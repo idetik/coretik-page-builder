@@ -1,14 +1,14 @@
 <?php
 
-namespace Themetik\Services\PageBuilder\Blocks\Layouts;
+namespace Coretik\PageBuilder\Blocks\Layouts;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Themetik\Services\PageBuilder\Blocks\Block;
-use Themetik\Services\PageBuilder\Blocks\Breadcrumb;
-use Themetik\Services\PageBuilder\Blocks\Components\Thumbnail;
-use Themetik\Services\PageBuilder\Blocks\Headings\TitlePrimary;
-use Themetik\Services\PageBuilder\Blocks\Traits\Composite;
-use Themetik\Services\PageBuilder\BlockInterface;
+use Coretik\PageBuilder\Blocks\Block;
+use Coretik\PageBuilder\Blocks\Breadcrumb;
+use Coretik\PageBuilder\Blocks\Components\Thumbnail;
+use Coretik\PageBuilder\Blocks\Headings\TitlePrimary;
+use Coretik\PageBuilder\Blocks\Traits\Composite;
+use Coretik\PageBuilder\BlockInterface;
 
 use function Globalis\WP\Cubi\include_template_part;
 

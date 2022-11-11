@@ -1,8 +1,9 @@
 <?php
 
-namespace Themetik\Services\PageBuilder\Blocks;
+namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
+use Coretik\PageBuilder\Blocks\Block;
 
 use function Globalis\WP\Cubi\include_template_part;
 
@@ -10,7 +11,7 @@ class Anchor extends Block
 {
     use Traits\Flow;
 
-    const NAME = 'tools.anchor';
+    const NAME = 'components.anchor';
     const LABEL = 'Outils: Ancre';
     const SCREENSHOTABLE = false;
 

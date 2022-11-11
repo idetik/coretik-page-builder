@@ -1,6 +1,6 @@
 <?php
 
-namespace Themetik\Services\PageBuilder\Blocks\Traits;
+namespace Coretik\PageBuilder\Blocks\Traits;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 

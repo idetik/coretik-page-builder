@@ -80,7 +80,7 @@ class Builder
         $this->blocks()->rewind();
     }
 
-    public static function availablesBlocks()
+    public function availablesBlocks()
     {
         $dir = get_parent_theme_file_path($this->config['fields.directory']);
         $layouts_default = [];

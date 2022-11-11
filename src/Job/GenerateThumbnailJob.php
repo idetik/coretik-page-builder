@@ -29,14 +29,8 @@ class GenerateThumbnailJob extends Job
 
     public function handle()
     {
-        // @todo rest route trigger sync job
-        // Notice observer Cron ?
-
-        // if (!isset($_GET[static::QUERY_VAR_GENERATE_THUMBS])) {
-        //     return;
-        // }
         if ($this->verbose) {
-            app()->notices()->notice('GenerateThumnail - Job start');
+            app()->notices()->info('GenerateThumnail - Job start');
         }
 
         if (!empty($this->layout)) {
@@ -57,12 +51,10 @@ class GenerateThumbnailJob extends Job
         }
 
         if ($this->verbose) {
-            app()->notices()->notice('GenerateThumnail - Job end');
+            app()->notices()->info('GenerateThumnail - Job end');
         }
 
         return $result;
-        // echo \json_encode($results);
-        // exit;
     }
 
     public function failed()

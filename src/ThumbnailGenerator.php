@@ -6,7 +6,6 @@ use function Globalis\WP\Cubi\include_template_part;
 
 class ThumbnailGenerator
 {
-    // const QUERY_VAR_GENERATE_THUMBS = 'themetik-regenerate-blocks-thumbs';
     protected $builder;
     protected $chrome;
     protected $outputDirectory;
@@ -31,34 +30,11 @@ class ThumbnailGenerator
         return $this;
     }
 
-    // public function handleGenerateThumbs()
-    // {
-    //     if (!isset($_GET[static::QUERY_VAR_GENERATE_THUMBS])) {
-    //         return;
-    //     }
-
-    //     $override = !empty($_GET['override']);
-
-    //     if (!empty($_GET['layout'])) {
-    //         try {
-    //             [$block, $output] = @$this->generateThumb($_GET['layout'], $override);
-    //             $results = [$block->getLabel() => $output];
-    //         } catch (\Exception $e) {
-    //             $results['errors'][$_GET['layout']] = $e->getMessage();
-    //         }
-    //     } else {
-    //         $results = @$this->generateThumbs($override);
-    //     }
-
-    //     echo \json_encode($results);
-    //     exit;
-    // }
-
     public function generateThumbs(bool $override = false, bool $verbose = false)
     {
         $results = [];
 
-        $layouts = $this->builder::availablesBlocks();
+        $layouts = $this->builder->availablesBlocks();
         \do_action('coretik/page-builder/generate-thumbs/start', count($layouts));
         foreach ($layouts as $layout) {
             try {
@@ -98,7 +74,7 @@ class ThumbnailGenerator
             throw new \Exception('Unscreenshotable');
         }
 
-        $outputDirectory = $this->outputDirectory ?? get_stylesheet_directory() . DIRECTORY_SEPARATOR . 'assets/images/admin/acf';
+        $outputDirectory = $this->outputDirectory;
         $output = $outputDirectory . sprintf('/%s.png', \str_replace('.', DIRECTORY_SEPARATOR, $block->getName()));
 
         if (!$override && \file_exists($output)) {

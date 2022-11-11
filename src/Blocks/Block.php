@@ -1,12 +1,12 @@
 <?php
 
-namespace Themetik\Services\PageBuilder\Blocks;
+namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Themetik\Services\PageBuilder\BlockInterface;
+use Coretik\PageBuilder\BlockInterface;
 use Coretik\Core\Models\Traits\Initializable;
 use Coretik\Core\Models\Traits\Bootable;
-use Themetik\Services\PageBuilder\Blocks\Traits\Grid;
+use Coretik\PageBuilder\Blocks\Traits\Grid;
 
 use function Globalis\WP\Cubi\include_template_part;
 
@@ -20,8 +20,6 @@ abstract class Block implements BlockInterface
     const SCREENSHOTABLE = true;
     const SCREEN_PREVIEW_SIZE = [1200, 542]; // coeff 2.21
     const CATEGORY = '';
-    const DIRECTORY_FIELDS = 'src/admin/fields/blocks/';
-    const DIRECTORY_THUMBS = 'images/admin/acf/';
 
     protected $context = null;
     protected $fields;
@@ -31,9 +29,12 @@ abstract class Block implements BlockInterface
     protected $propsFake = [];
     protected $propsFilled = [];
 
+    protected static $configGlobal = [];
+    protected $config = [];
+
     abstract function toArray();
 
-    public function __construct(array $props = [])
+    public function __construct(array $props = [], array $config = [])
     {
         $this->initialize();
         $this->setProps($props);
@@ -49,6 +50,16 @@ abstract class Block implements BlockInterface
                 static::$fieldsHooked[] = $this->getName();
             }
         }
+    }
+
+    public static function setConfigAsGlobal($config): void
+    {
+        static::$config = $config;
+    }
+
+    protected function config(string $key): mixed
+    {
+        return $this->config[$key] ?? static::$configGlobal[$key] ?? null;
     }
 
     public function getName(): string
@@ -120,27 +131,27 @@ abstract class Block implements BlockInterface
 
     public function adminTemplate($withExt = true): string
     {
-        return sprintf('templates/acf/%s/render%s', \str_replace('.', DIRECTORY_SEPARATOR, static::NAME), $withExt ? '.php' : '');
+        return \sprintf('%s%s/render%s', $this->config('blocks.acf.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME), $withExt ? '.php' : '');
     }
 
     public function template($withExt = true): string
     {
-        return sprintf('templates/blocks/%s%s', \str_replace('.', DIRECTORY_SEPARATOR, static::NAME), $withExt ? '.php' : '');
+        return \sprintf('%s%s%s', $this->config('blocks.template.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME), $withExt ? '.php' : '');
     }
 
     public function style(): string
     {
-        return sprintf('templates/acf/%s/style.css', \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
+        return \sprintf('%s%s/style.css', $this->config('blocks.acf.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
     }
 
     public function script(): string
     {
-        return sprintf('templates/acf/%s/script.js', \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
+        return \sprintf('%s%s/script.js', $this->config('blocks.acf.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
     }
 
     public function thumbnail(): string
     {
-        return sprintf('<##ASSETS_URL##>/images/admin/acf/%s.png', \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
+        return \sprintf('%s%s.png', $this->config('fields.thumbnails.baseUrl'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
     }
 
     public function category(): string
@@ -152,23 +163,23 @@ abstract class Block implements BlockInterface
         $name = explode('.', static::NAME, 2);
         switch ($name[0]) {
             case 'headings':
-                return __('Titres', 'themetik');
+                return __('Titres', app()->get('settings')['text-domain']);
             case 'content':
-                return __('Contenus', 'themetik');
+                return __('Contenus', app()->get('settings')['text-domain']);
             case 'tools':
-                return __('Outils', 'themetik');
+                return __('Outils', app()->get('settings')['text-domain']);
             case 'containers':
-                return __('Conteneurs', 'themetik');
+                return __('Conteneurs', app()->get('settings')['text-domain']);
             case 'layouts':
-                return __('Dispositions prédéfinies', 'themetik');
+                return __('Dispositions prédéfinies', app()->get('settings')['text-domain']);
             default:
-                return __($name[0], 'themetik');
+                return __($name[0], app()->get('settings')['text-domain']);
         }
     }
 
     public function templateFields(): string
     {
-        return static::DIRECTORY_FIELDS;
+        return $this->config('fields.directory') ?? '';
     }
 
     public function addWrapper(callable $wrapper, int $priority = 10)
@@ -187,8 +198,8 @@ abstract class Block implements BlockInterface
 
     public function render($return = false)
     {
-        \do_action('themetik/services/page-builder/block/before_render', $this);
-        \do_action('themetik/services/page-builder/block/before_render/name=' . $this->getName(), $this);
+        \do_action('coretik/page-builder/block/before_render', $this);
+        \do_action('coretik/page-builder/block/before_render/name=' . $this->getName(), $this);
 
         $component = include_template_part($this->template(false), $this->toArray() + ['context' => $this->context()], true);
         \ksort($this->wrappers, SORT_NUMERIC);
@@ -208,7 +219,7 @@ abstract class Block implements BlockInterface
 
     public function fakeIt()
     {
-        $props = \apply_filters('themetik/services/page-builder/fake-it/name=' . $this->getName(), $this->propsFake ?? []);
+        $props = \apply_filters('coretik/page-builder/fake-it/name=' . $this->getName(), $this->propsFake ?? []);
 
         $build = $this->fields()->build();
         foreach ($build['fields'] as $field) {

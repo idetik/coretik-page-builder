@@ -1,8 +1,8 @@
 <?php
 
-namespace Themetik\Services\PageBuilder\Blocks;
+namespace Coretik\PageBuilder\Blocks;
 
-use Themetik\Services\PageBuilder\BlockInterface;
+use Coretik\PageBuilder\BlockInterface;
 
 use function Globalis\WP\Cubi\include_template_part;
 

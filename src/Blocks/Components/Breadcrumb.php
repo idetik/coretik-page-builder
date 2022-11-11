@@ -1,6 +1,6 @@
 <?php
 
-namespace Themetik\Services\PageBuilder\Blocks;
+namespace Coretik\PageBuilder\Blocks\Components;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
@@ -11,8 +11,8 @@ class Breadcrumb extends Block
     use Traits\Flow;
     use Traits\Background;
 
-    const NAME = 'tools.breadcrumb';
-    const LABEL = "Outils: Fil d'ariane";
+    const NAME = 'components.breadcrumb';
+    const LABEL = "Fil d'ariane";
 
     protected $breadcrumb = null;
     protected $propsFake = [
@@ -24,7 +24,7 @@ class Breadcrumb extends Block
 
     public function toArray()
     {
-        if (is_admin()) {
+        if (is_admin() && app()->has('navigation')) {
             $this->breadcrumb = app()->navigation()->partsFactory('page')->setId(\acfe_get_post_id())->setCurrent()->breadcrumb()->map(function ($row) {
                 return $row->toArray();
             })->all();

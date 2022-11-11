@@ -1,6 +1,6 @@
 <?php
 
-namespace Themetik\Services\PageBuilder\Blocks;
+namespace Coretik\PageBuilder\Blocks\Components;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
@@ -11,7 +11,7 @@ class Wysiwyg extends Block
     use Traits\Flow;
     use Traits\Background;
 
-    const NAME = 'content.wysiwyg';
+    const NAME = 'components.wysiwyg';
     const LABEL = 'Contenu: Éditeur de texte';
     const SCREEN_PREVIEW_SIZE = [1600, 724];
 

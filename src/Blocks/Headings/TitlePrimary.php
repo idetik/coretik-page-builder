@@ -1,9 +1,9 @@
 <?php
 
-namespace Themetik\Services\PageBuilder\Blocks\Headings;
+namespace Coretik\PageBuilder\Blocks\Headings;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Themetik\Services\PageBuilder\Blocks\Block;
+use Coretik\PageBuilder\Blocks\Block;
 
 use function Globalis\WP\Cubi\include_template_part;
 
