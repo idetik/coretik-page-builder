@@ -25,7 +25,7 @@ class GenerateThumbnailCommand
      *     wp page-builder thumbnails --override --verbose
      */
     public function thumbnails($args, $assoc_args)
-    { 
+    {
         \add_action('coretik/page-builder/generate-thumbs/start', function ($counter) {
             $this->progress = \WP_CLI\Utils\make_progress_bar('Generating Thumbs', $counter);
         });
