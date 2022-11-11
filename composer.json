@@ -1,0 +1,28 @@
+{
+    "name": "idetik/coretik-page-builder",
+    "description": "Coretik page builer service",
+    "type": "library",
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "globalis/wp-cubi-helpers": "^1.0",
+        "stoutlogic/acf-builder": "^1.12",
+        "idetik/coretik-faker": "^1.1"
+    },
+    "authors": [
+        {
+            "name": "David",
+            "email": "david.daugreilh@idetik.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Coretik\\": ["src"] },
+        "files": [
+            "src/init.php",
+            "src/Cli/add-commands.php"
+        ]
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6"
+    }
+}

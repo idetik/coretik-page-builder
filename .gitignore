@@ -1,0 +1,7 @@
+vendor/
+node_modules/
+
+# File system files
+.DS_Store
+*~
+.fuse*
