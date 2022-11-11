@@ -1,7 +1,7 @@
 {
-    "name": "@idetik-group/coretik",
-    "version": "1.0.1",
-    "description": "Wordpress coretik",
+    "name": "@idetik-group/coretik-page-builder",
+    "version": "1.0.0",
+    "description": "Coretik page builder service",
     "scripts": {
         "semantic-release": "semantic-release"
     },
