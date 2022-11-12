@@ -9,7 +9,7 @@ trait WithPageBuilder
 
     abstract public function getBlocks();
 
-    public function initializePageBuilder()
+    public function initializeWithPageBuilder()
     {
         $this->builder = app()->get('pageBuilder');
     }
