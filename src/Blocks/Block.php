@@ -115,7 +115,7 @@ abstract class Block implements BlockInterface
     public function fieldsBuilderConfig(array $config = []): array
     {
         return \wp_parse_args($config, [
-            'label' => __(static::LABEL, 'themetik'),
+            'label' => __(static::LABEL, app()->get('settings')['text-domain']),
             'display' => 'block',
             'acfe_flexible_thumbnail' => $this->thumbnail(),
             'acfe_flexible_category' => $this->category(),

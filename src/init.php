@@ -38,7 +38,7 @@ add_action('coretik/container/construct', function ($container) {
     $container['pageBuilder.thumbnailGenerator'] = function ($c) {
         $chrome = $c->has('chrome') ? $c->get('chrome') : null;
         $generator = new ThumbnailGenerator($c->get('pageBuilder'), $chrome);
-        $generator->setOutputDirectory($c->get('fields.thumbnails.directory'));
+        $generator->setOutputDirectory($c->get('pageBuilder.config')->get('fields.thumbnails.directory'));
         return $generator;
     };
     $container['pageBuilder.job'] = $container->factory(function ($c) {

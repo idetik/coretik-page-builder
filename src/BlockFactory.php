@@ -26,8 +26,8 @@ class BlockFactory
             ];
         }
 
-        $custom = \apply_filters('themetik/services/page-builder/factory/create', null, $name, $layout, $context, $this->config);
-        $custom = \apply_filters('themetik/services/page-builder/factory/create/name=' . $name, $custom, $name, $layout, $context, $this->config);
+        $custom = \apply_filters('coretik/page-builder/factory/create', null, $name, $layout, $context, $this->config);
+        $custom = \apply_filters('coretik/page-builder/factory/create/name=' . $name, $custom, $name, $layout, $context, $this->config);
         if (!empty($custom) && $custom instanceof BlockInterface) {
             if (!empty($context)) {
                 $custom->setContext($context);
