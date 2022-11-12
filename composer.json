@@ -16,7 +16,7 @@
         }
     ],
     "autoload": {
-        "psr-4": { "Coretik\\": ["src"] },
+        "psr-4": { "Coretik\\PageBuilder\\": ["src"] },
         "files": [
             "src/init.php",
             "src/Cli/add-commands.php"
