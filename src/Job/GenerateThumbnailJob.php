@@ -20,11 +20,12 @@ class GenerateThumbnailJob extends Job
         }
     }
 
-    public function setConfig(array $config)
+    public function setConfig(array $config): self
     {
         $this->layout = $config['layout'] ?? null;
         $this->override = $config['override'] ?? false;
         $this->verbose = $config['verbose'] ?? false;
+        return $this;
     }
 
     public function handle()
