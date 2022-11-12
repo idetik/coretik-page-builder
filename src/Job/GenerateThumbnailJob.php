@@ -38,12 +38,12 @@ class GenerateThumbnailJob extends Job
             try {
                 [$block, $output] = @$this->generator->generateThumb($this->layout, $this->override);
                 $results = [$block->getLabel() => $output];
-                if ($verbose) {
+                if ($this->verbose) {
                     app()->notices()->success(sprintf('%s : %s', $block->getLabel(), $output));
                 }
             } catch (\Exception $e) {
                 $results['errors'][$this->layout] = $e->getMessage();
-                if ($verbose) {
+                if ($this->verbose) {
                     app()->notices()->error(sprintf('%s : %s', $layout, $e->getMessage()));
                 }
             }
@@ -55,7 +55,7 @@ class GenerateThumbnailJob extends Job
             app()->notices()->info('GenerateThumnail - Job end');
         }
 
-        return $result;
+        return $results;
     }
 
     public function failed()

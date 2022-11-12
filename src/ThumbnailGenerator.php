@@ -18,13 +18,13 @@ class ThumbnailGenerator
 
     public function setOutputDirectory(string $directory): self
     {
-        if (!\is_dir($directory)) {
-            throw new \Exception($directory . ' is not a directory.');
-        }
+        // if (!\is_dir($directory)) {
+        //     throw new \Exception($directory . ' is not a directory.');
+        // }
 
-        if (!\is_writable($directory)) {
-            throw new \Exception($directory . ' is not writable.');
-        }
+        // if (!\is_writable($directory)) {
+        //     throw new \Exception($directory . ' is not writable.');
+        // }
 
         $this->outputDirectory = rtrim('/', $directory);
         return $this;
