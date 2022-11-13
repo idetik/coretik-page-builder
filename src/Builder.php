@@ -82,11 +82,17 @@ class Builder
 
     public function availablesBlocks()
     {
-        $dir = get_parent_theme_file_path($this->config['fields.directory']);
+        $directories = \apply_filters('coretik/page-builder/blocks-directories', [
+            get_stylesheet_directory() . '/' . $this->config['fields.directory'],
+            get_parent_theme_file_path($this->config['fields.directory']),
+        ]);
         $layouts_default = [];
-        foreach (glob($dir . '**/*.php') as $blockfile) {
-            $from_blockdir = str_replace($dir, '', $blockfile);
-            $layouts_default[] = str_replace(['/', '.php'], ['.', ''], $from_blockdir);
+
+        foreach ($directories as $dir) {
+            foreach (glob($dir . '**/*.php') as $blockfile) {
+                $from_blockdir = str_replace($dir, '', $blockfile);
+                $layouts_default[] = str_replace(['/', '.php'], ['.', ''], $from_blockdir);
+            }
         }
 
         return \apply_filters('coretik/page-builder/blocks', $layouts_default);
