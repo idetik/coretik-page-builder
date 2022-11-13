@@ -2,14 +2,13 @@
 
 namespace Coretik\PageBuilder;
 
-use Coretik\Core\Interfaces\CollectionInterface;
 use Coretik\PageBuilder\Blocks\Block;
 
 class BlockFactory
 {
     protected $config;
 
-    public function __construct(CollectionInterface $config)
+    public function __construct($config)
     {
         $this->config = $config;
         Block::setConfigAsGlobal($config);

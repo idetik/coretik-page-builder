@@ -11,7 +11,7 @@ class Builder
     protected $config;
     private $factory;
 
-    public function __construct($blockFactory, array $config = [])
+    public function __construct($blockFactory, $config = [])
     {
         $this->builder_blocks = new \SplObjectStorage();
         $this->factory = $blockFactory;

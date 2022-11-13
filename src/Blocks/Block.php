@@ -54,7 +54,7 @@ abstract class Block implements BlockInterface
 
     public static function setConfigAsGlobal($config): void
     {
-        static::$config = $config;
+        static::$configGlobal = $config;
     }
 
     protected function config(string $key): mixed
