@@ -4,7 +4,7 @@ namespace Coretik\PageBuilder\Blocks\Layouts;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Block;
-use Coretik\PageBuilder\Blocks\Breadcrumb;
+use Coretik\PageBuilder\Blocks\Components\Breadcrumb;
 use Coretik\PageBuilder\Blocks\Components\Thumbnail;
 use Coretik\PageBuilder\Blocks\Headings\TitlePrimary;
 use Coretik\PageBuilder\Blocks\Traits\Composite;

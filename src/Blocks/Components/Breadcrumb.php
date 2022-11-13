@@ -3,13 +3,15 @@
 namespace Coretik\PageBuilder\Blocks\Components;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
+use Coretik\PageBuilder\Blocks\Block;
+use Coretik\PageBuilder\Blocks\Traits\{Flow, Background};
 
 use function Globalis\WP\Cubi\include_template_part;
 
 class Breadcrumb extends Block
 {
-    use Traits\Flow;
-    use Traits\Background;
+    use Flow;
+    use Background;
 
     const NAME = 'components.breadcrumb';
     const LABEL = "Fil d'ariane";
