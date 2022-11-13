@@ -31,7 +31,7 @@ class GenerateThumbnailJob extends Job
     public function handle()
     {
         if ($this->verbose) {
-            app()->notices()->info('GenerateThumnail - Job start');
+            app()->notices()->info('======== GenerateThumnail - Job start ========');
         }
 
         if (!empty($this->layout)) {
@@ -52,7 +52,7 @@ class GenerateThumbnailJob extends Job
         }
 
         if ($this->verbose) {
-            app()->notices()->info('GenerateThumnail - Job end');
+            app()->notices()->info('======== GenerateThumnail - Job end ========');
         }
 
         return $results;

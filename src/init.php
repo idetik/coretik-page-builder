@@ -2,7 +2,7 @@
 
 namespace Coretik\PageBuilder;
 
-use Coretik\PageBuilder\Cli\Command\GenerateThumbnailCommand;
+use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Job\GenerateThumbnailJob;
 use Coretik\PageBuilder\ThumbnailGenerator;
 use Coretik\PageBuilder\Builder;
@@ -45,6 +45,6 @@ add_action('coretik/container/construct', function ($container) {
         return new GenerateThumbnailJob($c->get('pageBuilder.thumbnailGenerator'));
     });
     $container['pageBuilder.commands'] = function ($c) {
-        return new GenerateThumbnailCommand($c->get('pageBuilder.job'));
+        return new PageBuilderCommand($c->get('pageBuilder.job'));
     };
 });

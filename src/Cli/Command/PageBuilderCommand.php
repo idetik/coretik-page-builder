@@ -2,7 +2,7 @@
 
 namespace Coretik\PageBuilder\Cli\Command;
 
-class GenerateThumbnailCommand
+class PageBuilderCommand
 {
     protected $progress;
     protected $job;
@@ -28,9 +28,9 @@ class GenerateThumbnailCommand
      *
      * ## EXAMPLES
      *
-     *     wp page-builder thumbnails --override --verbose
+     *     wp page-builder generate_thumbnails --override --verbose
      */
-    public function thumbnails($args, $assoc_args)
+    public function generate_thumbnails($args, $assoc_args)
     {
         \add_action('coretik/page-builder/generate-thumbs/start', function ($counter) {
             $progress = \WP_CLI\Utils\make_progress_bar('Generating Thumbs', $counter);
