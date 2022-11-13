@@ -4,8 +4,7 @@ namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\BlockInterface;
-use Coretik\Core\Models\Traits\Initializable;
-use Coretik\Core\Models\Traits\Bootable;
+use Coretik\Core\Models\Traits\{Initializable};
 use Coretik\PageBuilder\Blocks\Traits\Grid;
 
 use function Globalis\WP\Cubi\include_template_part;
@@ -17,6 +16,7 @@ abstract class Block implements BlockInterface
 
     const NAME = '';
     const LABEL = '';
+    const IN_LIBRARY = true;
     const SCREENSHOTABLE = true;
     const SCREEN_PREVIEW_SIZE = [1200, 542]; // coeff 2.21
     const CATEGORY = '';
@@ -24,6 +24,7 @@ abstract class Block implements BlockInterface
     protected $context = null;
     protected $fields;
     private $wrappers = [];
+    protected $settings = [];
     protected $wrapperParameters = [];
     protected static $fieldsHooked = [];
     protected $propsFake = [];
@@ -180,6 +181,11 @@ abstract class Block implements BlockInterface
     public function templateFields(): string
     {
         return $this->config('fields.directory') ?? '';
+    }
+
+    public function addSettings(callable $provider, int $priority = 10)
+    {
+        $this->settings[$priority][] = $provider;
     }
 
     public function addWrapper(callable $wrapper, int $priority = 10)

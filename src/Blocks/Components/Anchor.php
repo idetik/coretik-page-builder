@@ -1,15 +1,16 @@
 <?php
 
-namespace Coretik\PageBuilder\Blocks;
+namespace Coretik\PageBuilder\Blocks\Components;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Block;
+use Coretik\PageBuilder\Blocks\Traits\Flow;
 
 use function Globalis\WP\Cubi\include_template_part;
 
 class Anchor extends Block
 {
-    use Traits\Flow;
+    use Flow;
 
     const NAME = 'components.anchor';
     const LABEL = 'Outils: Ancre';

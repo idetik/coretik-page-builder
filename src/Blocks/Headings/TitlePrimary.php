@@ -29,7 +29,7 @@ class TitlePrimary extends Block
         $field
             ->addMessage(__("Titre principal", 'cfg'), __("Afficher le titre"))
             ->addText('subtitle')
-                ->setLabel(__('Sous-titre', 'themetik'));
+                ->setLabel(__('Sous-titre', app()->get('settings')['text-domain']));
         return $field;
     }
 

@@ -3,16 +3,16 @@
 namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Coretik\PageBuilder\Blocks\Traits\Grid;
+use Coretik\PageBuilder\Blocks\Traits\{Flow, Background, Grid, Container as ContainerTrait};
 
 use function Globalis\WP\Cubi\include_template_part;
 
 class Container extends Block
 {
     use Grid;
-    use Traits\Flow;
-    use Traits\Background;
-    use Traits\Container {
+    use Flow;
+    use Background;
+    use ContainerTrait {
         containerToArray as containerToArrayTrait;
     }
 

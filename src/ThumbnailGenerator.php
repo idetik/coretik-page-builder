@@ -34,7 +34,7 @@ class ThumbnailGenerator
     {
         $results = [];
 
-        $layouts = $this->builder->availablesBlocks();
+        $layouts = $this->builder->library();
         \do_action('coretik/page-builder/generate-thumbs/start', count($layouts));
         foreach ($layouts as $layout) {
             try {

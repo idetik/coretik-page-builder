@@ -14,6 +14,7 @@ trait Flow
     protected function initializeFlow()
     {
         $this->addWrapper([$this, 'flowWrap'], 99);
+        $this->addSettings([$this, 'flowSettings'], 10);
     }
 
     protected function flowWrap($component)
@@ -27,6 +28,48 @@ trait Flow
             $this->flowToArray() + $this->wrapperParameters() + ['component' => $component],
             true
         );
+    }
+
+    protected function flowSettings()
+    {
+        $flow_default = $this->flow_default ?? 'base';
+        $flow_advanced = $this->flow_advanced ?? false;
+
+        $flow_choices = \wp_parse_args(($this->flow_choices ?? []), [
+            ['none' => __('Pas de marge', app()->get('settings')['text-domain'])],
+            ['base' => __('Utiliser les marges par défaut', app()->get('settings')['text-domain'])],
+            ['10' => __('Petites', app()->get('settings')['text-domain'])],
+            ['20' => __('Grandes', app()->get('settings')['text-domain'])],
+        ]);
+
+        if ($flow_advanced) {
+            $flow_choices['advanced'] = __('Personnalisées', app()->get('settings')['text-domain']);
+        }
+
+        $flow = new FieldsBuilder('trait.flow');
+        $flow
+            ->addButtonGroup('flow')
+                ->setLabel(__('Marges', app()->get('settings')['text-domain']))
+                ->setInstructions(__('Espacement avec les autres blocs'))
+                ->setDefaultValue($flow_default)
+                ->addChoices($flow_choices)
+                ->setRequired()
+            ->addGroup('flow_advanced', ['label' => '', 'layout' => 'row'])
+                ->conditional('flow', '==', 'advanced')
+                ->addRange('top', ['label' => __('Marge en haut', app()->get('settings')['text-domain']), 'max' => 12])
+                    ->setRequired()
+                    ->setDefaultValue('4')
+                ->addRange('bottom', ['label' => __('Marge en bas', app()->get('settings')['text-domain']), 'max' => 12])
+                    ->setRequired()
+                    ->setDefaultValue('4')
+                ->addRange('left', ['label' => __('Marge à gauche', app()->get('settings')['text-domain']), 'max' => 12])
+                    ->setRequired()
+                    ->setDefaultValue('0')
+                ->addRange('right', ['label' => __('Marge à droite', app()->get('settings')['text-domain']), 'max' => 12])
+                    ->setRequired()
+                    ->setDefaultValue('0');
+
+        return $flow;
     }
 
     protected function flow()

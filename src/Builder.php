@@ -80,21 +80,19 @@ class Builder
         $this->blocks()->rewind();
     }
 
+    public function library()
+    {
+        $blocks = $this->config['blocks']
+            ->filter(fn ($block) => $block::IN_LIBRARY)
+            ->map(fn ($block) => $block::NAME)
+            ->all();
+
+        return \apply_filters('coretik/page-builder/blocks', $blocks);
+    }
+
+    // @deprecated
     public function availablesBlocks()
     {
-        $directories = \apply_filters('coretik/page-builder/blocks-directories', [
-            get_stylesheet_directory() . '/' . $this->config['fields.directory'],
-            get_parent_theme_file_path($this->config['fields.directory']),
-        ]);
-        $layouts_default = [];
-
-        foreach ($directories as $dir) {
-            foreach (glob($dir . '**/*.php') as $blockfile) {
-                $from_blockdir = str_replace($dir, '', $blockfile);
-                $layouts_default[] = str_replace(['/', '.php'], ['.', ''], $from_blockdir);
-            }
-        }
-
-        return \apply_filters('coretik/page-builder/blocks', $layouts_default);
+        return $this->library();
     }
 }

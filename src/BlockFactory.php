@@ -34,19 +34,26 @@ class BlockFactory
             return $custom;
         }
 
-        switch ($name) {
-            default:
-                $parts = \explode('.', $name);
-                $parts = \array_map(fn ($part) => \str_replace(['_', '-'], '', \ucwords($part, '-')), $parts);
-                $block = __NAMESPACE__ . '\\Blocks\\';
-                $block .= implode('\\', $parts);
-                if (\class_exists($block)) {
-                    $block = new $block($layout);
-                } else {
-                    throw new \Exception('Undefined layout ' . $layout['acf_fc_layout']);
-                }
-                break;
+        $block = $this->config['blocks']->first(fn ($block) => $block::NAME === $name);
+        if ($block) {
+            $block = new $block($layout);
+        } else {
+            throw new \Exception('Undefined layout ' . $layout['acf_fc_layout']);
         }
+
+        // switch ($name) {
+        //     default:
+        //         $parts = \explode('.', $name);
+        //         $parts = \array_map(fn ($part) => \str_replace(['_', '-'], '', \ucwords($part, '-')), $parts);
+        //         $block = __NAMESPACE__ . '\\Blocks\\';
+        //         $block .= implode('\\', $parts);
+        //         if (\class_exists($block)) {
+        //             $block = new $block($layout);
+        //         } else {
+        //             throw new \Exception('Undefined layout ' . $layout['acf_fc_layout']);
+        //         }
+        //         break;
+        // }
 
         if (!empty($context)) {
             $block->setContext($context);
