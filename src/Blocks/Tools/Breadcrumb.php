@@ -1,19 +1,15 @@
 <?php
 
-namespace Coretik\PageBuilder\Blocks\Components;
+namespace Coretik\PageBuilder\Blocks\Tools;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Block;
-use Coretik\PageBuilder\Blocks\Traits\{Flow, Background};
 
 use function Globalis\WP\Cubi\include_template_part;
 
 class Breadcrumb extends Block
 {
-    use Flow;
-    use Background;
-
-    const NAME = 'components.breadcrumb';
+    const NAME = 'tools.breadcrumb';
     const LABEL = "Fil d'ariane";
 
     protected $breadcrumb = null;
@@ -23,6 +19,14 @@ class Breadcrumb extends Block
             ['url' => '#', 'title' => 'Ipsum', 'current' => true],
         ]
     ];
+
+    public function fieldsBuilder($fieldName = 'content'): FieldsBuilder
+    {
+        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field->addMessage(__("Fil d'ariane", app()->get('settings')['text-domain']), __("Afficher le fil d'ariane", app()->get('settings')['text-domain']));
+        $this->useSettingsOn($field);
+        return $field;
+    }
 
     public function toArray()
     {

@@ -3,12 +3,11 @@
 namespace Coretik\PageBuilder\Blocks\Components;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Coretik\PageBuilder\Blocks\Block;
 use Coretik\PageBuilder\Blocks\ImageParallax;
 
 use function Globalis\WP\Cubi\include_template_part;
 
-class Thumbnail extends Block
+class Thumbnail extends Component
 {
     const NAME = 'components.thumbnail';
     const LABEL = 'Image à la une';

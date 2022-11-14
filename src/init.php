@@ -5,8 +5,9 @@ namespace Coretik\PageBuilder;
 use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Job\GenerateThumbnailJob;
 use Coretik\PageBuilder\{Builder, BlockFactory, ThumbnailGenerator};
-use Coretik\PageBuilder\Blocks\Components\{Anchor, Cta};
-use Coretik\PageBuilder\Blocks\Content\{Wysiwyg};
+use Coretik\PageBuilder\Blocks\Components\{Cta, Wysiwyg as WysiwygComponent};
+use Coretik\PageBuilder\Blocks\Tools\{Anchor};
+use Coretik\PageBuilder\Blocks\Content\{Wysiwyg, WysiwygDouble};
 use Coretik\PageBuilder\Blocks\Container;
 use Exception;
 
@@ -42,9 +43,11 @@ add_action('coretik/container/construct', function ($container) {
             // Components
             Anchor::class,
             Cta::class,
+            WysiwygComponent::class,
 
             // Content
             Wysiwyg::class,
+            WysiwygDouble::class,
 
             // Container
             Container::class,

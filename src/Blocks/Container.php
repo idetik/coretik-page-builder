@@ -3,19 +3,11 @@
 namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Coretik\PageBuilder\Blocks\Traits\{Flow, Background, Grid, Container as ContainerTrait};
 
 use function Globalis\WP\Cubi\include_template_part;
 
 class Container extends Block
 {
-    use Grid;
-    use Flow;
-    use Background;
-    use ContainerTrait {
-        containerToArray as containerToArrayTrait;
-    }
-
     const NAME = 'containers.container';
     const LABEL = 'Conteneur';
     const SCREENSHOTABLE = false;
@@ -105,12 +97,5 @@ class Container extends Block
                 'width' => $this->border_width . 'px',
             ] : false,
         ];
-    }
-
-    public function containerToArray()
-    {
-        $data = $this->containerToArrayTrait();
-        $data['padding'] = false;
-        return $data;
     }
 }

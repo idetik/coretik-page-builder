@@ -4,15 +4,14 @@ namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\BlockInterface;
-use Coretik\Core\Models\Traits\{Initializable};
-use Coretik\PageBuilder\Blocks\Traits\Grid;
+use Coretik\Core\Models\Traits\{Initializable, Bootable};
 
 use function Globalis\WP\Cubi\include_template_part;
 
 abstract class Block implements BlockInterface
 {
     use Initializable;
-    use Grid;
+    use Bootable;
 
     const NAME = '';
     const LABEL = '';
@@ -37,6 +36,7 @@ abstract class Block implements BlockInterface
 
     public function __construct(array $props = [], array $config = [])
     {
+        static::bootIfNotBooted();
         $this->initialize();
         $this->setProps($props);
 
@@ -113,6 +113,11 @@ abstract class Block implements BlockInterface
         return include locate_template($this->templateFields() . \str_replace('.', DIRECTORY_SEPARATOR, static::NAME) . '.php');
     }
 
+    public function flexibleLayoutArgs(): array
+    {
+        return [];
+    }
+
     public function fieldsBuilderConfig(array $config = []): array
     {
         return \wp_parse_args($config, [
@@ -186,6 +191,23 @@ abstract class Block implements BlockInterface
     public function addSettings(callable $provider, int $priority = 10)
     {
         $this->settings[$priority][] = $provider;
+    }
+
+    public function useSettingsOn(FieldsBuilder $field)
+    {
+        if (empty($this->settings)) {
+            return;
+        }
+
+        $field->addAccordion('settings', ['label' => __('Réglages', app()->get('settings')['text-domain'])]);
+
+        \ksort($this->settings, SORT_NUMERIC);
+
+        foreach ($this->settings as $priority => $callables) {
+            foreach ($callables as $callable) {
+                $field->addFields($callable());
+            }
+        }
     }
 
     public function addWrapper(callable $wrapper, int $priority = 10)
