@@ -51,35 +51,6 @@ class Builder
         return $this;
     }
 
-    // public function hasGridEnabled(): bool
-    // {
-    //     $gridFounded = false;
-
-    //     while ($this->blocks()->valid() && !$gridFounded) {
-    //         $block = $this->blocks()->current();
-
-    //         if ($block->useGrid()) {
-    //             $gridFounded = true;
-    //         }
-
-    //         $this->blocks()->next();
-    //     }
-
-    //     $this->blocks()->rewind();
-    //     return $gridFounded;
-    // }
-
-    // public function setGrid()
-    // {
-    //     while ($this->blocks()->valid()) {
-    //         $block = $this->blocks()->current();
-    //         $block->setGrid();
-    //         $this->blocks()->next();
-    //     }
-
-    //     $this->blocks()->rewind();
-    // }
-
     public function library()
     {
         $blocks = $this->config['blocks']

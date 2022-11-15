@@ -4,6 +4,7 @@ namespace Coretik\PageBuilder;
 
 use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Job\GenerateThumbnailJob;
+use Coretik\PageBuilder\Acf\PageBuilderField;
 use Coretik\PageBuilder\{Builder, BlockFactory, ThumbnailGenerator};
 use Coretik\PageBuilder\Blocks\Components\{Cta, Wysiwyg as WysiwygComponent};
 use Coretik\PageBuilder\Blocks\Tools\{Anchor};
@@ -68,5 +69,8 @@ add_action('coretik/container/construct', function ($container) {
     });
     $container['pageBuilder.commands'] = function ($c) {
         return new PageBuilderCommand($c->get('pageBuilder.job'));
+    };
+    $container['pageBuilder.field'] = function ($c) {
+        return new PageBuilderField($c->get('pageBuilder'));
     };
 });
