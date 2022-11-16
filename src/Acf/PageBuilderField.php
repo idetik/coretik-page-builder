@@ -20,13 +20,13 @@ class PageBuilderField
             $blocks = $this->service->availablesBlocks();
             $builder = new FieldsBuilder('');
             $builder->addFlexibleContent($field_name);
-            foreach ($layouts as $layout) {
+            foreach ($blocks as $layout) {
                 if ('containers.container' === $layout) {
                     continue;
                 }
                 try {
-                    $block = $service->factory()->create(['acf_fc_layout' => $layout]);
-                    $builder->getField('blocks')->addLayout($block->fields(), $block->flexibleLayoutArgs());
+                    $block = $this->service->factory()->create(['acf_fc_layout' => $layout]);
+                    $builder->getField($field_name)->addLayout($block->fields(), $block->flexibleLayoutArgs());
                 } catch (\Exception $e) {
                     app()->notices()->error($e->getMessage());
                 }

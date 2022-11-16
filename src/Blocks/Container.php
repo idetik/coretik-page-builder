@@ -97,7 +97,7 @@ class Container extends Block
                             $this->config('blocks')
                                 ->filter(fn ($block) => $block::IN_LIBRARY && $block::CONTAINERIZABLE)
                                 ->map(fn ($block) => $block::NAME)
-                                ->all()
+                                ->all(),
                             [],
                             false
                         );
