@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/idetik/coretik-page-builder/compare/v1.0.1...v1.0.2) (2022-11-16)
+
+
+### Bug Fixes
+
+* ThumbnailGenerator fix set directory method ([e0ebefc](https://github.com/idetik/coretik-page-builder/commit/e0ebefcef806fc7251a7a25c86c6b7bde256f467))
+
 ## [1.0.1](https://github.com/idetik/coretik-page-builder/compare/v1.0.0...v1.0.1) (2022-11-16)
 
 
