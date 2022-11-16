@@ -26,7 +26,7 @@ class ThumbnailGenerator
         //     throw new \Exception($directory . ' is not writable.');
         // }
 
-        $this->outputDirectory = rtrim('/', $directory);
+        $this->outputDirectory = rtrim($directory, '/');
         return $this;
     }
 
@@ -76,7 +76,6 @@ class ThumbnailGenerator
 
         $outputDirectory = $this->outputDirectory;
         $output = $outputDirectory . sprintf('/%s.png', \str_replace('.', DIRECTORY_SEPARATOR, $block->getName()));
-
         if (!$override && \file_exists($output)) {
             throw new \Exception('Already exists.');
         }
