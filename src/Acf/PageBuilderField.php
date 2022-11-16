@@ -105,7 +105,7 @@ class PageBuilderField
 
         if ($with_containers) {
             try {
-                $block = $service->factory()->create(['acf_fc_layout' => 'containers.container'], $context ?? null)->fields();
+                $block = $this->service->factory()->create(['acf_fc_layout' => 'containers.container'], $context ?? null)->fields();
                 $builder->getField($field_name)->addLayout($block);
             } catch (\Exception $e) {
                 app()->notices()->error($e->getMessage());
