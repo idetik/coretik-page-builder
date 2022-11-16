@@ -9,6 +9,8 @@ use function Globalis\WP\Cubi\include_template_part;
 
 trait Composite
 {
+    use WithComponent;
+
     protected $children;
 
     protected function initializeComposite()
@@ -18,7 +20,7 @@ trait Composite
         foreach ($this->components ?? [] as $componentClass) {
             $component = $this->compose($componentClass::NAME);
             $key = static::undot($component->getName());
-            \add_filter('themetik/services/page-builder/fake-it/name=' . $this->getName(), fn ($props) => $props + [$key => $component->fakeIt()->getPropsFilled() + ['acf_fc_layout' => $component->getName()]]);
+            \add_filter('coretik/page-builder/fake-it/name=' . $this->getName(), fn ($props) => $props + [$key => $component->fakeIt()->getPropsFilled() + ['acf_fc_layout' => $component->getName()]]);
             $this->$key = null;
         }
     }
@@ -32,7 +34,7 @@ trait Composite
         ];
 
         if (\is_string($block) || \is_array($block)) {
-            $block = app()->pageBuilder()->factory()->create($block);
+            $block = $this->component($block);
         }
 
         $block->setContext($context);

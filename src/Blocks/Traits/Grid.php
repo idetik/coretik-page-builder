@@ -25,7 +25,7 @@ trait Grid
     protected function columnWrap($component)
     {
         return include_template_part(
-            'templates/blocks/components/grid/column',
+            $this->config('blocks.template.directory') . '/wrapper/grid/column',
             $this->columnToArray() + $this->wrapperParameters() + ['component' => $component],
             true
         );

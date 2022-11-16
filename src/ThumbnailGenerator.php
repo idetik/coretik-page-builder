@@ -18,13 +18,13 @@ class ThumbnailGenerator
 
     public function setOutputDirectory(string $directory): self
     {
-        if (!\is_dir($directory)) {
-            throw new \Exception($directory . ' is not a directory.');
-        }
+        // if (!\is_dir($directory)) {
+        //     throw new \Exception($directory . ' is not a directory.');
+        // }
 
-        if (!\is_writable($directory)) {
-            throw new \Exception($directory . ' is not writable.');
-        }
+        // if (!\is_writable($directory)) {
+        //     throw new \Exception($directory . ' is not writable.');
+        // }
 
         $this->outputDirectory = rtrim('/', $directory);
         return $this;
@@ -34,7 +34,7 @@ class ThumbnailGenerator
     {
         $results = [];
 
-        $layouts = $this->builder->availablesBlocks();
+        $layouts = $this->builder->library();
         \do_action('coretik/page-builder/generate-thumbs/start', count($layouts));
         foreach ($layouts as $layout) {
             try {

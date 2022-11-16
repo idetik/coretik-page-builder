@@ -4,11 +4,10 @@ namespace Coretik\PageBuilder\Blocks\Layouts;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Block;
-use Coretik\PageBuilder\Blocks\Breadcrumb;
+use Coretik\PageBuilder\Blocks\Tools\Breadcrumb;
 use Coretik\PageBuilder\Blocks\Components\Thumbnail;
 use Coretik\PageBuilder\Blocks\Headings\TitlePrimary;
 use Coretik\PageBuilder\Blocks\Traits\Composite;
-use Coretik\PageBuilder\BlockInterface;
 
 use function Globalis\WP\Cubi\include_template_part;
 
@@ -31,6 +30,18 @@ class PageHeader extends Block
             'max' => 1,
             'min' => 0,
         ];
+    }
+
+    public function fieldsBuilder(): FieldsBuilder
+    {
+        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+
+        foreach ($this->fieldsComposite() as $name => $data) {
+            $field->addTab($data['block']->getLabel(), ['placement' => 'left'])
+                ->addFields($data['fields']);
+        }
+
+        return $field;
     }
 
     public function toArray()

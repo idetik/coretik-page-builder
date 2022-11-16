@@ -11,7 +11,7 @@ class Builder
     protected $config;
     private $factory;
 
-    public function __construct($blockFactory, array $config = [])
+    public function __construct($blockFactory, $config = [])
     {
         $this->builder_blocks = new \SplObjectStorage();
         $this->factory = $blockFactory;
@@ -58,7 +58,7 @@ class Builder
         while ($this->blocks()->valid() && !$gridFounded) {
             $block = $this->blocks()->current();
 
-            if ($block->useGrid()) {
+            if (\method_exists($block, 'useGrid') && $block->useGrid()) {
                 $gridFounded = true;
             }
 
@@ -66,6 +66,7 @@ class Builder
         }
 
         $this->blocks()->rewind();
+
         return $gridFounded;
     }
 
@@ -80,15 +81,19 @@ class Builder
         $this->blocks()->rewind();
     }
 
+    public function library()
+    {
+        $blocks = $this->config['blocks']
+            ->filter(fn ($block) => $block::IN_LIBRARY)
+            ->map(fn ($block) => $block::NAME)
+            ->all();
+
+        return \apply_filters('coretik/page-builder/blocks', $blocks);
+    }
+
+    // @deprecated
     public function availablesBlocks()
     {
-        $dir = get_parent_theme_file_path($this->config['fields.directory']);
-        $layouts_default = [];
-        foreach (glob($dir . '**/*.php') as $blockfile) {
-            $from_blockdir = str_replace($dir, '', $blockfile);
-            $layouts_default[] = str_replace(['/', '.php'], ['.', ''], $from_blockdir);
-        }
-
-        return \apply_filters('coretik/page-builder/blocks', $layouts_default);
+        return $this->library();
     }
 }

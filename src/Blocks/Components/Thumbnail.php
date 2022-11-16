@@ -3,12 +3,11 @@
 namespace Coretik\PageBuilder\Blocks\Components;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Coretik\PageBuilder\Blocks\Block;
 use Coretik\PageBuilder\Blocks\ImageParallax;
 
 use function Globalis\WP\Cubi\include_template_part;
 
-class Thumbnail extends Block
+class Thumbnail extends Component
 {
     const NAME = 'components.thumbnail';
     const LABEL = 'Image à la une';
@@ -19,7 +18,7 @@ class Thumbnail extends Block
     {
         $field = new FieldsBuilder(static::NAME, $this->fieldsBuilderConfig());
         $field->addImage('thumbnail', [
-            'label' => __('Image à la une', 'themetik'),
+            'label' => __('Image à la une', app()->get('settings')['text-domain']),
             'return_format' => 'id',
             'uploader' => 'wp',
             'acfe_thumbnail' => 1,
@@ -29,11 +28,18 @@ class Thumbnail extends Block
         return $field;
     }
 
+    public function flexibleLayoutArgs(): array
+    {
+        return [
+            'max' => 1,
+            'min' => 0,
+        ];
+    }
+
     public function toArray()
     {
         return [
-            'id' => $this->thumbnail,
-            'ratio' => 25,
+            'id' => $this->thumbnail
         ];
     }
 }

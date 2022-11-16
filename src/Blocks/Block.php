@@ -4,8 +4,7 @@ namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\BlockInterface;
-use Coretik\Core\Models\Traits\Initializable;
-use Coretik\Core\Models\Traits\Bootable;
+use Coretik\Core\Models\Traits\{Initializable, Bootable};
 use Coretik\PageBuilder\Blocks\Traits\Grid;
 
 use function Globalis\WP\Cubi\include_template_part;
@@ -13,10 +12,13 @@ use function Globalis\WP\Cubi\include_template_part;
 abstract class Block implements BlockInterface
 {
     use Initializable;
+    use Bootable;
     use Grid;
 
     const NAME = '';
     const LABEL = '';
+    const IN_LIBRARY = true;
+    const CONTAINERIZABLE = true;
     const SCREENSHOTABLE = true;
     const SCREEN_PREVIEW_SIZE = [1200, 542]; // coeff 2.21
     const CATEGORY = '';
@@ -24,6 +26,7 @@ abstract class Block implements BlockInterface
     protected $context = null;
     protected $fields;
     private $wrappers = [];
+    protected $settings = [];
     protected $wrapperParameters = [];
     protected static $fieldsHooked = [];
     protected $propsFake = [];
@@ -32,10 +35,11 @@ abstract class Block implements BlockInterface
     protected static $configGlobal = [];
     protected $config = [];
 
-    abstract function toArray();
+    abstract public function toArray();
 
     public function __construct(array $props = [], array $config = [])
     {
+        static::bootIfNotBooted();
         $this->initialize();
         $this->setProps($props);
 
@@ -54,7 +58,7 @@ abstract class Block implements BlockInterface
 
     public static function setConfigAsGlobal($config): void
     {
-        static::$config = $config;
+        static::$configGlobal = $config;
     }
 
     protected function config(string $key): mixed
@@ -112,10 +116,15 @@ abstract class Block implements BlockInterface
         return include locate_template($this->templateFields() . \str_replace('.', DIRECTORY_SEPARATOR, static::NAME) . '.php');
     }
 
+    public function flexibleLayoutArgs(): array
+    {
+        return [];
+    }
+
     public function fieldsBuilderConfig(array $config = []): array
     {
         return \wp_parse_args($config, [
-            'label' => __(static::LABEL, 'themetik'),
+            'label' => __(static::LABEL, app()->get('settings')['text-domain']),
             'display' => 'block',
             'acfe_flexible_thumbnail' => $this->thumbnail(),
             'acfe_flexible_category' => $this->category(),
@@ -182,6 +191,28 @@ abstract class Block implements BlockInterface
         return $this->config('fields.directory') ?? '';
     }
 
+    public function addSettings(callable $provider, int $priority = 10)
+    {
+        $this->settings[$priority][] = $provider;
+    }
+
+    public function useSettingsOn(FieldsBuilder $field)
+    {
+        if (empty($this->settings)) {
+            return;
+        }
+
+        $field->addAccordion('settings', ['label' => __('Réglages', app()->get('settings')['text-domain'])]);
+
+        \ksort($this->settings, SORT_NUMERIC);
+
+        foreach ($this->settings as $priority => $callables) {
+            foreach ($callables as $callable) {
+                $field->addFields($callable());
+            }
+        }
+    }
+
     public function addWrapper(callable $wrapper, int $priority = 10)
     {
         $this->wrappers[$priority][] = $wrapper;
@@ -236,6 +267,11 @@ abstract class Block implements BlockInterface
     {
         if (!empty($field['default_value'])) {
             return $field['default_value'];
+        }
+
+        $fakeField = \apply_filters('coretik/page-builder/block/fake-field', '', $field['type'], $field);
+        if (!empty($fakeField)) {
+            return $fakeField;
         }
 
         switch ($field['type']) {
