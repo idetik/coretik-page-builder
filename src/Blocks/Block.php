@@ -5,6 +5,7 @@ namespace Coretik\PageBuilder\Blocks;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\BlockInterface;
 use Coretik\Core\Models\Traits\{Initializable, Bootable};
+use Coretik\PageBuilder\Blocks\Traits\Grid;
 
 use function Globalis\WP\Cubi\include_template_part;
 
@@ -12,6 +13,7 @@ abstract class Block implements BlockInterface
 {
     use Initializable;
     use Bootable;
+    use Grid;
 
     const NAME = '';
     const LABEL = '';

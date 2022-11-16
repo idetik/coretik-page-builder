@@ -3,11 +3,14 @@
 namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
+use Coretik\PageBuilder\Blocks\Traits\Grid;
 
 use function Globalis\WP\Cubi\include_template_part;
 
 class Container extends Block
 {
+    use Grid;
+
     const NAME = 'containers.container';
     const LABEL = 'Conteneur';
     const SCREENSHOTABLE = false;
