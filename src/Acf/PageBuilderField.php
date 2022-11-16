@@ -88,9 +88,9 @@ class PageBuilderField
             ],
             'acfe_flexible_grid_container' => '',
         ];
-        
+
         $base_layouts = $this->base()->getField('base-blocks')->getLayouts();
-        
+
         if (!empty($restricted_layouts)) {
             $layouts = array_filter($base_layouts, function ($layout) use ($restricted_layouts) {
                 return \in_array($layout->getName(), $restricted_layouts);
@@ -98,11 +98,11 @@ class PageBuilderField
         } else {
             $layouts = $base_layouts;
         }
-        
+
         $builder
             ->addFlexibleContent($field_name, wp_parse_args($acfe_config ?? [], $acfe_config_default))
                 ->addLayouts($layouts);
-        
+
         if ($with_containers) {
             try {
                 $block = $service->factory()->create(['acf_fc_layout' => 'containers.container'], $context ?? null)->fields();

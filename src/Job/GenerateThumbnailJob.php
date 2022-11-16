@@ -2,9 +2,7 @@
 
 namespace Coretik\PageBuilder\Job;
 
-use WP_Queue\Job;
-
-class GenerateThumbnailJob extends Job
+class GenerateThumbnailJob
 {
     protected $generator;
     protected $layout;

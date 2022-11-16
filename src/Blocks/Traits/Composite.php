@@ -10,7 +10,7 @@ use function Globalis\WP\Cubi\include_template_part;
 trait Composite
 {
     use WithComponent;
-    
+
     protected $children;
 
     protected function initializeComposite()

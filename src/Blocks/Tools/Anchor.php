@@ -26,7 +26,11 @@ class Anchor extends Block
         $field->addText('anchor')
                 ->setLabel(__('Ancre', app()->get('settings')['text-domain']))
                 ->setInstructions(__('Permet de cibler une partie de la page via une url se terminant par "#ancre"', app()->get('settings')['text-domain']));
+
+        // Sample How to use settings
+        // Use trait Settings/Flow
         $this->useSettingsOn($field);
+
         return $field;
     }
 

@@ -36,9 +36,35 @@ class TitlePrimary extends Block
     public function toArray()
     {
         if (empty($this->title) && !empty(\acfe_get_post_id())) {
-            $model_id = \acf_decode_post_id(\acfe_get_post_id())['id'];
-            $model = app()->schema()->get('page', 'post')->model((int)$model_id);
-            $this->title = $model->title();
+            $current = \acf_decode_post_id(\acfe_get_post_id());
+
+            switch ($current['type']) {
+                case 'post':
+                    $selector = get_post_type($current['id']);
+                    $type = 'post';
+                    break;
+                case 'term':
+                    $term = \get_term($current['id']);
+                    $selector = $term->taxonomy;
+                    $type = 'taxonomy';
+                    break;
+                case 'comment':
+                    $selector = 'comments';
+                    $type = 'comment';
+                    break;
+                case 'user':
+                    $selector = 'users';
+                    $type = 'user';
+                    break;
+            }
+
+            if (!empty($selector) && !empty($type)) {
+                $this->title = app()
+                                ->schema()
+                                ->get($selector, $type)
+                                ?->model((int)$current['id'])
+                                ?->title();
+            }
         }
 
         return [

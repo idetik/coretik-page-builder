@@ -13,61 +13,56 @@ class Cta extends Component
 
     protected $cta;
 
-    public function fieldsBuilder(): FieldsBuilder
+    public function fieldsBuilder(?array $typeAsChoice = null, ?array $postTypes = null): FieldsBuilder
     {
-        $buttonTypes = [
-            'primary' => '<span class="view-frontend padding-left--2"><div class="btn btn--primary">' . __('Principal', 'themetik') . '</div></span>',
-            'secondary' => '<span class="view-frontend padding-left--2"><div class="btn btn--secondary">' . __('Secondaire', 'themetik') . '</div></span>',
-            // 'square' => '<span class="view-frontend padding-left--2"><div class="btn btn--square">' . __('Carré', 'themetik') . '</div></span>',
-            'ghost' => '<span class="view-frontend padding-left--2"><div class="btn btn--ghost">' . __('Transparent', 'themetik') . '</div></span>',
-            'link' => '<span class="view-frontend padding-left--2"><div class="btn btn--link">' . __('Lien', 'themetik') . '</div></span>',
-            'danger' => '<span class="view-frontend padding-left--2"><div class="btn btn--danger">' . __('Danger', 'themetik') . '</div></span>',
-        ];
+        $ctaTypes = \apply_filters('coretik/page-builder/blocks/components/cta/types', [
+            'primary' => '<div class="btn btn--primary" aria-label="Primary">Call to action</div>',
+            'secondary' => '<div class="btn btn--secondary" aria-label="Secondary">Call to action</div>',
+        ]);
 
-        $type = $type ?? 'primary';
         $typeAsChoice = $typeAsChoice ?? false;
-        $post_types = $post_types ?? app()->schema()->type('post')->keys()->all();
+        $postTypes = $postTypes ?? app()->schema()->type('post')->keys()->all();
 
         $typeField = new FieldsBuilder('components.cta.type');
         if ($typeAsChoice) {
             if (\is_array($typeAsChoice)) {
-                $choices = \array_intersect_key($buttonTypes, array_flip($typeAsChoice));
+                $choices = \array_intersect_key($ctaTypes, array_flip($typeAsChoice));
             } else {
-                $choices = $buttonTypes;
+                $choices = $ctaTypes;
             }
-            $typeField->addRadio('type')->addChoices($choices)->setLabel(__('Style', 'themetik'));
+            $typeField->addRadio('type')->addChoices($choices)->setLabel('Style');
         } else {
-            $typeField->addField('type', 'acfe_hidden', ['default_value' => $type]);
+            $typeField->addField('type', 'acfe_hidden', ['default_value' => current($ctaTypes)]);
         }
 
         $cta = new FieldsBuilder('components.cta');
         $cta
             ->addButtonGroup('target_type')
-                ->setLabel(__('Type de lien', 'themetik'))
+                ->setLabel(__('Type de lien', app()->get('settings')['text-domain']))
                 ->setRequired()
                 ->setDefaultValue('pagelink')
                 ->addChoices([
-                    'pagelink' => __('Lien vers une page du site', 'themetik'),
-                    'file' => __('Lien vers un fichier', 'themetik'),
-                    'url' => __('Lien libre', 'themetik'),
+                    'pagelink' => __('Lien vers une page du site', app()->get('settings')['text-domain']),
+                    'file' => __('Lien vers un fichier', app()->get('settings')['text-domain']),
+                    'url' => __('Lien libre', app()->get('settings')['text-domain']),
                 ])
-            ->addPageLink('href', ['post_type' => $post_types, 'allow_null' => 1])
-                ->setLabel(__('Lien', 'themetik'))
+            ->addPageLink('href', ['post_type' => $postTypes, 'allow_null' => 1])
+                ->setLabel(__('Lien', app()->get('settings')['text-domain']))
                 ->conditional('target_type', '==', 'pagelink')
             ->addFile('file_id', ['return_format' => 'id'])
-                ->setLabel(__('Fichier', 'themetik'))
+                ->setLabel(__('Fichier', app()->get('settings')['text-domain']))
                 ->conditional('target_type', '==', 'file')
             ->addUrl('url')
-                ->setLabel(__('Lien', 'themetik'))
+                ->setLabel(__('Lien', app()->get('settings')['text-domain']))
                 ->conditional('target_type', '==', 'url')
             ->addText('label')
-                ->setLabel('Texte du lien')
+                ->setLabel(__('Texte du lien', app()->get('settings')['text-domain']))
                 ->setDefaultValue('En savoir plus')
-            ->addAccordion('settings', ['label' => __('Réglages', 'themetik')])
+            ->addAccordion('settings', ['label' => __('Réglages', app()->get('settings')['text-domain'])])
                 ->addText('anchor')
-                    ->setLabel(__('Ancre', 'themetik'))
+                    ->setLabel(__('Ancre', app()->get('settings')['text-domain']))
                     ->conditional('target_type', '==', 'pagelink')
-                    ->setInstructions(__('Ajouter une ancre à l\'url, afin de placer un élément de la page en haut de l\'écran.'))
+                    ->setInstructions(__('Ajouter une ancre à l\'url, afin de placer un élément de la page en haut de l\'écran.', app()->get('settings')['text-domain']))
                     ->setConfig('prepend', '#')
                 ->addFields($typeField);
     }

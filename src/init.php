@@ -29,7 +29,7 @@ add_action('coretik/container/construct', function ($container) {
             'fields.thumbnails.directory' => \get_stylesheet_directory() . '/assets/images/admin/acf/',
             'fields.thumbnails.baseUrl' => '<##ASSETS_URL##>/images/admin/acf/',
             'blocks.template.directory' => 'templates/blocks/',
-            'blocks.acf.directory' => 'templates/blocks/',
+            'blocks.acf.directory' => 'templates/acf/',
             'blocks' => $c->get('pageBuilder.blocks')
         ])->filter();
     };

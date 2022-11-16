@@ -16,6 +16,7 @@ abstract class Block implements BlockInterface
     const NAME = '';
     const LABEL = '';
     const IN_LIBRARY = true;
+    const CONTAINERIZABLE = true;
     const SCREENSHOTABLE = true;
     const SCREEN_PREVIEW_SIZE = [1200, 542]; // coeff 2.21
     const CATEGORY = '';
@@ -264,6 +265,11 @@ abstract class Block implements BlockInterface
     {
         if (!empty($field['default_value'])) {
             return $field['default_value'];
+        }
+
+        $fakeField = \apply_filters('coretik/page-builder/block/fake-field', '', $field['type'], $field);
+        if (!empty($fakeField)) {
+            return $fakeField;
         }
 
         switch ($field['type']) {

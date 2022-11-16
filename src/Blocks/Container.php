@@ -87,15 +87,34 @@ class Container extends Block
         return $this->builder;
     }
 
+    public function fieldsBuilder(): FieldsBuilder
+    {
+        $field_name = 'container_blocks';
+        $pageBuilder = app()
+                        ->get('pageBuilder.field')
+                        ->field(
+                            'container_blocks',
+                            $this->config('blocks')
+                                ->filter(fn ($block) => $block::IN_LIBRARY && $block::CONTAINERIZABLE)
+                                ->map(fn ($block) => $block::NAME)
+                                ->all()
+                            [],
+                            false
+                        );
+
+        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field
+            ->addFields($pageBuilder);
+
+        $this->useSettingsOn($field);
+
+        return $field;
+    }
+
     public function toArray()
     {
         return [
             'blocks' => $this,
-            'padding' => $this->padding,
-            'border' => $this->border_customizer ? [
-                'color' => $this->border_color,
-                'width' => $this->border_width . 'px',
-            ] : false,
         ];
     }
 }

@@ -19,10 +19,10 @@ class PageBuilderCommand
      *
      * [<layout>]
      * : The block layout name of the block to render.
-     * 
+     *
      * [--verbose]
      * : Echo logs
-     * 
+     *
      * [--override]
      * : Override existing block thumbnail
      *
