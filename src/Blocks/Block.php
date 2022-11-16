@@ -35,7 +35,7 @@ abstract class Block implements BlockInterface
     protected static $configGlobal = [];
     protected $config = [];
 
-    abstract function toArray();
+    abstract public function toArray();
 
     public function __construct(array $props = [], array $config = [])
     {
