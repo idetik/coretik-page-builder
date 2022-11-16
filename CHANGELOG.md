@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/idetik/coretik-page-builder/compare/v1.0.0...v1.0.1) (2022-11-16)
+
+
+### Bug Fixes
+
+* ACF PageBuilder field, fix php error on service call ([56e4bb7](https://github.com/idetik/coretik-page-builder/commit/56e4bb7016e13c186c1a15909ed98c794ccb65c5))
+
 # 1.0.0 (2022-11-16)
 
 
