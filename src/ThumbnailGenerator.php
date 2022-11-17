@@ -46,7 +46,7 @@ class ThumbnailGenerator
             } catch (\Exception $e) {
                 $results['errors'][$layout] = $e->getMessage();
                 if ($verbose) {
-                    app()->notices()->error(sprintf('%s : %s', $layout, $e->getMessage()));
+                    app()->notices()->warning(sprintf('%s : %s', $layout, $e->getMessage()));
                 }
             }
             \do_action('coretik/page-builder/generate-thumbs/tick');
