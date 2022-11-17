@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/idetik/coretik-page-builder/compare/v1.0.2...v1.0.3) (2022-11-17)
+
+
+### Bug Fixes
+
+* ThumbnailGenerator: change notice error to warning to prevent exit script in cli ([c08efce](https://github.com/idetik/coretik-page-builder/commit/c08efcec3be95cb898b69014313ff46da92cb393))
+
 ## [1.0.2](https://github.com/idetik/coretik-page-builder/compare/v1.0.1...v1.0.2) (2022-11-16)
 
 
