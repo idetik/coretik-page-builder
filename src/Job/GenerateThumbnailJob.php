@@ -29,7 +29,7 @@ class GenerateThumbnailJob
     public function handle()
     {
         if ($this->verbose) {
-            app()->notices()->info('======== GenerateThumnail - Job start ========');
+            app()->notices()->info(PHP_EOL . '======== GenerateThumnail - Job start ========' . PHP_EOL);
         }
 
         if (!empty($this->layout)) {
@@ -42,7 +42,7 @@ class GenerateThumbnailJob
             } catch (\Exception $e) {
                 $results['errors'][$this->layout] = $e->getMessage();
                 if ($this->verbose) {
-                    app()->notices()->error(sprintf('%s : %s', $layout, $e->getMessage()));
+                    app()->notices()->error(sprintf('%s : %s', $this->layout, $e->getMessage()));
                 }
             }
         } else {
@@ -50,15 +50,10 @@ class GenerateThumbnailJob
         }
 
         if ($this->verbose) {
-            app()->notices()->info('======== GenerateThumnail - Job end ========');
+            app()->notices()->info(PHP_EOL . '======== GenerateThumnail - Job start ========' . PHP_EOL);
         }
 
         return $results;
-    }
-
-    public function failed()
-    {
-        // Called when the job is failing...
     }
 
     public function __invoke()
