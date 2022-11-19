@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/idetik/coretik-page-builder/compare/v1.0.4...v1.0.5) (2022-11-19)
+
+
+### Bug Fixes
+
+* enhance cli command && change block method category to static method ([9a86fc5](https://github.com/idetik/coretik-page-builder/commit/9a86fc5c0fe4bd0ec4718376e0a7b598cb704753))
+
 ## [1.0.4](https://github.com/idetik/coretik-page-builder/compare/v1.0.3...v1.0.4) (2022-11-19)
 
 
