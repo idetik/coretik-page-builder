@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/idetik/coretik-page-builder/compare/v1.0.3...v1.0.4) (2022-11-19)
+
+
+### Bug Fixes
+
+* Rename WP filter coretik/page-builder/blocks to coretik/page-builder/library ([c314a8c](https://github.com/idetik/coretik-page-builder/commit/c314a8c93d4adb20a8056b53a1c6d3a7a76472a5))
+
 ## [1.0.3](https://github.com/idetik/coretik-page-builder/compare/v1.0.2...v1.0.3) (2022-11-17)
 
 
