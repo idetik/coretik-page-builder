@@ -88,7 +88,7 @@ class Builder
             ->map(fn ($block) => $block::NAME)
             ->all();
 
-        return \apply_filters('coretik/page-builder/blocks', $blocks);
+        return \apply_filters('coretik/page-builder/library', $blocks);
     }
 
     // @deprecated
