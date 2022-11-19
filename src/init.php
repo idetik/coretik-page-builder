@@ -84,7 +84,7 @@ add_action('coretik/container/construct', function ($container) {
     });
 
     $container['pageBuilder.commands'] = function ($c) {
-        return new PageBuilderCommand($c->get('pageBuilder.job'));
+        return new PageBuilderCommand($c->get('pageBuilder.job'), $c->get('pageBuilder.config'));
     };
 
     $container['pageBuilder.field'] = function ($c) {

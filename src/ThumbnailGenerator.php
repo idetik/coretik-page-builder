@@ -39,14 +39,14 @@ class ThumbnailGenerator
         foreach ($layouts as $layout) {
             try {
                 [$block, $output] = $this->generateThumb($layout, $override);
-                $results[$block->getLabel()] = $output;
+                $results[$block->getName()] = $output;
                 if ($verbose) {
                     app()->notices()->success(sprintf('%s : %s', $block->getLabel(), $output));
                 }
             } catch (\Exception $e) {
                 $results['errors'][$layout] = $e->getMessage();
                 if ($verbose) {
-                    app()->notices()->warning(sprintf('%%3%s%%3 : %s', $layout, $e->getMessage()));
+                    app()->notices()->warning(sprintf('%s : %s', $layout, $e->getMessage()));
                 }
             }
             \do_action('coretik/page-builder/generate-thumbs/tick');

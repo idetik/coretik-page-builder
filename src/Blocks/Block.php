@@ -127,7 +127,7 @@ abstract class Block implements BlockInterface
             'label' => __(static::LABEL, app()->get('settings')['text-domain']),
             'display' => 'block',
             'acfe_flexible_thumbnail' => $this->thumbnail(),
-            'acfe_flexible_category' => $this->category(),
+            'acfe_flexible_category' => static::category(),
             'acfe_flexible_render_template' => $this->adminTemplate(),
             'acfe_flexible_render_style' => $this->style(),
             'acfe_flexible_render_script' => $this->script(),
@@ -163,7 +163,7 @@ abstract class Block implements BlockInterface
         return \sprintf('%s%s.png', $this->config('fields.thumbnails.baseUrl'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
     }
 
-    public function category(): string
+    public static function category(): string
     {
         if (!empty(static::CATEGORY)) {
             return static::CATEGORY;

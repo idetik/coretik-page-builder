@@ -35,7 +35,7 @@ class GenerateThumbnailJob
         if (!empty($this->layout)) {
             try {
                 [$block, $output] = @$this->generator->generateThumb($this->layout, $this->override);
-                $results = [$block->getLabel() => $output];
+                $results = [$block->getName() => $output];
                 if ($this->verbose) {
                     app()->notices()->success(sprintf('%s : %s', $block->getLabel(), $output));
                 }
@@ -50,7 +50,7 @@ class GenerateThumbnailJob
         }
 
         if ($this->verbose) {
-            app()->notices()->info(PHP_EOL . '======== GenerateThumnail - Job start ========' . PHP_EOL);
+            app()->notices()->info(PHP_EOL . '======== GenerateThumnail - Job end ========' . PHP_EOL);
         }
 
         return $results;
