@@ -196,13 +196,28 @@ abstract class Block implements BlockInterface
         $this->settings[$priority][] = $provider;
     }
 
+    public function fieldSettingsName()
+    {
+        return $this->getName() . '_settings';
+    }
+
+    public function fieldSettingsTitle()
+    {
+        return __('Paramètres du bloc ' . lcfirst($this->getLabel()), app()->get('settings')['text-domain']);
+    }
+
     public function useSettingsOn(FieldsBuilder $field)
     {
         if (empty($this->settings)) {
             return;
         }
 
-        $field->addAccordion('settings', ['label' => __('Paramètres du bloc ' . lcfirst($this->getLabel()), app()->get('settings')['text-domain'])]);
+        $accordion = $this->fieldSettingsName() . '_accordion';
+        if (!$field->fieldExists($accordion)) {
+            $field->addAccordion($this->fieldSettingsName(), ['label' => $this->fieldSettingsTitle()]);
+        } else {
+            $field->getField($accordion);
+        }
 
         \ksort($this->settings, SORT_NUMERIC);
 
