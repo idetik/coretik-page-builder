@@ -13,7 +13,7 @@ class Cta extends Component
 
     protected $cta;
 
-    public function fieldsBuilder(?array $typeAsChoice = null, ?array $postTypes = null): FieldsBuilder
+    public function fieldsBuilder(null|array|bool $typeAsChoice = null, ?array $postTypes = null): FieldsBuilder
     {
         $ctaTypes = \apply_filters('coretik/page-builder/blocks/components/cta/types', [
             'primary' => '<div class="btn btn--primary" aria-label="Primary">Call to action</div>',
@@ -65,6 +65,7 @@ class Cta extends Component
                     ->setInstructions(__('Ajouter une ancre à l\'url, afin de placer un élément de la page en haut de l\'écran.', app()->get('settings')['text-domain']))
                     ->setConfig('prepend', '#')
                 ->addFields($typeField);
+        return $cta;
     }
 
     public function toArray()
