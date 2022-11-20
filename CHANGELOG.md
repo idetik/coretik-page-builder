@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/idetik/coretik-page-builder/compare/v1.0.6...v1.0.7) (2022-11-20)
+
+
+### Bug Fixes
+
+* Block CTA component ([7af43d8](https://github.com/idetik/coretik-page-builder/commit/7af43d85e2dddf27624b45688e275d2ec7d1b2c9))
+
 ## [1.0.6](https://github.com/idetik/coretik-page-builder/compare/v1.0.5...v1.0.6) (2022-11-20)
 
 
