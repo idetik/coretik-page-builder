@@ -32,7 +32,7 @@ class Cta extends Component
             }
             $typeField->addRadio('type')->addChoices($choices)->setLabel('Style');
         } else {
-            $typeField->addField('type', 'acfe_hidden', ['default_value' => current($ctaTypes)]);
+            $typeField->addField('type', 'acfe_hidden', ['default_value' => key($ctaTypes)]);
         }
 
         $cta = new FieldsBuilder('components.cta');
