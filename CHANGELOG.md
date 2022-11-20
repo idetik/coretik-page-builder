@@ -1,3 +1,11 @@
+## [1.0.8](https://github.com/idetik/coretik-page-builder/compare/v1.0.7...v1.0.8) (2022-11-20)
+
+
+### Bug Fixes
+
+* Enhance Block settings ([e9385f5](https://github.com/idetik/coretik-page-builder/commit/e9385f51f4bd69fba7ebe2749543a721e3e05dfd))
+* rename block settings ([3634040](https://github.com/idetik/coretik-page-builder/commit/36340405390aff9c343e075652c8d19ae8d70e0b))
+
 ## [1.0.7](https://github.com/idetik/coretik-page-builder/compare/v1.0.6...v1.0.7) (2022-11-20)
 
 
