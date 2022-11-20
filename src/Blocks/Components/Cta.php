@@ -58,7 +58,7 @@ class Cta extends Component
             ->addText('label')
                 ->setLabel(__('Texte du lien', app()->get('settings')['text-domain']))
                 ->setDefaultValue('En savoir plus')
-            ->addAccordion('settings', ['label' => __('Réglages', app()->get('settings')['text-domain'])])
+            ->addAccordion('settings', ['label' => __('Paramètres du lien', app()->get('settings')['text-domain'])])
                 ->addText('anchor')
                     ->setLabel(__('Ancre', app()->get('settings')['text-domain']))
                     ->conditional('target_type', '==', 'pagelink')
