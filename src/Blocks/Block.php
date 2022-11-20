@@ -202,7 +202,7 @@ abstract class Block implements BlockInterface
             return;
         }
 
-        $field->addAccordion('settings', ['label' => __('Réglages', app()->get('settings')['text-domain'])]);
+        $field->addAccordion('settings', ['label' => __('Paramètres du bloc ' . lcfirst($this->getLabel()), app()->get('settings')['text-domain'])]);
 
         \ksort($this->settings, SORT_NUMERIC);
 
