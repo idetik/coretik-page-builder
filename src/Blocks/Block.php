@@ -293,13 +293,19 @@ abstract class Block implements BlockInterface
             case 'button_group':
             case 'radio':
             case 'select':
-            case 'checkbox':
                 $choices = array_keys($field['choices']);
                 if (empty($choices)) {
                     return '';
                 }
                 $random = array_rand($choices);
                 return $choices[$random];
+            case 'checkbox':
+                $choices = array_keys($field['choices']);
+                if (empty($choices)) {
+                    return [];
+                }
+                $random = array_rand($choices);
+                return [$choices[$random]];
             case 'repeater':
             case 'group':
                 $fakeChildren = function () use ($field) {
@@ -360,6 +366,8 @@ abstract class Block implements BlockInterface
                 return rand(0, 1);
             case 'number':
                 return rand($field['min'] ?? 0, $field['max'] ?? 100);
+            case 'date_time_picker':
+                return app()->faker()->date('Y-m-d H:i:s');
             default:
                 return '';
         }
