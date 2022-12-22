@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/idetik/coretik-page-builder/compare/v1.0.9...v1.0.10) (2022-12-22)
+
+
+### Bug Fixes
+
+* Fake field add checkbox type and datetime ([8c70f49](https://github.com/idetik/coretik-page-builder/commit/8c70f49204e4608d62ac136d9ac55cf11da13dc8))
+
 ## [1.0.9](https://github.com/idetik/coretik-page-builder/compare/v1.0.8...v1.0.9) (2022-11-20)
 
 
