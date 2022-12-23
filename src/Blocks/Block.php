@@ -123,7 +123,7 @@ abstract class Block implements BlockInterface
 
     public function fieldsBuilderConfig(array $config = []): array
     {
-        return \wp_parse_args($config, [
+        $config = \wp_parse_args($config, [
             'label' => __(static::LABEL, app()->get('settings')['text-domain']),
             'display' => 'block',
             'acfe_flexible_thumbnail' => $this->thumbnail(),
@@ -136,6 +136,10 @@ abstract class Block implements BlockInterface
             'acfe_layout_col' => '12',
             'acfe_layout_allowed_col' => ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         ]);
+
+        $config = \apply_filters('coretik/page-builder/block/fields-builder-config', $config, $this->getName(), $this);
+        $config = \apply_filters('coretik/page-builder/block/fields-builder-config/name=' . $this->getName(), $config, $this);
+        return $config;
     }
 
     public function adminTemplate($withExt = true): string
