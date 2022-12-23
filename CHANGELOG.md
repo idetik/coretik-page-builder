@@ -1,3 +1,11 @@
+## [1.0.11](https://github.com/idetik/coretik-page-builder/compare/v1.0.10...v1.0.11) (2022-12-23)
+
+
+### Bug Fixes
+
+* add filter hook coretik/page-builder/acf/page-builder-field/args ([e660316](https://github.com/idetik/coretik-page-builder/commit/e660316b899d7bd874dc8df4bfcfde44a81c7da1))
+* add filter hook coretik/page-builder/block/fields-builder-config ([598e74e](https://github.com/idetik/coretik-page-builder/commit/598e74e4e3f8863d7428bf90f57893673499ee19))
+
 ## [1.0.10](https://github.com/idetik/coretik-page-builder/compare/v1.0.9...v1.0.10) (2022-12-22)
 
 
