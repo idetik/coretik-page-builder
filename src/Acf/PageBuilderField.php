@@ -99,8 +99,11 @@ class PageBuilderField
             $layouts = $base_layouts;
         }
 
+        $args = \wp_parse_args($acfe_config ?? [], $acfe_config_default);
+        $args = \apply_filters('coretik/page-builder/acf/page-builder-field/args', $args, $field_name);
+
         $builder
-            ->addFlexibleContent($field_name, wp_parse_args($acfe_config ?? [], $acfe_config_default))
+            ->addFlexibleContent($field_name, $args)
                 ->addLayouts($layouts);
 
         if ($with_containers) {
