@@ -1,3 +1,10 @@
+## [1.0.12](https://github.com/idetik/coretik-page-builder/compare/v1.0.11...v1.0.12) (2023-01-16)
+
+
+### Bug Fixes
+
+* DI make pagebuilder service non singleton ([5e536b7](https://github.com/idetik/coretik-page-builder/commit/5e536b7f71f6a0a4b3e356b14dd25569c1c97e79))
+
 ## [1.0.11](https://github.com/idetik/coretik-page-builder/compare/v1.0.10...v1.0.11) (2022-12-23)
 
 
