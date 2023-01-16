@@ -68,9 +68,9 @@ add_action('coretik/container/construct', function ($container) {
         return new BlockFactory($c->get('pageBuilder.config'));
     };
 
-    $container['pageBuilder'] = function ($c) {
+    $container['pageBuilder'] = $container->factory(function ($c) {
         return new Builder($c->get('pageBuilder.factory'), $c->get('pageBuilder.config'));
-    };
+    });
 
     $container['pageBuilder.thumbnailGenerator'] = function ($c) {
         $chrome = $c->has('chrome') ? $c->get('chrome') : null;
