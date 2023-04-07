@@ -9,6 +9,7 @@ use Coretik\PageBuilder\Blocks\Traits\Grid;
 
 use function Globalis\WP\Cubi\include_template_part;
 
+#[\AllowDynamicProperties]
 abstract class Block implements BlockInterface
 {
     use Initializable;

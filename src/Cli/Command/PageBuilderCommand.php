@@ -43,7 +43,7 @@ class PageBuilderCommand
         if ($verbose) {
             \add_action('coretik/page-builder/generate-thumbs/start', function ($counter) {
                 $progress = \WP_CLI\Utils\make_progress_bar('Generating Thumbs', $counter);
-    
+
                 \add_action('coretik/page-builder/generate-thumbs/tick', function () use ($progress) {
                     $progress->tick();
                 });
@@ -101,7 +101,7 @@ class PageBuilderCommand
                     ->map(fn ($block) => ['category' => $block::category(), 'name' => $block::NAME])
                     ->all();
 
-        $format = \WP_CLI\Utils\get_flag_value( $assoc_args, 'format', 'json' );
+        $format = \WP_CLI\Utils\get_flag_value($assoc_args, 'format', 'json');
         \WP_CLI\Utils\format_items(
             $format,
             $blocks,
