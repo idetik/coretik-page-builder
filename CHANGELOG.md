@@ -1,3 +1,10 @@
+## [1.0.13](https://github.com/idetik/coretik-page-builder/compare/v1.0.12...v1.0.13) (2023-04-07)
+
+
+### Bug Fixes
+
+* Dependencies up & support PHP 8.2 ([cb42a52](https://github.com/idetik/coretik-page-builder/commit/cb42a52ab0a3e0ea2e8044567c6b6582be047a11))
+
 ## [1.0.12](https://github.com/idetik/coretik-page-builder/compare/v1.0.11...v1.0.12) (2023-01-16)
 
 
