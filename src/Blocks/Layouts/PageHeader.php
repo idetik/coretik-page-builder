@@ -17,6 +17,7 @@ class PageHeader extends Block
 
     const NAME = 'layouts.page-header';
     const LABEL = 'En-tête de page';
+    const CONTAINERIZABLE = false;
 
     protected $components = [
         Breadcrumb::class ,
