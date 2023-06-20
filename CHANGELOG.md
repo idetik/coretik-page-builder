@@ -1,3 +1,10 @@
+## [1.0.14](https://github.com/idetik/coretik-page-builder/compare/v1.0.13...v1.0.14) (2023-06-20)
+
+
+### Bug Fixes
+
+* remove Layout pageHeader block from container block ([efce10a](https://github.com/idetik/coretik-page-builder/commit/efce10aa85020bd228077220f506575c8abafc0e))
+
 ## [1.0.13](https://github.com/idetik/coretik-page-builder/compare/v1.0.12...v1.0.13) (2023-04-07)
 
 
