@@ -28,7 +28,7 @@ class PageBuilderField
                     $block = $this->service->factory()->create(['acf_fc_layout' => $layout]);
                     $builder->getField($field_name)->addLayout($block->fields(), $block->flexibleLayoutArgs());
                 } catch (\Exception $e) {
-                    app()->notices()->error($e->getMessage());
+                    \app()->notices()->error($e->getMessage());
                 }
             }
             $this->base = $builder;
@@ -46,7 +46,7 @@ class PageBuilderField
         ]);
 
         $acfe_config_default = [
-            'label' => __('Constructeur de page', app()->get('settings')['text-domain']),
+            'label' => __('Constructeur de page', \app()->get('settings')['text-domain']),
             'acfe_flexible_advanced' => 1,
             'acfe_flexible_stylised_button' => 1,
             'acfe_flexible_hide_empty_message' => 0,
@@ -73,13 +73,13 @@ class PageBuilderField
             ],
             'acfe_flexible_modal' => [
                 'acfe_flexible_modal_enabled' => '1',
-                'acfe_flexible_modal_title' => __('Ajouter un élément', app()->get('settings')['text-domain']),
+                'acfe_flexible_modal_title' => __('Ajouter un élément', \app()->get('settings')['text-domain']),
                 'acfe_flexible_modal_col' => '3',
                 'acfe_flexible_modal_categories' => '1',
             ],
             'acfe_flexible_layouts_state' => '',
             'acfe_flexible_layouts_remove_collapse' => 0,
-            'button_label' => __('Ajouter un élément', app()->get('settings')['text-domain']),
+            'button_label' => __('Ajouter un élément', \app()->get('settings')['text-domain']),
             'acfe_flexible_grid' => [
                 'acfe_flexible_grid_enabled' => '1',
                 'acfe_flexible_grid_align' => 'center',
@@ -92,7 +92,7 @@ class PageBuilderField
         $base_layouts = $this->base()->getField('base-blocks')->getLayouts();
 
         if (!empty($restricted_layouts)) {
-            $layouts = array_filter($base_layouts, function ($layout) use ($restricted_layouts) {
+            $layouts = \array_filter($base_layouts, function ($layout) use ($restricted_layouts) {
                 return \in_array($layout->getName(), $restricted_layouts);
             });
         } else {
@@ -108,10 +108,10 @@ class PageBuilderField
 
         if ($with_containers) {
             try {
-                $block = $this->service->factory()->create(['acf_fc_layout' => 'containers.container'], $context ?? null)->fields();
+                $block = $this->service->factory()->create(['acf_fc_layout' => 'containers.container'])->fields();
                 $builder->getField($field_name)->addLayout($block);
             } catch (\Exception $e) {
-                app()->notices()->error($e->getMessage());
+                \app()->notices()->error($e->getMessage());
             }
         }
 
