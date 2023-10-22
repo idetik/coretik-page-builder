@@ -2,11 +2,10 @@
 
 namespace Coretik\PageBuilder\Blocks\Components;
 
+use Coretik\PageBuilder\Blocks\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-use function Globalis\WP\Cubi\include_template_part;
-
-class Cta extends Component
+class Cta extends BlockComponent
 {
     const NAME = 'components.cta';
     const LABEL = 'Call-to-action';

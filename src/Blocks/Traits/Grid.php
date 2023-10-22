@@ -2,7 +2,6 @@
 
 namespace Coretik\PageBuilder\Blocks\Traits;
 
-use StoutLogic\AcfBuilder\FieldsBuilder;
 
 use function Globalis\WP\Cubi\include_template_part;
 

@@ -5,8 +5,6 @@ namespace Coretik\PageBuilder\Blocks\Headings;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Block;
 
-use function Globalis\WP\Cubi\include_template_part;
-
 class TitlePrimary extends Block
 {
     const NAME = 'headings.title-primary';

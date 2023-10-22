@@ -2,12 +2,10 @@
 
 namespace Coretik\PageBuilder\Blocks\Components;
 
+use Coretik\PageBuilder\Blocks\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Coretik\PageBuilder\Blocks\ImageParallax;
 
-use function Globalis\WP\Cubi\include_template_part;
-
-class Thumbnail extends Component
+class Thumbnail extends BlockComponent
 {
     const NAME = 'components.thumbnail';
     const LABEL = 'Image à la une';
@@ -35,6 +33,14 @@ class Thumbnail extends Component
             'min' => 0,
         ];
     }
+
+    /**
+     * @todo renderIfNoTemplate
+     */
+    // public function render()
+    // {
+    //     wp_get_attachment_image();
+    // }
 
     public function toArray()
     {

@@ -4,7 +4,10 @@ namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\BlockInterface;
-use Coretik\Core\Models\Traits\{Initializable, Bootable};
+use Coretik\Core\Models\Traits\{
+    Initializable,
+    Bootable
+};
 use Coretik\PageBuilder\Blocks\Traits\{
     Grid,
     Faker,
@@ -20,13 +23,30 @@ abstract class Block implements BlockInterface
     use Grid;
     use Faker;
 
+    // Identifier
     const NAME = '';
+
+    // Human label
     const LABEL = '';
+    
+    // Human category name
+    const CATEGORY = '';
+
+    // Define the block as user pickable
     const IN_LIBRARY = true;
+
+    // Define the block as usuable in container block type
     const CONTAINERIZABLE = true;
+
+    // Define the block to be screeshotable with the wp-cli task
     const SCREENSHOTABLE = true;
     const SCREEN_PREVIEW_SIZE = [1200, 542]; // coeff 2.21
-    const CATEGORY = '';
+
+    // Custom php template path to render block
+    const TEMPLATE_PATH = null;
+
+    // Custom thumbnail path to preview block in library
+    const THUMBNAIL_PATH = null;
 
     protected $context = null;
     protected $fields;
@@ -44,6 +64,13 @@ abstract class Block implements BlockInterface
     {
         static::bootIfNotBooted();
         $this->initialize();
+
+        \do_action('pagebuilder/block/initialize', $props, $config, $this);
+        \do_action('pagebuilder/block/initialize/name=' . $this->getName(), $props, $config, $this);
+
+        $props = \apply_filters('pagebuilder/block/props', $props, $this);
+        $props = \apply_filters('pagebuilder/block/props/name=' . $this->getName(), $props, $this);
+
         $this->setProps($props);
 
         if (\is_admin()) {
@@ -95,9 +122,10 @@ abstract class Block implements BlockInterface
         return $this->propsFilled;
     }
 
-    public function setContext($context)
+    public function setContext($context): self
     {
         $this->context = $context;
+        return $this;
     }
 
     public function context()
@@ -152,7 +180,7 @@ abstract class Block implements BlockInterface
 
     public function template($withExt = true): string
     {
-        return \sprintf('%s%s%s', $this->config('blocks.template.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME), $withExt ? '.php' : '');
+        return static::TEMPLATE_PATH ?? \sprintf('%s%s%s', $this->config('blocks.template.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME), $withExt ? '.php' : '');
     }
 
     public function style(): string
@@ -167,7 +195,7 @@ abstract class Block implements BlockInterface
 
     public function thumbnail(): string
     {
-        return \sprintf('%s%s.png', $this->config('fields.thumbnails.baseUrl'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
+        return static::THUMBNAIL_PATH ?? \sprintf('%s%s.png', $this->config('fields.thumbnails.baseUrl'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
     }
 
     public static function category(): string
@@ -214,6 +242,24 @@ abstract class Block implements BlockInterface
         return __('Paramètres du bloc ' . lcfirst($this->getLabel()), app()->get('settings')['text-domain']);
     }
 
+    /**
+     * Add settings fields on existings fieldgroup;
+     */
+    protected function applySettings(FieldsBuilder $field): FieldsBuilder
+    {
+        \ksort($this->settings, SORT_NUMERIC);
+        foreach ($this->settings as $priority => $callables) {
+            foreach ($callables as $callable) {
+                $field->addFields($callable());
+            }
+        }
+
+        return $field;
+    }
+
+    /**
+     * Provide an existings fieldgroup and create an accordion field if missing and append settings fields;
+     */
     public function useSettingsOn(FieldsBuilder $field): self
     {
         if (empty($this->settings)) {
@@ -227,13 +273,7 @@ abstract class Block implements BlockInterface
             $field->getField($accordion);
         }
 
-        \ksort($this->settings, SORT_NUMERIC);
-
-        foreach ($this->settings as $priority => $callables) {
-            foreach ($callables as $callable) {
-                $field->addFields($callable());
-            }
-        }
+        $this->applySettings($field);
 
         return $this;
     }
@@ -265,12 +305,21 @@ abstract class Block implements BlockInterface
         return $output;
     }
 
+    protected function getPlainHtml(): string
+    {
+        return include_template_part($this->template(false), $this->toArray() + ['context' => $this->context()], true);
+    }
+
+    /**
+     * Rendering block
+     * Return or echo html
+     */
     public function render($return = false): string
     {
         \do_action('coretik/page-builder/block/before_render', $this);
         \do_action('coretik/page-builder/block/before_render/name=' . $this->getName(), $this);
 
-        $output = include_template_part($this->template(false), $this->toArray() + ['context' => $this->context()], true);
+        $output = $this->getPlainHtml();
         $output = $this->applyWrappers($output);
 
         if (!$return) {
