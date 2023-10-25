@@ -14,18 +14,19 @@ use Coretik\PageBuilder\Blocks\Headings\{TitlePrimary};
 use Coretik\PageBuilder\Blocks\Container;
 
 use function Globalis\WP\Cubi\add_action;
+use function Globalis\WP\Cubi\is_cli;
 
 add_action('coretik/container/construct', function ($container) {
 
     if (!\class_exists('ACF')) {
-        if (\is_admin() && !\is_cli()) {
+        if (\is_admin() && !is_cli()) {
             $container->get('notices')->error('Advanced Custom fields module is required.');
         }
         return;
     }
 
     if (!\class_exists('ACFE')) {
-        if (\is_admin() && !\is_cli()) {
+        if (\is_admin() && !is_cli()) {
             $container->get('notices')->error('ACF Extended module is required.');
         }
         return;
