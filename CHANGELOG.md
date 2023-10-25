@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/idetik/coretik-page-builder/compare/v1.1.2...v1.1.3) (2023-10-25)
+
+
+### Bug Fixes
+
+* is_cli function ([eec5af8](https://github.com/idetik/coretik-page-builder/commit/eec5af86745e4298201a06401e9eb5a5d6cd7a42))
+
 ## [1.1.2](https://github.com/idetik/coretik-page-builder/compare/v1.1.1...v1.1.2) (2023-10-25)
 
 
