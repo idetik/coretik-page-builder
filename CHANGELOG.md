@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/idetik/coretik-page-builder/compare/v1.1.3...v1.1.4) (2023-10-25)
+
+
+### Bug Fixes
+
+* prevent acf module ([ca5b1c0](https://github.com/idetik/coretik-page-builder/commit/ca5b1c037d95c5b4244f9ee2e61d7cdd39dc3182))
+
 ## [1.1.3](https://github.com/idetik/coretik-page-builder/compare/v1.1.2...v1.1.3) (2023-10-25)
 
 
