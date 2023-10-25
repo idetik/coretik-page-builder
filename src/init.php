@@ -12,18 +12,19 @@ use Coretik\PageBuilder\Blocks\Content\{Wysiwyg, WysiwygDouble};
 use Coretik\PageBuilder\Blocks\Layouts\{PageHeader};
 use Coretik\PageBuilder\Blocks\Headings\{TitlePrimary};
 use Coretik\PageBuilder\Blocks\Container;
-use Exception;
 
 use function Globalis\WP\Cubi\add_action;
 
 add_action('coretik/container/construct', function ($container) {
 
     if (!\class_exists('ACF')) {
-        throw new Exception('Advanced Custom fields module is required.');
+        $container->notices()->error('Advanced Custom fields module is required.');
+        return;
     }
 
     if (!\class_exists('ACFE')) {
-        throw new Exception('ACF Extended module is required.');
+        $container->notices()->error('ACF Extended module is required.');
+        return;
     }
 
     // Extend it: $container->extend('pageBuilder.blocks', fn ($blocks, $c) => $blocks->append(...));
