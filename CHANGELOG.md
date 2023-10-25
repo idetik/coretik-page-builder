@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/idetik/coretik-page-builder/compare/v1.1.1...v1.1.2) (2023-10-25)
+
+
+### Bug Fixes
+
+* handle errors if acf disabled ([20afd6f](https://github.com/idetik/coretik-page-builder/commit/20afd6f8d210e6c04914a1fd45f950de407a53d7))
+
 ## [1.1.1](https://github.com/idetik/coretik-page-builder/compare/v1.1.0...v1.1.1) (2023-10-25)
 
 
