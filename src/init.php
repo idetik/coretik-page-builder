@@ -18,12 +18,16 @@ use function Globalis\WP\Cubi\add_action;
 add_action('coretik/container/construct', function ($container) {
 
     if (!\class_exists('ACF')) {
-        $container->get('notices')->error('Advanced Custom fields module is required.');
+        if (\is_admin() && !\is_cli()) {
+            $container->get('notices')->error('Advanced Custom fields module is required.');
+        }
         return;
     }
 
     if (!\class_exists('ACFE')) {
-        $container->get('notices')->error('ACF Extended module is required.');
+        if (\is_admin() && !\is_cli()) {
+            $container->get('notices')->error('ACF Extended module is required.');
+        }
         return;
     }
 
