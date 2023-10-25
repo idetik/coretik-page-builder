@@ -5,7 +5,6 @@ namespace Coretik\PageBuilder\Blocks;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Traits\Composite;
 
-
 abstract class BlockComposite extends Block
 {
     const AUTO_BUILD_FIELDS = true;

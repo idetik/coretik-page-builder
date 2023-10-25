@@ -6,7 +6,11 @@ use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Job\GenerateThumbnailJob;
 use Coretik\PageBuilder\Acf\PageBuilderField;
 use Coretik\PageBuilder\{Builder, BlockFactory, ThumbnailGenerator};
-use Coretik\PageBuilder\Blocks\Components\{Thumbnail, Cta, Wysiwyg as WysiwygComponent};
+use Coretik\PageBuilder\Blocks\Components\{
+    ThumbnailComponent,
+    CtaComponent,
+    WysiwygComponent
+};
 use Coretik\PageBuilder\Blocks\Tools\{Anchor, Breadcrumb};
 use Coretik\PageBuilder\Blocks\Content\{Wysiwyg, WysiwygDouble};
 use Coretik\PageBuilder\Blocks\Layouts\{PageHeader};
@@ -34,9 +38,9 @@ add_action('coretik/container/construct', function ($container) {
     $container['pageBuilder.blocks'] = function ($c) {
         return \collect([
             // Components
-            Cta::class,
+            CtaComponent::class,
             WysiwygComponent::class,
-            Thumbnail::class,
+            ThumbnailComponent::class,
 
             // Tools
             Anchor::class,

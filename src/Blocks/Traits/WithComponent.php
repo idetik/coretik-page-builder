@@ -2,7 +2,6 @@
 
 namespace Coretik\PageBuilder\Blocks\Traits;
 
-
 trait WithComponent
 {
     protected function component(mixed $data)

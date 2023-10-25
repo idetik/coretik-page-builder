@@ -5,7 +5,7 @@ namespace Coretik\PageBuilder\Blocks\Components;
 use Coretik\PageBuilder\Blocks\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-class Wysiwyg extends BlockComponent
+class WysiwygComponent extends BlockComponent
 {
     const NAME = 'components.wysiwyg';
     const LABEL = 'Éditeur de texte';

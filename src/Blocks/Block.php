@@ -28,7 +28,7 @@ abstract class Block implements BlockInterface
 
     // Human label
     const LABEL = '';
-    
+
     // Human category name
     const CATEGORY = '';
 
@@ -205,19 +205,32 @@ abstract class Block implements BlockInterface
         }
 
         $name = explode('.', static::NAME, 2);
-        switch ($name[0]) {
+
+        $category = $name[0];
+        $category = \apply_filters('coretik/page-builder/block/category', $category, static::NAME);
+        $category = \apply_filters('coretik/page-builder/block/category/name=' . static::NAME, $category);
+
+        switch ($category) {
             case 'headings':
                 return __('Titres', app()->get('settings')['text-domain']);
             case 'content':
                 return __('Contenus', app()->get('settings')['text-domain']);
+            case 'editorial':
+                return __('Éditorial', app()->get('settings')['text-domain']);
+            case 'multimedia':
+                return __('Multimédia', app()->get('settings')['text-domain']);
             case 'tools':
                 return __('Outils', app()->get('settings')['text-domain']);
             case 'containers':
                 return __('Conteneurs', app()->get('settings')['text-domain']);
             case 'layouts':
                 return __('Dispositions prédéfinies', app()->get('settings')['text-domain']);
+            case 'templates':
+                return __('Modèles de page', app()->get('settings')['text-domain']);
+            case 'posts':
+                return __('Blog', app()->get('settings')['text-domain']);
             default:
-                return __($name[0], app()->get('settings')['text-domain']);
+                return __($category, app()->get('settings')['text-domain']);
         }
     }
 

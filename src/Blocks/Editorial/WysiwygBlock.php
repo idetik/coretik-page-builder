@@ -5,9 +5,9 @@ namespace Coretik\PageBuilder\Blocks\Content;
 use Coretik\PageBuilder\Blocks\BlockComposite;
 use Coretik\PageBuilder\Blocks\Components\WysiwygComponent;
 
-class Wysiwyg extends BlockComposite
+class WysiwygBlock extends BlockComposite
 {
-    const NAME = 'content.wysiwyg';
+    const NAME = 'editorial.wysiwyg';
     const LABEL = 'Éditeur de texte';
     const SCREEN_PREVIEW_SIZE = [1600, 724];
 

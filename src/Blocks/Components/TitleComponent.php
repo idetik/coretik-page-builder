@@ -5,7 +5,7 @@ namespace Coretik\PageBuilder\Blocks\Components;
 use Coretik\PageBuilder\Blocks\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-class Title extends BlockComponent
+class TitleComponent extends BlockComponent
 {
     const NAME = 'components.title';
     const LABEL = 'Titre';
@@ -21,11 +21,11 @@ class Title extends BlockComponent
                 ->setRequired()
             ->addRadio('tag')
                 ->setLabel(__('Niveau de titre', app()->get('settings')['text-domain']))
-                ->addChoice('h1')
                 ->addChoice('h2')
                 ->addChoice('h3')
                 ->addChoice('h4')
-                ->addChoice('h5');
+                ->addChoice('h5')
+                ->setDefaultValue('h2');
         return $field;
     }
 

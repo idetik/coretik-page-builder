@@ -5,7 +5,6 @@ namespace Coretik\PageBuilder\Blocks\Tools;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Block;
 
-
 class Anchor extends Block
 {
     const NAME = 'tools.anchor';

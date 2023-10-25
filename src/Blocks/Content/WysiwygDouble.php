@@ -4,10 +4,7 @@ namespace Coretik\PageBuilder\Blocks\Content;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Block;
-use Coretik\PageBuilder\BlockInterface;
 use Coretik\PageBuilder\Blocks\Traits\{WithComponent};
-
-use function Globalis\WP\Cubi\include_template_part;
 
 class WysiwygDouble extends Block
 {

@@ -2,7 +2,6 @@
 
 namespace Coretik\PageBuilder\Blocks\Traits;
 
-
 use function Globalis\WP\Cubi\include_template_part;
 
 trait Grid

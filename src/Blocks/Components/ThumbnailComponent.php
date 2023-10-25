@@ -5,7 +5,7 @@ namespace Coretik\PageBuilder\Blocks\Components;
 use Coretik\PageBuilder\Blocks\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-class Thumbnail extends BlockComponent
+class ThumbnailComponent extends BlockComponent
 {
     const NAME = 'components.thumbnail';
     const LABEL = 'Image à la une';

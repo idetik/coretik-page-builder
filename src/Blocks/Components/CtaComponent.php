@@ -5,7 +5,7 @@ namespace Coretik\PageBuilder\Blocks\Components;
 use Coretik\PageBuilder\Blocks\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-class Cta extends BlockComponent
+class CtaComponent extends BlockComponent
 {
     const NAME = 'components.cta';
     const LABEL = 'Call-to-action';

@@ -2,7 +2,6 @@
 
 namespace Coretik\PageBuilder\Blocks\Layouts;
 
-
 use Coretik\PageBuilder\Blocks\{
     BlockComposite,
     Tools\Breadcrumb,

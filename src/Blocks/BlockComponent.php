@@ -2,7 +2,6 @@
 
 namespace Coretik\PageBuilder\Blocks;
 
-
 use Coretik\PageBuilder\Blocks\Block;
 
 abstract class BlockComponent extends Block
