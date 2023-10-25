@@ -22,14 +22,12 @@ add_action('coretik/container/construct', function ($container) {
         if (\is_admin() && !is_cli()) {
             $container->get('notices')->error('Advanced Custom fields module is required.');
         }
-        return;
     }
 
     if (!\class_exists('ACFE')) {
         if (\is_admin() && !is_cli()) {
             $container->get('notices')->error('ACF Extended module is required.');
         }
-        return;
     }
 
     // Extend it: $container->extend('pageBuilder.blocks', fn ($blocks, $c) => $blocks->append(...));
