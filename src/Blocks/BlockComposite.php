@@ -26,9 +26,21 @@ abstract class BlockComposite extends Block
             return parent::fieldsBuilder();
         }
 
+        $tabs = [];
+
         $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
         foreach ($this->fieldsComposite() as $name => $data) {
-            $field->addTab($data['block']->getLabel(), ['placement' => 'left'])
+
+            $tabName = \apply_filters('coretik/page-builder/composite/tab-name', $name, $tabs, $data, $this);
+
+            $i = 0;
+            while (in_array($tabName, $tabs)) {
+                $i++;
+                $tabName = sprintf('%s %s', $tabName, $i);
+            }
+            $tabs[] = $tabName;
+
+            $field->addTab($tabName, ['placement' => 'left'])
                 ->addFields($data['fields']);
         }
         $this->useSettingsOn($field);
@@ -41,9 +53,13 @@ abstract class BlockComposite extends Block
         $data = [];
 
         foreach ($this->components as $key => $component) {
+            if (\is_int($key)) {
+                $key = $component;
+            }
+
             $data[(string)$key] = static::RENDER_COMPONENTS
-                ? $this->renderComponent($component)
-                : $this->componentToArray($component);
+                ? $this->renderComponent($key)
+                : $this->componentToArray($key);
         }
 
         return $data;

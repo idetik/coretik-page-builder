@@ -15,20 +15,22 @@ trait Composite
     {
         $this->children = new \SplObjectStorage();
 
-        foreach ($this->components ?? [] as $componentClass) {
-            $component = $this->compose($componentClass::NAME);
-            $key = static::undot($component->getName());
+        foreach ($this->components ?? [] as $key => $componentClass) {
+            if (\is_int($key)) {
+                $key = static::undot($component->getName());
+            }
+            $component = $this->compose($componentClass::NAME, $key);
             \add_filter('coretik/page-builder/fake-it/name=' . $this->getName(), fn ($props) => $props + [$key => $component->fakeIt()->getPropsFilled() + ['acf_fc_layout' => $component->getName()]]);
             $this->$key = null;
         }
     }
 
-    public function compose(array|string|BlockInterface $block): BlockInterface
+    public function compose(array|string|BlockInterface $block, ?string $key = null): BlockInterface
     {
         $context = [
             'block' => static::NAME,
             'type' => static::CATEGORY ?? explode('.', static::NAME)[0],
-            'name' => explode('.', static::NAME)[1],
+            'name' => $this->getName(),
         ];
 
         if (\is_string($block) || \is_array($block)) {
@@ -38,7 +40,7 @@ trait Composite
         $block->setContext($context);
 
         if (!$this->children->contains($block)) {
-            $this->children->attach($block);
+            $this->children->attach($block, $key);
         }
         return $block;
     }
@@ -64,13 +66,13 @@ trait Composite
 
             $compositeField = new FieldsBuilder('');
             $compositeField
-                ->addGroup(static::undot($block->getName()), ['acfe_seamless_style' => 1])
+                ->addGroup($this->children->getInfo() ?? static::undot($block->getName()), ['acfe_seamless_style' => 1])
                     ->setLabel('')
                     ->addFields($blockFields)
                 ->end();
 
 
-            $fields[$block->getName()] = [
+            $fields[$this->children->getInfo() ?? $block->getName()] = [
                 'fields' => $compositeField,
                 'block' => $block
             ];
@@ -80,21 +82,29 @@ trait Composite
         return $fields;
     }
 
-    protected function renderComponent($class)
+    protected function renderComponent($key)
     {
-        $key = static::undot($class::NAME);
+        if ($key instanceof BlockInterface) {
+            $key = static::undot($key::NAME);
+        }
+
         if (empty($this->$key)) {
             return null;
         }
+
         return $this->compose($this->$key)->render(true);
     }
 
-    protected function componentToArray($class): array
+    protected function componentToArray($key): array
     {
-        $key = static::undot($class::NAME);
+        if ($key instanceof BlockInterface) {
+            $key = static::undot($key::NAME);
+        }
+
         if (empty($this->$key)) {
             return [];
         }
+
         return $this->compose($this->$key)->toArray();
     }
 }

@@ -48,6 +48,7 @@ abstract class Block implements BlockInterface
     // Custom thumbnail path to preview block in library
     const THUMBNAIL_PATH = null;
 
+    protected string $uniqId;
     protected $context = null;
     protected $fields;
     private $wrappers = [];
@@ -64,6 +65,7 @@ abstract class Block implements BlockInterface
     {
         static::bootIfNotBooted();
         $this->initialize();
+        $this->uniqId = uniqid($this->getName() . '-');
 
         \do_action('pagebuilder/block/initialize', $props, $config, $this);
         \do_action('pagebuilder/block/initialize/name=' . $this->getName(), $props, $config, $this);
@@ -94,6 +96,11 @@ abstract class Block implements BlockInterface
     protected function config(string $key): mixed
     {
         return $this->config[$key] ?? static::$configGlobal[$key] ?? null;
+    }
+
+    public function getUniqId(): string
+    {
+        return $this->uniqId;
     }
 
     public function getName(): string
@@ -156,7 +163,7 @@ abstract class Block implements BlockInterface
     {
         $config = \wp_parse_args($config, [
             'label' => __(static::LABEL, app()->get('settings')['text-domain']),
-            'display' => 'block',
+            'display' => 'row',
             'acfe_flexible_thumbnail' => $this->thumbnail(),
             'acfe_flexible_category' => static::category(),
             'acfe_flexible_render_template' => $this->adminTemplate(),

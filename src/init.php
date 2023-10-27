@@ -12,7 +12,7 @@ use Coretik\PageBuilder\Blocks\Components\{
     WysiwygComponent
 };
 use Coretik\PageBuilder\Blocks\Tools\{Anchor, Breadcrumb};
-use Coretik\PageBuilder\Blocks\Content\{Wysiwyg, WysiwygDouble};
+use Coretik\PageBuilder\Blocks\Content\{WysiwygBlock, WysiwygDoubleBlock};
 use Coretik\PageBuilder\Blocks\Layouts\{PageHeader};
 use Coretik\PageBuilder\Blocks\Headings\{TitlePrimary};
 use Coretik\PageBuilder\Blocks\Container;
@@ -42,22 +42,22 @@ add_action('coretik/container/construct', function ($container) {
             WysiwygComponent::class,
             ThumbnailComponent::class,
 
-            // Tools
-            Anchor::class,
-            Breadcrumb::class,
+            // // Tools
+            // Anchor::class,
+            // Breadcrumb::class,
 
-            // Layouts
-            PageHeader::class,
+            // // Layouts
+            // PageHeader::class,
 
-            // Headings
-            TitlePrimary::class,
+            // // Headings
+            // TitlePrimary::class,
 
-            // Content
-            Wysiwyg::class,
-            WysiwygDouble::class,
+            // // Content
+            // WysiwygBlock::class,
+            WysiwygDoubleBlock::class,
 
-            // Container
-            Container::class,
+            // // Container
+            // Container::class,
         ]);
     };
 

@@ -67,9 +67,14 @@ class PageBuilderField
             'acfe_flexible_remove_duplicate_button' => 0,
             'acfe_flexible_remove_delete_button' => 0,
             'acfe_flexible_lock' => 0,
+            'acfe_flexible_add_actions' => [
+                // 'title', // inline edit
+                'copy',
+                'lock',
+            ],
             'acfe_flexible_modal_edit' => [
-                'acfe_flexible_modal_edit_enabled' => 1,
-                'acfe_flexible_modal_edit_size' => 'full',
+                'acfe_flexible_modal_edit_enabled' => 0,
+                'acfe_flexible_modal_edit_size' => 'large',
             ],
             'acfe_flexible_modal' => [
                 'acfe_flexible_modal_enabled' => '1',
@@ -81,7 +86,7 @@ class PageBuilderField
             'acfe_flexible_layouts_remove_collapse' => 0,
             'button_label' => __('Ajouter un élément', \app()->get('settings')['text-domain']),
             'acfe_flexible_grid' => [
-                'acfe_flexible_grid_enabled' => '1',
+                'acfe_flexible_grid_enabled' => '0',
                 'acfe_flexible_grid_align' => 'center',
                 'acfe_flexible_grid_valign' => 'stretch',
                 'acfe_flexible_grid_wrap' => '0',
@@ -106,7 +111,7 @@ class PageBuilderField
             ->addFlexibleContent($field_name, $args)
                 ->addLayouts($layouts);
 
-        if ($with_containers) {
+        if ($with_containers && \in_array('containers.container', $this->service->availablesBlocks())) {
             try {
                 $block = $this->service->factory()->create(['acf_fc_layout' => 'containers.container'])->fields();
                 $builder->getField($field_name)->addLayout($block);
