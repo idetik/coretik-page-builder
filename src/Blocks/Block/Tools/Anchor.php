@@ -1,6 +1,6 @@
 <?php
 
-namespace Coretik\PageBuilder\Blocks\Tools;
+namespace Coretik\PageBuilder\Blocks\Block\Tools;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Block;

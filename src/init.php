@@ -6,19 +6,23 @@ use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Job\GenerateThumbnailJob;
 use Coretik\PageBuilder\Acf\PageBuilderField;
 use Coretik\PageBuilder\{Builder, BlockFactory, ThumbnailGenerator};
-use Coretik\PageBuilder\Blocks\Components\{
+use Coretik\PageBuilder\Blocks\Component\{
     ThumbnailComponent,
-    CtaComponent,
     WysiwygComponent
 };
 use Coretik\PageBuilder\Blocks\Tools\{Anchor, Breadcrumb};
-use Coretik\PageBuilder\Blocks\Content\{WysiwygBlock, WysiwygDoubleBlock};
+use Coretik\PageBuilder\Blocks\Block\Editorial\{WysiwygBlock, WysiwygDoubleBlock};
 use Coretik\PageBuilder\Blocks\Layouts\{PageHeader};
 use Coretik\PageBuilder\Blocks\Headings\{TitlePrimary};
 use Coretik\PageBuilder\Blocks\Container;
 
 use function Globalis\WP\Cubi\add_action;
 use function Globalis\WP\Cubi\is_cli;
+
+/**
+ * @todo supprimer
+ */
+require_once __DIR__ ."/Blocks/Modifier/modifiers.php";
 
 add_action('coretik/container/construct', function ($container) {
 
@@ -38,7 +42,7 @@ add_action('coretik/container/construct', function ($container) {
     $container['pageBuilder.blocks'] = function ($c) {
         return \collect([
             // Components
-            CtaComponent::class,
+            // CtaComponent::class,
             WysiwygComponent::class,
             ThumbnailComponent::class,
 

@@ -53,6 +53,7 @@ abstract class Block implements BlockInterface
     protected $fields;
     private $wrappers = [];
     protected $settings = [];
+    protected $modifiers = [];
     protected $wrapperParameters = [];
     protected static $fieldsHooked = [];
     protected $propsFilled = [];
@@ -93,7 +94,7 @@ abstract class Block implements BlockInterface
         static::$configGlobal = $config;
     }
 
-    protected function config(string $key): mixed
+    public function config(string $key): mixed
     {
         return $this->config[$key] ?? static::$configGlobal[$key] ?? null;
     }
@@ -145,7 +146,13 @@ abstract class Block implements BlockInterface
         if (empty($this->fields)) {
             $this->fields = $this->fieldsBuilder();
         }
-        return $this->fields;
+        return $this->applyModifiers($this->fields);
+    }
+
+    public function resetFields(): self
+    {
+        $this->fields = null;
+        return $this;
     }
 
     public function fieldsBuilder(): FieldsBuilder
@@ -323,6 +330,23 @@ abstract class Block implements BlockInterface
         }
 
         return $output;
+    }
+
+    public function addModifier(callable $modifier, int $priority = 10): self
+    {
+        $this->modifiers[$priority][] = $modifier;
+        return $this;
+    }
+
+    protected function applyModifiers(FieldsBuilder $field): FieldsBuilder
+    {
+        \ksort($this->modifiers, SORT_NUMERIC);
+        foreach ($this->modifiers as $priority => $callables) {
+            foreach ($callables as $callable) {
+                $field = \call_user_func($callable, $field, $this);
+            }
+        }
+        return $field;
     }
 
     protected function getPlainHtml(): string

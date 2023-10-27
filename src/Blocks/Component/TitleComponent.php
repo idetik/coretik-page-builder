@@ -1,6 +1,6 @@
 <?php
 
-namespace Coretik\PageBuilder\Blocks\Components;
+namespace Coretik\PageBuilder\Blocks\Component;
 
 use Coretik\PageBuilder\Blocks\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
@@ -25,7 +25,8 @@ class TitleComponent extends BlockComponent
                 ->addChoice('h3')
                 ->addChoice('h4')
                 ->addChoice('h5')
-                ->setDefaultValue('h2');
+                ->setDefaultValue('h2')
+                ->setRequired();
         return $field;
     }
 

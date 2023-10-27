@@ -17,7 +17,7 @@ trait Composite
 
         foreach ($this->components ?? [] as $key => $componentClass) {
             if (\is_int($key)) {
-                $key = static::undot($component->getName());
+                $key = static::undot($componentClass::NAME);
             }
             $component = $this->compose($componentClass::NAME, $key);
             \add_filter('coretik/page-builder/fake-it/name=' . $this->getName(), fn ($props) => $props + [$key => $component->fakeIt()->getPropsFilled() + ['acf_fc_layout' => $component->getName()]]);

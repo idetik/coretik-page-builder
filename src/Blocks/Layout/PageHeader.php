@@ -1,6 +1,6 @@
 <?php
 
-namespace Coretik\PageBuilder\Blocks\Layouts;
+namespace Coretik\PageBuilder\Blocks\Layout;
 
 use Coretik\PageBuilder\Blocks\{
     BlockComposite,

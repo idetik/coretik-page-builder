@@ -90,10 +90,4 @@ class Builder
 
         return \apply_filters('coretik/page-builder/library', $blocks);
     }
-
-    // @deprecated
-    public function availablesBlocks()
-    {
-        return $this->library();
-    }
 }

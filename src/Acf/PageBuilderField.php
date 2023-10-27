@@ -17,7 +17,7 @@ class PageBuilderField
     protected function base(string $field_name = 'base-blocks')
     {
         if (empty($this->base)) {
-            $blocks = $this->service->availablesBlocks();
+            $blocks = $this->service->library();
             $builder = new FieldsBuilder('');
             $builder->addFlexibleContent($field_name);
             foreach ($blocks as $layout) {
@@ -111,7 +111,7 @@ class PageBuilderField
             ->addFlexibleContent($field_name, $args)
                 ->addLayouts($layouts);
 
-        if ($with_containers && \in_array('containers.container', $this->service->availablesBlocks())) {
+        if ($with_containers && \in_array('containers.container', $this->service->library())) {
             try {
                 $block = $this->service->factory()->create(['acf_fc_layout' => 'containers.container'])->fields();
                 $builder->getField($field_name)->addLayout($block);

@@ -43,6 +43,7 @@ abstract class BlockComposite extends Block
             $field->addTab($tabName, ['placement' => 'left'])
                 ->addFields($data['fields']);
         }
+
         $this->useSettingsOn($field);
 
         return $field;
