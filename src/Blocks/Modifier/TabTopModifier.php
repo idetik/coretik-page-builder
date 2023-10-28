@@ -4,24 +4,24 @@ namespace Coretik\PageBuilder\Blocks\Modifier;
 
 use Coretik\PageBuilder\BlockInterface;
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use StoutLogic\AcfBuilder\GroupBuilder;
 use StoutLogic\AcfBuilder\TabBuilder;
 
 
-class RequiredModifier extends Modifier
+class TabTopModifier extends Modifier
 {
-    const NAME = 'required';
+    const NAME = 'tabtop';
 
     /**
-     * Set fields as required if this config didn't set before
+     * Change tab placement to top
      */
     public function handle(FieldsBuilder $fields, BlockInterface $block): FieldsBuilder
     {
         foreach ($fields->getFields() as $field) {
-            $config = $field->getConfig();
-            if (!array_key_exists('required', $config)) {
-                $field->setRequired();
+
+            if ($field instanceof TabBuilder) {
+                $field->setConfig('placement', 'top');
             }
+
         }
 
         return $fields;

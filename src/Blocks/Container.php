@@ -5,7 +5,6 @@ namespace Coretik\PageBuilder\Blocks;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Traits\Grid;
 
-use function Globalis\WP\Cubi\include_template_part;
 
 class Container extends Block
 {

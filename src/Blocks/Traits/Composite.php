@@ -15,11 +15,15 @@ trait Composite
     {
         $this->children = new \SplObjectStorage();
 
+        if (\method_exists($this, 'prepareComponents')) {
+            $this->prepareComponents();
+        }
+
         foreach ($this->components ?? [] as $key => $componentClass) {
             if (\is_int($key)) {
                 $key = static::undot($componentClass::NAME);
             }
-            $component = $this->compose($componentClass::NAME, $key);
+            $component = $this->compose($componentClass, $key);
             \add_filter('coretik/page-builder/fake-it/name=' . $this->getName(), fn ($props) => $props + [$key => $component->fakeIt()->getPropsFilled() + ['acf_fc_layout' => $component->getName()]]);
             $this->$key = null;
         }
@@ -34,6 +38,12 @@ trait Composite
         ];
 
         if (\is_string($block) || \is_array($block)) {
+
+            // Handle block class name (block::class)
+            if (\is_a($block, BlockInterface::class, true)) {
+                $block = $block::NAME;
+            }
+
             $block = $this->component($block);
         }
 

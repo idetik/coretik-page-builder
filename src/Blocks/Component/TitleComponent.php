@@ -19,7 +19,7 @@ class TitleComponent extends BlockComponent
         $field->addText('title')
                 ->setLabel(__('Titre', app()->get('settings')['text-domain']))
                 ->setRequired()
-            ->addRadio('tag')
+            ->addRadio('tag', ['layout' => 'horizontal'])
                 ->setLabel(__('Niveau de titre', app()->get('settings')['text-domain']))
                 ->addChoice('h2')
                 ->addChoice('h3')
@@ -38,10 +38,10 @@ class TitleComponent extends BlockComponent
         ];
     }
 
-    protected function getPlainHtml(): string
+    protected function getPlainHtml(array $parameters): string
     {
         if (\locate_template($this->template())) {
-            return parent::getPlainHtml();
+            return parent::getPlainHtml($paramaters);
         }
 
         return sprintf('<%1$s>%2$s<%1$s>', $this->tag, $this->title);

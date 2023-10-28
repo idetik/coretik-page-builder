@@ -2,6 +2,8 @@
 
 namespace Coretik\PageBuilder;
 
+use Coretik\PageBuilder\Blocks\Component\TitleComponent;
+use Coretik\PageBuilder\Blocks\Layout\ParagraphLayout;
 use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Job\GenerateThumbnailJob;
 use Coretik\PageBuilder\Acf\PageBuilderField;
@@ -45,6 +47,7 @@ add_action('coretik/container/construct', function ($container) {
             // CtaComponent::class,
             WysiwygComponent::class,
             ThumbnailComponent::class,
+            TitleComponent::class,
 
             // // Tools
             // Anchor::class,
@@ -52,12 +55,13 @@ add_action('coretik/container/construct', function ($container) {
 
             // // Layouts
             // PageHeader::class,
+            ParagraphLayout::class,
 
             // // Headings
             // TitlePrimary::class,
 
             // // Content
-            // WysiwygBlock::class,
+            WysiwygBlock::class,
             WysiwygDoubleBlock::class,
 
             // // Container

@@ -7,11 +7,16 @@ use Coretik\PageBuilder\Blocks\Component\WysiwygComponent;
 
 class WysiwygBlock extends BlockComposite
 {
-    const NAME = 'content.wysiwyg';
+    const NAME = 'editorial.wysiwyg';
     const LABEL = 'Éditeur de texte';
     const SCREEN_PREVIEW_SIZE = [1600, 724];
 
     protected $components = [
         'wysiwyg' => WysiwygComponent::class,
     ];
+
+    protected function getPlainHtml(array $parameters): string
+    {
+        return $parameters['wysiwyg'];
+    }
 }

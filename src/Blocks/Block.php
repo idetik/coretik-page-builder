@@ -338,20 +338,20 @@ abstract class Block implements BlockInterface
         return $this;
     }
 
-    protected function applyModifiers(FieldsBuilder $field): FieldsBuilder
+    protected function applyModifiers(FieldsBuilder $fields): FieldsBuilder
     {
         \ksort($this->modifiers, SORT_NUMERIC);
         foreach ($this->modifiers as $priority => $callables) {
             foreach ($callables as $callable) {
-                $field = \call_user_func($callable, $field, $this);
+                $fields = \call_user_func($callable, $fields, $this);
             }
         }
-        return $field;
+        return $fields;
     }
 
-    protected function getPlainHtml(): string
+    protected function getPlainHtml(array $parameters): string
     {
-        return include_template_part($this->template(false), $this->toArray() + ['context' => $this->context()], true);
+        return include_template_part($this->template(false), $parameters, true);
     }
 
     /**
@@ -363,7 +363,7 @@ abstract class Block implements BlockInterface
         \do_action('coretik/page-builder/block/before_render', $this);
         \do_action('coretik/page-builder/block/before_render/name=' . $this->getName(), $this);
 
-        $output = $this->getPlainHtml();
+        $output = $this->getPlainHtml($this->toArray() + ['context' => $this->context()]);
         $output = $this->applyWrappers($output);
 
         if (!$return) {

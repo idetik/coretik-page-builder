@@ -12,14 +12,8 @@ class WysiwygDoubleBlock extends BlockComposite
     const NAME = 'content.wysiwyg-double';
     const LABEL = 'Éditeur de texte (2 colonnes)';
 
-    protected $components = [];
-
-    public function __construct(array $props = [], array $config = [])
-    {
-        $this->components = [
-            'column_1' => required(WysiwygComponent::class),
-            'column_2' => WysiwygComponent::class,
-        ];
-        parent::__construct($props, $config);
-    }
+    protected $components = [
+        'column_1' => WysiwygComponent::class,
+        'column_2' => WysiwygComponent::class,
+    ];
 }

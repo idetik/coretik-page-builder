@@ -8,19 +8,18 @@ use StoutLogic\AcfBuilder\GroupBuilder;
 use StoutLogic\AcfBuilder\TabBuilder;
 
 
-class RequiredModifier extends Modifier
+class TablessModifier extends Modifier
 {
-    const NAME = 'required';
+    const NAME = 'tabless';
 
     /**
-     * Set fields as required if this config didn't set before
+     * Remove tabs
      */
     public function handle(FieldsBuilder $fields, BlockInterface $block): FieldsBuilder
     {
         foreach ($fields->getFields() as $field) {
-            $config = $field->getConfig();
-            if (!array_key_exists('required', $config)) {
-                $field->setRequired();
+            if ($field instanceof TabBuilder) {
+                $fields->removeField($field->getName());
             }
         }
 

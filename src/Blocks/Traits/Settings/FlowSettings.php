@@ -6,12 +6,12 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 use function Globalis\WP\Cubi\include_template_part;
 
-trait Flow
+trait FlowSettings
 {
     protected $flow;
     protected $flow_advanced;
 
-    protected function initializeFlow()
+    protected function initializeFlowSettings()
     {
         $this->addWrapper([$this, 'flowWrap'], 99);
         $this->addSettings([$this, 'flowSettings'], 10);

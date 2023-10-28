@@ -51,10 +51,10 @@ class LinkComponent extends BlockComponent
         ];
     }
 
-    protected function getPlainHtml(): string
+    protected function getPlainHtml(array $parameters): string
     {
         if (\locate_template($this->template())) {
-            return parent::getPlainHtml();
+            return parent::getPlainHtml($parameters);
         }
 
         $link = $this->link;

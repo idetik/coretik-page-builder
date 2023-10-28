@@ -26,7 +26,7 @@ class Anchor extends Block
                 ->setInstructions(__('Permet de cibler une partie de la page via une url se terminant par "#ancre"', app()->get('settings')['text-domain']));
 
         // Sample How to use settings
-        // Use trait Settings/Flow
+        // Use trait Settings/FlowSettings
         $this->useSettingsOn($field);
 
         return $field;
