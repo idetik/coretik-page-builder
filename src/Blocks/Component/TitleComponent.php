@@ -44,6 +44,6 @@ class TitleComponent extends BlockComponent
             return parent::getPlainHtml($paramaters);
         }
 
-        return sprintf('<%1$s>%2$s<%1$s>', $this->tag, $this->title);
+        return sprintf('<%1$s>%2$s</%1$s>', $this->tag, $this->title);
     }
 }

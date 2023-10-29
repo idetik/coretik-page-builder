@@ -10,7 +10,8 @@ use Coretik\PageBuilder\Acf\PageBuilderField;
 use Coretik\PageBuilder\{Builder, BlockFactory, ThumbnailGenerator};
 use Coretik\PageBuilder\Blocks\Component\{
     ThumbnailComponent,
-    WysiwygComponent
+    WysiwygComponent,
+    LinkComponent
 };
 use Coretik\PageBuilder\Blocks\Tools\{Anchor, Breadcrumb};
 use Coretik\PageBuilder\Blocks\Block\Editorial\{WysiwygBlock, WysiwygDoubleBlock};
@@ -48,6 +49,7 @@ add_action('coretik/container/construct', function ($container) {
             WysiwygComponent::class,
             ThumbnailComponent::class,
             TitleComponent::class,
+            LinkComponent::class,
 
             // // Tools
             // Anchor::class,

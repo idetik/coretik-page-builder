@@ -11,10 +11,13 @@ class LinkComponent extends BlockComponent
     const LABEL = 'Call-to-action';
 
     protected $link;
+    protected $use_gtm;
 
     public function fieldsBuilder(): FieldsBuilder
     {
-        $this->addSettings([__CLASS__, 'gtmFields']);
+        if (\apply_filters('pagebuilder/block/components/' . $this->getName() . '/gtm_enabled', true)) {
+            $this->addSettings([__CLASS__, 'gtmFields']);
+        }
 
         $advancedLinkArgs = \apply_filters('pagebuilder/block/components/' . $this->getName() . '/advanced_link_args', [
             'label' => 'Lien',
@@ -38,16 +41,35 @@ class LinkComponent extends BlockComponent
         $gtm = new FieldsBuilder('setting.gtm');
         $gtm
             ->addTrueFalse('use_gtm', ['ui' => 1])
-                ->setLabel('Ajouter un évènement GTM');
+                ->setLabel('Ajouter un évènement GTM')
+                ->setUnrequired()
+            ->addGroup('gtm_event', ['layout' => 'row'])
+                ->setLabel('GTM : Paramètres (onclick)')
+                ->conditional('use_gtm', '==', 1)
+                ->addText('event')
+                    ->setLabel('Évènement')
+                    ->setRequired()
+                ->addText('category')
+                    ->setLabel('Catégorie')
+                    ->setRequired()
+                ->addText('action')
+                    ->setLabel('Action')
+                    ->setRequired()
+                ->addText('label')
+                    ->setLabel('Label')
+                    ->setRequired()
+                ->addText('name', ['placeholder' => '<action>_<label>'])
+                    ->setLabel('Nom')
+                    ->setRequired();
         
-        return $gtm;
+        return \apply_filters('pagebuilder/block/components/' . static::NAME . '/gtm_fields', $gtm);
     }
 
     public function toArray()
     {
         return [
             'link' => $this->link,
-            'use_gtm' => $this->use_gtm,
+            'use_gtm' => $this->use_gtm ?? false,
         ];
     }
 
@@ -57,11 +79,15 @@ class LinkComponent extends BlockComponent
             return parent::getPlainHtml($parameters);
         }
 
-        $link = $this->link;
+        $link = $parameters['link'];
+
+        if (empty($link)) {
+            return '';
+        }
 
         $attr = \apply_filters('pagebuilder/block/components/' . $this->getName() . '/render/advanced_link_attrs', [
                 'href' => $link['url'],
-                'class' => $className,
+                // 'class' => $className,
             ],
             $link,
             $this

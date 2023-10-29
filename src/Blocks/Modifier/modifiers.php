@@ -18,3 +18,8 @@ function tabtop(BlockInterface|string $block): BlockInterface
 {
     return TabTopModifier::modify($block);
 }
+
+function column(BlockInterface|string $block, int $size = 6): BlockInterface
+{
+    return ColumnModifier::modify($block, $size);
+}
