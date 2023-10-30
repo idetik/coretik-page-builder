@@ -15,6 +15,80 @@ class PageBuilderCommand
     }
 
     /**
+     * @todo create-component
+     * @todo create-block
+     * @todo create-layout
+     * @todo create-modifier
+     * @todo create-settings
+     */
+
+    /**
+     * Create block
+     *
+     * ## OPTIONS
+     *
+     * [<layout_name>]
+     * : The block layout name
+     *
+     * [--verbose]
+     * : Echo logs
+     *
+     * [--format=<format>]
+     * : Output json results
+     *
+     * ## EXAMPLES
+     *
+     *     wp page-builder create_block layout.my_layout
+     */
+    public function create_block($args, $assoc_args)
+    {
+        $verbose = $assoc_args['verbose'] ?? false;
+        $format = $assoc_args['format'] ?? false;
+
+        if ($verbose) {
+            \add_action('coretik/page-builder/generate-thumbs/start', function ($counter) {
+                $progress = \WP_CLI\Utils\make_progress_bar('Generating Thumbs', $counter);
+
+                \add_action('coretik/page-builder/generate-thumbs/tick', function () use ($progress) {
+                    $progress->tick();
+                });
+                \add_action('coretik/page-builder/generate-thumbs/end', function () use ($progress) {
+                    $progress->finish();
+                });
+            });
+        }
+
+        $results = $this->job->setConfig([
+            'layout' => $args[0] ?? null,
+            'override' => $assoc_args['override'] ?? false,
+            'verbose' => $verbose,
+        ])->handle();
+
+        if ('json' === $format) {
+            $formatted = [];
+
+            if (!empty($results['errors'])) {
+                foreach ($results['errors'] as $layout => $message) {
+                    $formatted[$layout] = [
+                        'success' => false,
+                        'message' => $message
+                    ];
+                }
+                unset($results['errors']);
+            }
+
+            foreach (($results) as $layout => $message) {
+                $formatted[$layout] = [
+                    'success' => true,
+                    'message' => $message
+                ];
+            }
+
+            echo \json_encode($formatted);
+        }
+    }
+
+    /**
      * Create block's preview images
      *
      * ## OPTIONS

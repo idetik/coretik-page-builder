@@ -1,0 +1,22 @@
+<?php
+
+namespace {{ namespace }};
+
+use Coretik\PageBuilder\Blocks\BlockComposite;
+
+class {{ class }} extends BlockComposite
+{
+    const NAME = '{{ name }}';
+    const LABEL = '{{ label }}';
+
+    protected $components = [
+        // 'wysiwyg' => WysiwygComponent::class,
+    ];
+
+    /*
+    protected function getPlainHtml(array $parameters): string
+    {
+        return '';
+    }
+    */
+}
