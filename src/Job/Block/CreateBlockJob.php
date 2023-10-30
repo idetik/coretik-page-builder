@@ -2,17 +2,18 @@
 
 namespace Coretik\PageBuilder\Job\Block;
 
-class CreateBlockJob
+use Coretik\PageBuilder\Job\JobInterface;
+
+class CreateBlockJob implements JobInterface
 {
     protected BlockType $blockType;
     protected $layout;
     protected $override;
     protected $verbose;
+    protected array $payload = [];
 
-    public function __construct(BlockType $blockType, array $config = [])
+    public function __construct(array $config = [])
     {
-        $this->blockType = $blockType;
-
         if (!empty($config)) {
             $this->setConfig($config);
         }
@@ -26,44 +27,56 @@ class CreateBlockJob
         return $this;
     }
 
+    public function setBlockType(BlockType $blockType): self
+    {
+        $this->blockType = $blockType;
+        return $this;
+    }
+
     protected static function getStubFile(string $name): string
     {
         return __DIR__ . '/stubs/' . $name . '.stub';
     }
 
-    public function handle()
+    public function handle(): void
     {
         if ($this->verbose) {
             app()->notices()->info(PHP_EOL . '======== CreateBlock - Job start ========' . PHP_EOL);
         }
 
-        if (!empty($this->layout)) {
-            try {
 
-                // Create ClassFile
-                $stubFile = match ($this->blockType) {
-                    BlockType::Component => static::getStubFile('block-component'),
-                    BlockType::Composite => static::getStubFile('block-composite'),
-                    BlockType::Block => static::getStubFile('block'),
-                };
+        try {
+
+            // Create ClassFile
+            $stubFile = match ($this->blockType) {
+                BlockType::Component => static::getStubFile('block-component'),
+                BlockType::Composite => static::getStubFile('block-composite'),
+                BlockType::Block => static::getStubFile('block'),
+            };
+
+            var_dump($stubFile);
+            // app()->notices()->info($stubFile);
+            die;
 
 
-                if ($this->verbose) {
-                    app()->notices()->success(sprintf('%s : %s', $block->getLabel(), $output));
-                }
-            } catch (\Exception $e) {
-                $results['errors'][$this->layout] = $e->getMessage();
-                if ($this->verbose) {
-                    app()->notices()->error(sprintf('%s : %s', $this->layout, $e->getMessage()));
-                }
+            if ($this->verbose) {
+                app()->notices()->success(sprintf('%s : %s', $block->getLabel(), $output));
+            }
+        } catch (\Exception $e) {
+            $results['errors'][$this->layout] = $e->getMessage();
+            if ($this->verbose) {
+                app()->notices()->error(sprintf('%s : %s', $this->layout, $e->getMessage()));
             }
         }
 
         if ($this->verbose) {
             app()->notices()->info(PHP_EOL . '======== CreateBlock - Job end ========' . PHP_EOL);
         }
+    }
 
-        return $results;
+    public function getPayload(): array
+    {
+        return $this->payload;
     }
 
     public function __invoke()

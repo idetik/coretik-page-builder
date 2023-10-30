@@ -1,6 +1,6 @@
 <?php
 
-namespace Coretik\PageBuilder;
+namespace Coretik\PageBuilder\Job\Thumbnail;
 
 use function Globalis\WP\Cubi\include_template_part;
 

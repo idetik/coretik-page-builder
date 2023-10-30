@@ -2,16 +2,37 @@
 
 namespace Coretik\PageBuilder\Cli\Command;
 
-class PageBuilderCommand
+use Coretik\PageBuilder\Job\JobInterface;
+use Illuminate\Support\Collection;
+use Coretik\PageBuilder\Job\Block\BlockType;
+
+class ThumbnailCommand
 {
     protected $progress;
-    protected $job;
+    protected JobInterface $thumbnailJob;
+    protected JobInterface $blockJob;
     protected $config;
 
-    public function __construct($job, $config)
+    public function __construct(Collection $config)
     {
-        $this->job = $job;
         $this->config = $config;
+    }
+
+    public static function make(Collection $config): self
+    {
+        return new static($config);
+    }
+
+    public function setThumbnailJob(JobInterface $job): self
+    {
+        $this->thumbnailJob = $job;
+        return $this;
+    }
+
+    public function setBlockJob(JobInterface $job): self
+    {
+        $this->blockJob = $job;
+        return $this;
     }
 
     /**
@@ -58,11 +79,13 @@ class PageBuilderCommand
             });
         }
 
-        $results = $this->job->setConfig([
+        $this->blockJob->setConfig([
             'layout' => $args[0] ?? null,
             'override' => $assoc_args['override'] ?? false,
             'verbose' => $verbose,
-        ])->handle();
+        ])->setBlockType(BlockType::Component)->handle();
+
+        $results = $this->blockJob->getPayload();
 
         if ('json' === $format) {
             $formatted = [];
@@ -127,11 +150,13 @@ class PageBuilderCommand
             });
         }
 
-        $results = $this->job->setConfig([
+        $this->thumbnailJob->setConfig([
             'layout' => $args[0] ?? null,
             'override' => $assoc_args['override'] ?? false,
             'verbose' => $verbose,
         ])->handle();
+
+        $results = $this->thumbnailJob->getPayload();
 
         if ('json' === $format) {
             $formatted = [];

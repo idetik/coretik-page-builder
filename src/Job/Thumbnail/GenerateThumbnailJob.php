@@ -1,13 +1,16 @@
 <?php
 
-namespace Coretik\PageBuilder\Job;
+namespace Coretik\PageBuilder\Job\Thumbnail;
 
-class GenerateThumbnailJob
+use Coretik\PageBuilder\Job\JobInterface;
+
+class GenerateThumbnailJob implements JobInterface
 {
     protected $generator;
     protected $layout;
     protected $override;
     protected $verbose;
+    protected $payload;
 
     public function __construct($generator, array $config = [])
     {
@@ -26,7 +29,7 @@ class GenerateThumbnailJob
         return $this;
     }
 
-    public function handle()
+    public function handle(): void
     {
         if ($this->verbose) {
             app()->notices()->info(PHP_EOL . '======== GenerateThumnail - Job start ========' . PHP_EOL);
@@ -53,7 +56,17 @@ class GenerateThumbnailJob
             app()->notices()->info(PHP_EOL . '======== GenerateThumnail - Job end ========' . PHP_EOL);
         }
 
-        return $results;
+        $this->setPayload($results);
+    }
+
+    protected function setPayload(array $payload): void
+    {
+        $this->payload = $payload;
+    }
+
+    public function getPayload(): array
+    {
+        return $this->payload;
     }
 
     public function __invoke()

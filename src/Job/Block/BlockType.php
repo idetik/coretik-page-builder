@@ -3,7 +3,7 @@
 namespace Coretik\PageBuilder\Job\Block;
 
 
-enum BlockType: string {
+enum BlockType {
     case Block;
     case Component;
     case Composite;

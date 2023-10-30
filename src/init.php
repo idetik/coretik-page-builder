@@ -4,10 +4,14 @@ namespace Coretik\PageBuilder;
 
 use Coretik\PageBuilder\Blocks\Component\TitleComponent;
 use Coretik\PageBuilder\Blocks\Layout\ParagraphLayout;
-use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
-use Coretik\PageBuilder\Job\GenerateThumbnailJob;
+use Coretik\PageBuilder\Cli\Command\ThumbnailCommand;
+use Coretik\PageBuilder\Job\Thumbnail\{
+    GenerateThumbnailJob,
+    ThumbnailGenerator
+};
+use Coretik\PageBuilder\Job\Block\CreateBlockJob;
 use Coretik\PageBuilder\Acf\PageBuilderField;
-use Coretik\PageBuilder\{Builder, BlockFactory, ThumbnailGenerator};
+use Coretik\PageBuilder\{Builder, BlockFactory};
 use Coretik\PageBuilder\Blocks\Component\{
     ThumbnailComponent,
     WysiwygComponent,
@@ -78,6 +82,7 @@ add_action('coretik/container/construct', function ($container) {
             'fields.thumbnails.baseUrl' => '<##ASSETS_URL##>/images/admin/acf/',
             'blocks.template.directory' => 'templates/blocks/',
             'blocks.acf.directory' => 'templates/acf/',
+            'blocks.src.directory' => 'src/Services/PageBuilder/Blocks/',
             'blocks' => $c->get('pageBuilder.blocks')
         ])->filter();
     };
@@ -97,12 +102,18 @@ add_action('coretik/container/construct', function ($container) {
         return $generator;
     };
 
-    $container['pageBuilder.job'] = $container->factory(function ($c) {
+    $container['pageBuilder.job.generate-thumbnail'] = $container->factory(function ($c) {
         return new GenerateThumbnailJob($c->get('pageBuilder.thumbnailGenerator'));
     });
 
+    $container['pageBuilder.job.create-block'] = $container->factory(function ($c) {
+        return new CreateBlockJob();
+    });
+
     $container['pageBuilder.commands'] = function ($c) {
-        return new PageBuilderCommand($c->get('pageBuilder.job'), $c->get('pageBuilder.config'));
+        return ThumbnailCommand::make($c->get('pageBuilder.config'))
+            ->setThumbnailJob($c->get('pageBuilder.job.generate-thumbnail'))
+            ->setBlockJob($c->get('pageBuilder.job.create-block'));
     };
 
     $container['pageBuilder.field'] = function ($c) {
