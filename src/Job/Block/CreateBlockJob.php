@@ -54,6 +54,8 @@ class CreateBlockJob implements JobInterface
                 BlockType::Block => static::getStubFile('block'),
             };
 
+            // $dir = $this->
+
             var_dump($stubFile);
             // app()->notices()->info($stubFile);
             die;
