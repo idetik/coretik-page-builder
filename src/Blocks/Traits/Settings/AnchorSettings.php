@@ -7,7 +7,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 trait AnchorSettings
 {
-    protected $attr_id;
+    protected $anchor;
 
     protected function initializeAnchorSettings()
     {
@@ -17,21 +17,22 @@ trait AnchorSettings
     protected function anchorSettings()
     {
         $anchor = new FieldsBuilder('settings.anchor');
-
-        if ($this instanceof BlockComponent) {
-            $anchor
+        $anchor
+            ->addGroup('anchor', ['layout' => 'row'])
+                ->setLabel('Ancre')
                 ->addText('attr_id')
                     ->setInstructions('Placer un identifiant unique. Celui-ci pourra être ciblé par une ancre.')
                     ->setUnrequired()
-                    ->setLabel('Id');
-        }
+                    ->setLabel('Id')
+            ->end();
+
         return $anchor;
     }
 
     protected function anchorSettingsToArray()
     {
         return [
-            'id' => $this->attr_id
+            'anchor' => $this->anchor
         ];
     }
 }

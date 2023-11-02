@@ -7,8 +7,9 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 trait AccessibilitySettings
 {
-    protected $aria_hidden;
-    protected $aria_label;
+    // protected $aria_hidden;
+    // protected $aria_label;
+    protected $accessibility;
 
     protected function initializeAccessibilitySettings()
     {
@@ -18,6 +19,10 @@ trait AccessibilitySettings
     protected function accessibilitySettings()
     {
         $accessibility = new FieldsBuilder('settings.accessibility');
+
+        $accessibility = $accessibility
+            ->addGroup('accessibility', ['layout' => 'row'])
+                ->setLabel('Accessibilité');
 
         if ($this instanceof BlockComponent) {
             $accessibility
@@ -30,7 +35,10 @@ trait AccessibilitySettings
             ->addText('aria_label')
                 ->setUnrequired()
                 ->setLabel('Aria label')
-                ->setInstructions('Nom accessible qui ne sera visible que par les technologies d\'assistance.');
+                ->setInstructions('Nom accessible qui ne sera visible que par les technologies d\'assistance.')
+                ->conditional('aria_hidden', '!=', 1);
+
+        $accessibility = $accessibility->endGroup();
 
         return $accessibility;
     }
@@ -38,8 +46,7 @@ trait AccessibilitySettings
     protected function accessibilitySettingsToArray()
     {
         return [
-            'aria-hidden' => $this->aria_hidden,
-            'aria-label' => $this->aria_label,
+            'accessibility' => $this->accessibility,
         ];
     }
 }

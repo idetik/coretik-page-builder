@@ -11,13 +11,16 @@ class LinkComponent extends BlockComponent
     const LABEL = 'Call-to-action';
 
     protected $link;
-    protected $use_gtm;
+    protected $gtm;
+    protected $seo;
 
     public function fieldsBuilder(): FieldsBuilder
     {
         if (\apply_filters('pagebuilder/block/components/' . $this->getName() . '/gtm_enabled', true)) {
             $this->addSettings([__CLASS__, 'gtmFields']);
         }
+
+        $this->addSettings([__CLASS__, 'seoSettings'], 1);
 
         $advancedLinkArgs = \apply_filters('pagebuilder/block/components/' . $this->getName() . '/advanced_link_args', [
             'label' => 'Lien',
@@ -40,36 +43,54 @@ class LinkComponent extends BlockComponent
     {
         $gtm = new FieldsBuilder('settings.gtm');
         $gtm
-            ->addTrueFalse('use_gtm', ['ui' => 1])
-                ->setLabel('Ajouter un évènement GTM')
-                ->setUnrequired()
-            ->addGroup('gtm_event', ['layout' => 'row'])
-                ->setLabel('GTM : Paramètres (onclick)')
-                ->conditional('use_gtm', '==', 1)
-                ->addText('event')
-                    ->setLabel('Évènement')
-                    ->setRequired()
-                ->addText('category')
-                    ->setLabel('Catégorie')
-                    ->setRequired()
-                ->addText('action')
-                    ->setLabel('Action')
-                    ->setRequired()
-                ->addText('label')
-                    ->setLabel('Label')
-                    ->setRequired()
-                ->addText('name', ['placeholder' => '<action>_<label>'])
-                    ->setLabel('Nom')
-                    ->setRequired();
+            ->addGroup('gtm', ['layout' => 'row'])
+                ->addTrueFalse('use_gtm', ['ui' => 1])
+                    ->setLabel('Ajouter un évènement GTM')
+                    ->setUnrequired()
+                ->addGroup('gtm_event', ['layout' => 'row'])
+                    ->setLabel('GTM : Paramètres (onclick)')
+                    ->conditional('use_gtm', '==', 1)
+                    ->addText('event')
+                        ->setLabel('Évènement')
+                        ->setRequired()
+                    ->addText('category')
+                        ->setLabel('Catégorie')
+                        ->setRequired()
+                    ->addText('action')
+                        ->setLabel('Action')
+                        ->setRequired()
+                    ->addText('label')
+                        ->setLabel('Label')
+                        ->setRequired()
+                    ->addText('name', ['placeholder' => '<action>_<label>'])
+                        ->setLabel('Nom')
+                        ->setRequired()
+            ->endGroup();
         
         return \apply_filters('pagebuilder/block/components/' . static::NAME . '/gtm_fields', $gtm);
+    }
+
+    public static function seoSettings()
+    {
+        $seo = new FieldsBuilder('settings.seo');
+        $seo
+            ->addGroup('seo', ['layout' => 'row'])
+                ->addCheckbox('rel')
+                    ->setLabel('Rel')
+                    ->setInstructions('Si non renseignée, l\'alternative textuelle de l\'image sera utilisée.')
+                    ->addChoice('nofollow', '[nofollow] Indiquer aux moteurs de recherche de ne pas suivre ce lien')
+                    ->setUnrequired()
+            ->endGroup();
+
+        return \apply_filters('pagebuilder/block/components/' . static::NAME . '/seo_fields', $seo);
     }
 
     public function toArray()
     {
         return [
             'link' => $this->link,
-            'use_gtm' => $this->use_gtm ?? false,
+            'gtm' => $this->gtm,
+            'seo' => $this->seo,
         ];
     }
 
