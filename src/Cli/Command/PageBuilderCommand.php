@@ -6,7 +6,7 @@ use Coretik\PageBuilder\Job\JobInterface;
 use Illuminate\Support\Collection;
 use Coretik\PageBuilder\Job\Block\BlockType;
 
-class ThumbnailCommand
+class PageBuilderCommand
 {
     protected $progress;
     protected JobInterface $thumbnailJob;
@@ -36,79 +36,60 @@ class ThumbnailCommand
     }
 
     /**
-     * @todo create-component
-     * @todo create-block
-     * @todo create-layout
-     * @todo create-modifier
-     * @todo create-settings
-     */
-
-    /**
      * Create block
      *
      * ## OPTIONS
      *
-     * [<layout_name>]
-     * : The block layout name
+     * [<class>]
+     * : The block classname
+     * 
+     * [--type=<block_type>]
+     * : The block type
+     * ---
+     * default: block
+     * options:
+     *   - block
+     *   - component
+     *   - composite
+     * ---
      *
+     * [--name=<name>]
+     * : The block name to retrieve template (ex: components.title, template based in blocks/components/title.php)
+     *
+     * [--label=<label>]
+     * : The block title
+     * 
      * [--verbose]
      * : Echo logs
      *
-     * [--format=<format>]
-     * : Output json results
+     * [--force]
+     * : Override existings files
      *
      * ## EXAMPLES
      *
-     *     wp page-builder create_block layout.my_layout
+     *     wp page-builder create Components/MyComponent --name=components.my-component --type=component --label="My super Component" --verbose --force
      */
-    public function create_block($args, $assoc_args)
+    public function create($args, $assoc_args)
     {
+        $class = \rtrim($args[0], '.php');
         $verbose = $assoc_args['verbose'] ?? false;
-        $format = $assoc_args['format'] ?? false;
-
-        if ($verbose) {
-            \add_action('coretik/page-builder/generate-thumbs/start', function ($counter) {
-                $progress = \WP_CLI\Utils\make_progress_bar('Generating Thumbs', $counter);
-
-                \add_action('coretik/page-builder/generate-thumbs/tick', function () use ($progress) {
-                    $progress->tick();
-                });
-                \add_action('coretik/page-builder/generate-thumbs/end', function () use ($progress) {
-                    $progress->finish();
-                });
-            });
-        }
+        $name = $assoc_args['name'] ?? null;
+        $label = $assoc_args['label'] ?? null;
+        $type = $assoc_args['type'] ?? false;
+        $force = $assoc_args['force'] ?? false;
 
         $this->blockJob->setConfig([
-            'layout' => $args[0] ?? null,
-            'override' => $assoc_args['override'] ?? false,
+            'class' => $class,
+            'force' => $force,
             'verbose' => $verbose,
-        ])->setBlockType(BlockType::Component)->handle();
-
-        $results = $this->blockJob->getPayload();
-
-        if ('json' === $format) {
-            $formatted = [];
-
-            if (!empty($results['errors'])) {
-                foreach ($results['errors'] as $layout => $message) {
-                    $formatted[$layout] = [
-                        'success' => false,
-                        'message' => $message
-                    ];
-                }
-                unset($results['errors']);
-            }
-
-            foreach (($results) as $layout => $message) {
-                $formatted[$layout] = [
-                    'success' => true,
-                    'message' => $message
-                ];
-            }
-
-            echo \json_encode($formatted);
-        }
+            'name' => $name,
+            'label' => $label,
+        ])->setBlockType(match ($type) {
+            'component' => BlockType::Component,
+            'block' => BlockType::Block,
+            'composite' => BlockType::Composite,
+            default => BlockType::Block,
+        })->handle();
     }
 
     /**

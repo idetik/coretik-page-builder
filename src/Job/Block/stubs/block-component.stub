@@ -7,7 +7,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class {{ class }} extends BlockComponent
 {
-    const NAME = 'components.{{ name }}';
+    const NAME = '{{ name }}';
     const LABEL = '{{ label }}';
 
     // protected $prop;

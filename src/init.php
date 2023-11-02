@@ -4,7 +4,7 @@ namespace Coretik\PageBuilder;
 
 use Coretik\PageBuilder\Blocks\Component\TitleComponent;
 use Coretik\PageBuilder\Blocks\Layout\ParagraphLayout;
-use Coretik\PageBuilder\Cli\Command\ThumbnailCommand;
+use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Job\Thumbnail\{
     GenerateThumbnailJob,
     ThumbnailGenerator
@@ -76,6 +76,8 @@ add_action('coretik/container/construct', function ($container) {
     };
 
     $container['pageBuilder.config'] = function ($c) {
+        $globalSettings = $c->get('settings');
+
         return \collect([
             'fields.directory' => 'src/admin/fields/blocks/',
             'fields.thumbnails.directory' => \get_stylesheet_directory() . '/assets/images/admin/acf/',
@@ -83,6 +85,7 @@ add_action('coretik/container/construct', function ($container) {
             'blocks.template.directory' => 'templates/blocks/',
             'blocks.acf.directory' => 'templates/acf/',
             'blocks.src.directory' => 'src/Services/PageBuilder/Blocks/',
+            'blocks.rootNamespace' => $globalSettings['rootNamespace'] ?? 'App' . '\\Services\\PageBuilder\\Blocks',
             'blocks' => $c->get('pageBuilder.blocks')
         ])->filter();
     };
@@ -107,11 +110,11 @@ add_action('coretik/container/construct', function ($container) {
     });
 
     $container['pageBuilder.job.create-block'] = $container->factory(function ($c) {
-        return new CreateBlockJob();
+        return new CreateBlockJob($c);
     });
 
     $container['pageBuilder.commands'] = function ($c) {
-        return ThumbnailCommand::make($c->get('pageBuilder.config'))
+        return PageBuilderCommand::make($c->get('pageBuilder.config'))
             ->setThumbnailJob($c->get('pageBuilder.job.generate-thumbnail'))
             ->setBlockJob($c->get('pageBuilder.job.create-block'));
     };
