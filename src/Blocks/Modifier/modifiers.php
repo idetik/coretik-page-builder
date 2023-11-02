@@ -23,3 +23,8 @@ function column(BlockInterface|string $block, int $size = 6): BlockInterface
 {
     return ColumnModifier::modify($block, $size);
 }
+
+function tap(BlockInterface|string $block, callable $callback): BlockInterface
+{
+    return TapModifier::modify($block, $callback);
+}

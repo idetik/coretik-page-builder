@@ -46,7 +46,7 @@ trait FlowSettings
             $flow_choices['advanced'] = __('Personnalisées', app()->get('settings')['text-domain']);
         }
 
-        $flow = new FieldsBuilder('trait.flow');
+        $flow = new FieldsBuilder('settings.flow');
         $flow
             ->addButtonGroup('flow')
                 ->setLabel(__('Marges', app()->get('settings')['text-domain']))
@@ -89,7 +89,7 @@ trait FlowSettings
         }
     }
 
-    protected function flowToArray()
+    protected function flowSettingsToArray()
     {
         return [
             'flow' => $this->flow()

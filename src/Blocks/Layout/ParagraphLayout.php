@@ -7,7 +7,7 @@ use Coretik\PageBuilder\Blocks\{
     Component\TitleComponent,
     Block\Editorial\WysiwygBlock,
 };
-
+use Coretik\PageBuilder\Blocks\Component\ImageComponent;
 use Coretik\PageBuilder\Blocks\Component\LinkComponent;
 use function Coretik\PageBuilder\Blocks\Modifier\required;
 use function Coretik\PageBuilder\Blocks\Modifier\tabless;
@@ -25,6 +25,7 @@ class ParagraphLayout extends BlockComposite
             'title' => TitleComponent::class,
             'text' => required(tabless(WysiwygBlock::class)),
             'cta' => LinkComponent::class,
+            'image' => ImageComponent::class,
         ];
     }
 

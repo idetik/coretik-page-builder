@@ -4,8 +4,6 @@ namespace Coretik\PageBuilder\Blocks\Modifier;
 
 use Coretik\PageBuilder\BlockInterface;
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use StoutLogic\AcfBuilder\GroupBuilder;
-use StoutLogic\AcfBuilder\TabBuilder;
 
 
 class RequiredModifier extends Modifier
@@ -18,6 +16,7 @@ class RequiredModifier extends Modifier
     public function handle(FieldsBuilder $fields, BlockInterface $block): FieldsBuilder
     {
         foreach ($fields->getFields() as $field) {
+
             $config = $field->getConfig();
             if (!array_key_exists('required', $config)) {
                 $field->setRequired();

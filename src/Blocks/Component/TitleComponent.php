@@ -3,12 +3,17 @@
 namespace Coretik\PageBuilder\Blocks\Component;
 
 use Coretik\PageBuilder\Blocks\BlockComponent;
+use Coretik\PageBuilder\Blocks\Traits\Settings\AccessibilitySettings;
+use Coretik\PageBuilder\Blocks\Traits\Settings\AnchorSettings;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class TitleComponent extends BlockComponent
 {
     const NAME = 'components.title';
     const LABEL = 'Titre';
+
+    use AnchorSettings;
+    use AccessibilitySettings;
 
     protected $title;
     protected $tag;
@@ -27,6 +32,7 @@ class TitleComponent extends BlockComponent
                 ->addChoice('h5')
                 ->setDefaultValue('h2')
                 ->setRequired();
+        $this->useSettingsOn($field);
         return $field;
     }
 

@@ -8,6 +8,7 @@ use Coretik\Core\Models\Traits\{
     Initializable,
     Bootable
 };
+use Coretik\Core\Utils\Classes;
 use Coretik\PageBuilder\Blocks\Traits\{
     Grid,
     Faker,
@@ -349,6 +350,23 @@ abstract class Block implements BlockInterface
         return $fields;
     }
 
+    protected function getParameters(): array
+    {
+        $parameters = $this->toArray() + ['context' => $this->context()];
+
+        // Call toArray from traits
+        foreach (Classes::classUsesDeep($this) as $traitNamespace) {
+            $ref = new \ReflectionClass($traitNamespace);
+            $traitName = $ref->getShortName();
+            $method = $traitName . 'ToArray';
+            if (method_exists($this, $method)) {
+                $parameters = array_merge($parameters, $this->$method());
+            }
+        }
+
+        return $parameters;
+    }
+
     protected function getPlainHtml(array $parameters): string
     {
         return include_template_part($this->template(false), $parameters, true);
@@ -363,7 +381,7 @@ abstract class Block implements BlockInterface
         \do_action('coretik/page-builder/block/before_render', $this);
         \do_action('coretik/page-builder/block/before_render/name=' . $this->getName(), $this);
 
-        $output = $this->getPlainHtml($this->toArray() + ['context' => $this->context()]);
+        $output = $this->getPlainHtml($this->getParameters());
         $output = $this->applyWrappers($output);
 
         if (!$return) {

@@ -38,7 +38,7 @@ class LinkComponent extends BlockComponent
 
     public static function gtmFields()
     {
-        $gtm = new FieldsBuilder('setting.gtm');
+        $gtm = new FieldsBuilder('settings.gtm');
         $gtm
             ->addTrueFalse('use_gtm', ['ui' => 1])
                 ->setLabel('Ajouter un évènement GTM')

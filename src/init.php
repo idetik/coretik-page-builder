@@ -13,6 +13,7 @@ use Coretik\PageBuilder\Job\Block\CreateBlockJob;
 use Coretik\PageBuilder\Acf\PageBuilderField;
 use Coretik\PageBuilder\{Builder, BlockFactory};
 use Coretik\PageBuilder\Blocks\Component\{
+    ImageComponent,
     ThumbnailComponent,
     WysiwygComponent,
     LinkComponent
@@ -54,6 +55,7 @@ add_action('coretik/container/construct', function ($container) {
             ThumbnailComponent::class,
             TitleComponent::class,
             LinkComponent::class,
+            ImageComponent::class,
 
             // // Tools
             // Anchor::class,
