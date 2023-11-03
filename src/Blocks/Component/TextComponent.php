@@ -23,7 +23,7 @@ class TextComponent extends BlockComponent
     public function toArray()
     {
         return [
-            'wysiwyg' => $this->content
+            'wysiwyg' => $this->text
         ];
     }
 }

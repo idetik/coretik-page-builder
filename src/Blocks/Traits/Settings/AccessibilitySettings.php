@@ -7,8 +7,6 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 trait AccessibilitySettings
 {
-    // protected $aria_hidden;
-    // protected $aria_label;
     protected $accessibility;
 
     protected function initializeAccessibilitySettings()

@@ -12,6 +12,9 @@ use Coretik\Core\Utils\Classes;
 use Coretik\PageBuilder\Blocks\Traits\{
     Grid,
     Faker,
+    Settings,
+    Wrappers,
+    Modifiers,
 };
 
 use function Globalis\WP\Cubi\include_template_part;
@@ -21,8 +24,11 @@ abstract class Block implements BlockInterface
 {
     use Initializable;
     use Bootable;
-    use Grid;
+    // use Grid;
     use Faker;
+    use Settings;
+    use Wrappers;
+    use Modifiers;
 
     // Identifier
     const NAME = '';
@@ -52,10 +58,6 @@ abstract class Block implements BlockInterface
     protected string $uniqId;
     protected $context = null;
     protected $fields;
-    private $wrappers = [];
-    protected $settings = [];
-    protected $modifiers = [];
-    protected $wrapperParameters = [];
     protected static $fieldsHooked = [];
     protected $propsFilled = [];
     protected static $configGlobal = [];
@@ -67,7 +69,7 @@ abstract class Block implements BlockInterface
     {
         static::bootIfNotBooted();
         $this->initialize();
-        $this->uniqId = uniqid($this->getName() . '-');
+        $this->setUniqId();
 
         \do_action('pagebuilder/block/initialize', $props, $config, $this);
         \do_action('pagebuilder/block/initialize/name=' . $this->getName(), $props, $config, $this);
@@ -98,6 +100,14 @@ abstract class Block implements BlockInterface
     public function config(string $key): mixed
     {
         return $this->config[$key] ?? static::$configGlobal[$key] ?? null;
+    }
+
+    public function setUniqId(): self
+    {
+        if (empty($this->uniqId)) {
+            $this->uniqId = uniqid($this->getName() . '-');
+        }
+        return $this;
     }
 
     public function getUniqId(): string
@@ -156,10 +166,15 @@ abstract class Block implements BlockInterface
         return $this;
     }
 
+    public function fieldsBuilderTemplate(): string
+    {
+        return $this->config('fields.directory') ?? '';
+    }
+
     public function fieldsBuilder(): FieldsBuilder
     {
         $block = $this;
-        return include \locate_template($this->templateFields() . \str_replace('.', DIRECTORY_SEPARATOR, static::NAME) . '.php');
+        return include \locate_template($this->fieldsBuilderTemplate() . \str_replace('.', DIRECTORY_SEPARATOR, static::NAME) . '.php');
     }
 
     public function flexibleLayoutArgs(): array
@@ -188,29 +203,29 @@ abstract class Block implements BlockInterface
         return $config;
     }
 
-    public function adminTemplate($withExt = true): string
+    protected function adminResourcePath(): string
     {
-        return \sprintf('%s%s/render%s', $this->config('blocks.acf.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME), $withExt ? '.php' : '');
+        return $this->config('blocks.acf.directory') . \str_replace('.', DIRECTORY_SEPARATOR, $this->getName());
     }
 
-    public function template($withExt = true): string
+    public function adminTemplate($withExt = true): string
     {
-        return static::TEMPLATE_PATH ?? \sprintf('%s%s%s', $this->config('blocks.template.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME), $withExt ? '.php' : '');
+        return \sprintf('%s/render%s', $this->adminResourcePath(), $withExt ? '.php' : '');
     }
 
     public function style(): string
     {
-        return \sprintf('%s%s/style.css', $this->config('blocks.acf.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
+        return \sprintf('%s/style.css', $this->adminResourcePath());
     }
 
     public function script(): string
     {
-        return \sprintf('%s%s/script.js', $this->config('blocks.acf.directory'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
+        return \sprintf('%s/script.js', $this->adminResourcePath());
     }
 
     public function thumbnail(): string
     {
-        return static::THUMBNAIL_PATH ?? \sprintf('%s%s.png', $this->config('fields.thumbnails.baseUrl'), \str_replace('.', DIRECTORY_SEPARATOR, static::NAME));
+        return static::THUMBNAIL_PATH ?? \sprintf('%s%s.png', $this->config('fields.thumbnails.baseUrl'), \str_replace('.', DIRECTORY_SEPARATOR, $this->getName()));
     }
 
     public static function category(): string
@@ -249,107 +264,6 @@ abstract class Block implements BlockInterface
         }
     }
 
-    public function templateFields(): string
-    {
-        return $this->config('fields.directory') ?? '';
-    }
-
-    public function addSettings(callable $provider, int $priority = 10): self
-    {
-        $this->settings[$priority][] = $provider;
-        return $this;
-    }
-
-    public function fieldSettingsName(): string
-    {
-        return $this->getName() . '_settings';
-    }
-
-    public function fieldSettingsTitle(): string
-    {
-        return __('Paramètres du bloc ' . lcfirst($this->getLabel()), app()->get('settings')['text-domain']);
-    }
-
-    /**
-     * Add settings fields on existings fieldgroup;
-     */
-    protected function applySettings(FieldsBuilder $field): FieldsBuilder
-    {
-        \ksort($this->settings, SORT_NUMERIC);
-        foreach ($this->settings as $priority => $callables) {
-            foreach ($callables as $callable) {
-                $field->addFields($callable());
-            }
-        }
-
-        return $field;
-    }
-
-    /**
-     * Provide an existings fieldgroup and create an accordion field if missing and append settings fields;
-     */
-    public function useSettingsOn(FieldsBuilder $field): self
-    {
-        if (empty($this->settings)) {
-            return $this;
-        }
-
-        $accordion = $this->fieldSettingsName() . '_accordion';
-        if (!$field->fieldExists($accordion)) {
-            $field->addAccordion($this->fieldSettingsName(), ['label' => $this->fieldSettingsTitle()]);
-        } else {
-            $field->getField($accordion);
-        }
-
-        $this->applySettings($field);
-
-        return $this;
-    }
-
-    public function addWrapper(callable $wrapper, int $priority = 10): self
-    {
-        $this->wrappers[$priority][] = $wrapper;
-        return $this;
-    }
-
-    public function wrapperParameters(): array
-    {
-        $parameters = [];
-        foreach ($this->wrapperParameters as $key) {
-            $parameters[$key] = $this->$key ?? null;
-        }
-        return $parameters;
-    }
-
-    protected function applyWrappers(string $output): string
-    {
-        \ksort($this->wrappers, SORT_NUMERIC);
-        foreach ($this->wrappers as $priority => $callables) {
-            foreach ($callables as $callable) {
-                $output = \call_user_func($callable, $output, $this);
-            }
-        }
-
-        return $output;
-    }
-
-    public function addModifier(callable $modifier, int $priority = 10): self
-    {
-        $this->modifiers[$priority][] = $modifier;
-        return $this;
-    }
-
-    protected function applyModifiers(FieldsBuilder $fields): FieldsBuilder
-    {
-        \ksort($this->modifiers, SORT_NUMERIC);
-        foreach ($this->modifiers as $priority => $callables) {
-            foreach ($callables as $callable) {
-                $fields = \call_user_func($callable, $fields, $this);
-            }
-        }
-        return $fields;
-    }
-
     protected function getParameters(): array
     {
         $parameters = $this->toArray() + ['context' => $this->context()];
@@ -365,6 +279,11 @@ abstract class Block implements BlockInterface
         }
 
         return $parameters;
+    }
+
+    public function template($withExt = true): string
+    {
+        return static::TEMPLATE_PATH ?? \sprintf('%s%s%s', $this->config('blocks.template.directory'), \str_replace('.', DIRECTORY_SEPARATOR, $this->getName()), $withExt ? '.php' : '');
     }
 
     protected function getPlainHtml(array $parameters): string

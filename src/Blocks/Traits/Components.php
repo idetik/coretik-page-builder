@@ -4,7 +4,7 @@ namespace Coretik\PageBuilder\Blocks\Traits;
 
 use Coretik\PageBuilder\BlockInterface;
 
-trait WithComponent
+trait Components
 {
     protected function component(mixed $data): BlockInterface
     {

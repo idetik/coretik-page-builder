@@ -17,10 +17,10 @@ class LinkComponent extends BlockComponent
     public function fieldsBuilder(): FieldsBuilder
     {
         if (\apply_filters('pagebuilder/block/components/' . $this->getName() . '/gtm_enabled', true)) {
-            $this->addSettings([__CLASS__, 'gtmFields']);
+            $this->addSettings([$this, 'gtmFields']);
         }
 
-        $this->addSettings([__CLASS__, 'seoSettings'], 1);
+        $this->addSettings([$this, 'seoSettings'], 1);
 
         $advancedLinkArgs = \apply_filters('pagebuilder/block/components/' . $this->getName() . '/advanced_link_args', [
             'label' => 'Lien',
@@ -39,7 +39,7 @@ class LinkComponent extends BlockComponent
         return $link;
     }
 
-    public static function gtmFields()
+    public function gtmFields()
     {
         $gtm = new FieldsBuilder('settings.gtm');
         $gtm
@@ -70,7 +70,7 @@ class LinkComponent extends BlockComponent
         return \apply_filters('pagebuilder/block/components/' . static::NAME . '/gtm_fields', $gtm);
     }
 
-    public static function seoSettings()
+    public function seoSettings()
     {
         $seo = new FieldsBuilder('settings.seo');
         $seo

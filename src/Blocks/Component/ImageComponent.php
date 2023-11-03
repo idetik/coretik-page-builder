@@ -22,7 +22,7 @@ class ImageComponent extends BlockComponent
 
     public function fieldsBuilder(): FieldsBuilder
     {
-        $this->addSettings([__CLASS__, 'seoSettings'], 1);
+        $this->addSettings([$this, 'seoSettings'], 1);
 
         // @todo : hide on mobile / desktop
         // $this->addSettings([__CLASS__, 'visibilitySettings']);
@@ -43,7 +43,7 @@ class ImageComponent extends BlockComponent
         return $field;
     }
 
-    public static function seoSettings()
+    public function seoSettings()
     {
         $seo = new FieldsBuilder('settings.seo');
         $seo

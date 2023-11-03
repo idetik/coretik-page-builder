@@ -7,7 +7,7 @@ use Coretik\PageBuilder\BlockInterface;
 
 trait Composite
 {
-    use WithComponent;
+    use Components;
 
     protected $children;
 
@@ -32,8 +32,8 @@ trait Composite
     public function compose(array|string|BlockInterface $block, ?string $key = null): BlockInterface
     {
         $context = [
-            'block' => static::NAME,
-            'type' => static::CATEGORY ?? explode('.', static::NAME)[0],
+            'block' => $this->getName(),
+            'type' => static::CATEGORY ?? explode('.', $this->getName(), 2)[0],
             'name' => $this->getName(),
         ];
 
@@ -92,7 +92,7 @@ trait Composite
         return $fields;
     }
 
-    protected function renderComponent($key)
+    protected function renderComponent(BlockInterface|string $key)
     {
         if ($key instanceof BlockInterface) {
             $key = static::undot($key::NAME);
@@ -105,7 +105,7 @@ trait Composite
         return $this->compose($this->$key)->render(true);
     }
 
-    protected function componentToArray($key): array
+    protected function componentToArray(BlockInterface|string $key): array
     {
         if ($key instanceof BlockInterface) {
             $key = static::undot($key::NAME);

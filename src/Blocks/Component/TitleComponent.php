@@ -13,7 +13,6 @@ class TitleComponent extends BlockComponent
     const LABEL = 'Titre';
 
     use AnchorSettings;
-    use AccessibilitySettings;
 
     protected $title;
     protected $tag;
@@ -47,7 +46,7 @@ class TitleComponent extends BlockComponent
     protected function getPlainHtml(array $parameters): string
     {
         if (\locate_template($this->template())) {
-            return parent::getPlainHtml($paramaters);
+            return parent::getPlainHtml($parameters);
         }
 
         return sprintf('<%1$s>%2$s</%1$s>', $this->tag, $this->title);

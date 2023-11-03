@@ -2,7 +2,6 @@
 
 namespace Coretik\PageBuilder\Blocks\Traits\Settings;
 
-use Coretik\PageBuilder\Blocks\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
 trait VisibilitySettings
