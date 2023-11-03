@@ -2,8 +2,6 @@
 
 namespace Coretik\PageBuilder;
 
-use function Globalis\WP\Cubi\include_template_part;
-
 class Builder
 {
     protected $context = null;

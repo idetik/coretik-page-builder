@@ -44,12 +44,12 @@ class LinkComponent extends BlockComponent
         $gtm = new FieldsBuilder('settings.gtm');
         $gtm
             ->addGroup('gtm', ['layout' => 'row'])
-                ->addTrueFalse('use_gtm', ['ui' => 1])
+                ->addTrueFalse('push_event', ['ui' => 1])
                     ->setLabel('Ajouter un évènement GTM')
                     ->setUnrequired()
-                ->addGroup('gtm_event', ['layout' => 'row'])
+                ->addGroup('datalayer', ['layout' => 'row'])
                     ->setLabel('GTM : Paramètres (onclick)')
-                    ->conditional('use_gtm', '==', 1)
+                    ->conditional('push_event', '==', 1)
                     ->addText('event')
                         ->setLabel('Évènement')
                         ->setRequired()
