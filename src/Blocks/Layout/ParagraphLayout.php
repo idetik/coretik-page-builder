@@ -9,6 +9,8 @@ use Coretik\PageBuilder\Blocks\{
 };
 use Coretik\PageBuilder\Blocks\Component\ImageComponent;
 use Coretik\PageBuilder\Blocks\Component\LinkComponent;
+use Coretik\PageBuilder\Blocks\Modifier\PersistantIdModifier;
+
 use function Coretik\PageBuilder\Blocks\Modifier\required;
 use function Coretik\PageBuilder\Blocks\Modifier\tabless;
 
@@ -21,6 +23,7 @@ class ParagraphLayout extends BlockComposite
 
     protected function prepareComponents(): void
     {
+        $this->addModifier([PersistantIdModifier::make(), 'handle'], 1);
         $this->components = [
             'title' => TitleComponent::class,
             'text' => required(tabless(WysiwygBlock::class)),

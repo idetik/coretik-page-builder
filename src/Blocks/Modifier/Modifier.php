@@ -20,14 +20,18 @@ abstract class Modifier
     protected static function getInstance(): self
     {
         if (!array_key_exists(static::NAME, static::$instances)) {
-            static::$instances[static::NAME] = static::make();
+            static::$instances[static::NAME] = new static();
         }
         return static::$instances[static::NAME];
     }
 
     public static function make(mixed $args = null): self
     {
-        $instance = new static();
+        if (!empty($args) || !static::SINGLETON) {
+            $instance = new static();
+        } else {
+            $instance = static::getInstance();
+        }
 
         if (!\is_null($args)) {
             $instance->setArgs($args);
@@ -42,13 +46,7 @@ abstract class Modifier
             $block = \app()->get('pageBuilder.factory')->create($block::NAME);
         }
 
-        if (!empty($args) || !static::SINGLETON) {
-            $instance = static::make($args);
-        } else {
-            $instance = static::getInstance();
-        }
-
-        $block->addModifier([$instance, 'handle'], static::PRIORITY);
+        $block->addModifier([static::make($args), 'handle'], static::PRIORITY);
         return $block;
     }
 

@@ -23,6 +23,7 @@ trait Composite
             if (\is_int($key)) {
                 $key = static::undot($componentClass::NAME);
             }
+
             $component = $this->compose($componentClass, $key);
             \add_filter('coretik/page-builder/fake-it/name=' . $this->getName(), fn ($props) => $props + [$key => $component->fakeIt()->getPropsFilled() + ['acf_fc_layout' => $component->getName()]]);
             $this->$key = null;
@@ -33,7 +34,7 @@ trait Composite
     {
         $context = [
             'block' => $this->getName(),
-            'type' => static::CATEGORY ?? explode('.', $this->getName(), 2)[0],
+            'type' => $this->getCategory(),
             'name' => $this->getName(),
         ];
 

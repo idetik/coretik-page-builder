@@ -16,6 +16,7 @@ use Coretik\PageBuilder\Blocks\Traits\{
     Wrappers,
     Modifiers,
 };
+use Coretik\PageBuilder\Blocks\Modifier\PersistantIdModifier;
 
 use function Globalis\WP\Cubi\include_template_part;
 
@@ -62,20 +63,25 @@ abstract class Block implements BlockInterface
     protected $propsFilled = [];
     protected static $configGlobal = [];
     protected $config = [];
+    protected static int $counter = 0;
 
     abstract public function toArray();
 
     public function __construct(array $props = [], array $config = [])
     {
+        static::$counter++;
         static::bootIfNotBooted();
         $this->initialize();
-        $this->setUniqId();
 
         \do_action('pagebuilder/block/initialize', $props, $config, $this);
         \do_action('pagebuilder/block/initialize/name=' . $this->getName(), $props, $config, $this);
 
         $props = \apply_filters('pagebuilder/block/props', $props, $this);
         $props = \apply_filters('pagebuilder/block/props/name=' . $this->getName(), $props, $this);
+
+        if (empty($props['uniqId']) && empty($this->uniqId)) {
+            $props['uniqId'] = sprintf('%s-%s', $this->getName(), static::$counter);
+        }
 
         $this->setProps($props);
 
@@ -102,14 +108,6 @@ abstract class Block implements BlockInterface
         return $this->config[$key] ?? static::$configGlobal[$key] ?? null;
     }
 
-    public function setUniqId(): self
-    {
-        if (empty($this->uniqId)) {
-            $this->uniqId = uniqid($this->getName() . '-');
-        }
-        return $this;
-    }
-
     public function getUniqId(): string
     {
         return $this->uniqId;
@@ -123,6 +121,16 @@ abstract class Block implements BlockInterface
     public function getLabel(): string
     {
         return static::LABEL;
+    }
+
+    public function getCategory(): string
+    {
+        return static::category();
+    }
+
+    public function getCategoryTitle(): string
+    {
+        return static::categoryTitle();
     }
 
     public function setProps(array $props)
@@ -147,7 +155,7 @@ abstract class Block implements BlockInterface
         return $this;
     }
 
-    public function context()
+    public function getContext()
     {
         return $this->context;
     }
@@ -188,10 +196,10 @@ abstract class Block implements BlockInterface
             'label' => __(static::LABEL, app()->get('settings')['text-domain']),
             'display' => 'row',
             'acfe_flexible_thumbnail' => $this->thumbnail(),
-            'acfe_flexible_category' => static::category(),
+            'acfe_flexible_category' => $this->getCategoryTitle(),
             'acfe_flexible_render_template' => $this->adminTemplate(),
-            'acfe_flexible_render_style' => $this->style(),
-            'acfe_flexible_render_script' => $this->script(),
+            'acfe_flexible_render_style' => $this->adminStyle(),
+            'acfe_flexible_render_script' => $this->adminScript(),
             'acfe_flexible_settings' => '',
             'acfe_flexible_settings_size' => 'medium',
             'acfe_layout_col' => '12',
@@ -213,12 +221,12 @@ abstract class Block implements BlockInterface
         return \sprintf('%s/render%s', $this->adminResourcePath(), $withExt ? '.php' : '');
     }
 
-    public function style(): string
+    public function adminStyle(): string
     {
         return \sprintf('%s/style.css', $this->adminResourcePath());
     }
 
-    public function script(): string
+    public function adminScript(): string
     {
         return \sprintf('%s/script.js', $this->adminResourcePath());
     }
@@ -235,38 +243,39 @@ abstract class Block implements BlockInterface
         }
 
         $name = explode('.', static::NAME, 2);
-
         $category = $name[0];
         $category = \apply_filters('coretik/page-builder/block/category', $category, static::NAME);
         $category = \apply_filters('coretik/page-builder/block/category/name=' . static::NAME, $category);
 
-        switch ($category) {
-            case 'headings':
-                return __('Titres', app()->get('settings')['text-domain']);
-            case 'content':
-                return __('Contenus', app()->get('settings')['text-domain']);
-            case 'editorial':
-                return __('Éditorial', app()->get('settings')['text-domain']);
-            case 'multimedia':
-                return __('Multimédia', app()->get('settings')['text-domain']);
-            case 'tools':
-                return __('Outils', app()->get('settings')['text-domain']);
-            case 'containers':
-                return __('Conteneurs', app()->get('settings')['text-domain']);
-            case 'layouts':
-                return __('Dispositions prédéfinies', app()->get('settings')['text-domain']);
-            case 'templates':
-                return __('Modèles de page', app()->get('settings')['text-domain']);
-            case 'posts':
-                return __('Blog', app()->get('settings')['text-domain']);
-            default:
-                return __($category, app()->get('settings')['text-domain']);
-        }
+        return $category;
+    }
+
+    public static function categoryTitle(): string
+    {
+        $category = static::category();
+
+        $categoryTitle = match ($category) {
+            'headings' => __('Titres', app()->get('settings')['text-domain']),
+            'content' => __('Contenus', app()->get('settings')['text-domain']),
+            'editorial' => __('Éditorial', app()->get('settings')['text-domain']),
+            'multimedia' => __('Multimédia', app()->get('settings')['text-domain']),
+            'tools' => __('Outils', app()->get('settings')['text-domain']),
+            'containers' => __('Conteneurs', app()->get('settings')['text-domain']),
+            'layouts' => __('Dispositions prédéfinies', app()->get('settings')['text-domain']),
+            'templates' => __('Modèles de page', app()->get('settings')['text-domain']),
+            'posts' => __('Blog', app()->get('settings')['text-domain']),
+            default => $category,
+        };
+
+        $categoryTitle = \apply_filters('coretik/page-builder/block/category-title', $categoryTitle, $category);
+        $categoryTitle = \apply_filters('coretik/page-builder/block/category-title/category=' . $category, $categoryTitle);
+
+        return $categoryTitle;
     }
 
     protected function getParameters(): array
     {
-        $parameters = $this->toArray() + ['context' => $this->context()];
+        $parameters = $this->toArray() + ['context' => $this->getContext()];
 
         // Call toArray from traits
         foreach (Classes::classUsesDeep($this) as $traitNamespace) {

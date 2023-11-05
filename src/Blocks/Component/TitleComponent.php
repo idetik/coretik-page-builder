@@ -3,7 +3,6 @@
 namespace Coretik\PageBuilder\Blocks\Component;
 
 use Coretik\PageBuilder\Blocks\BlockComponent;
-use Coretik\PageBuilder\Blocks\Traits\Settings\AccessibilitySettings;
 use Coretik\PageBuilder\Blocks\Traits\Settings\AnchorSettings;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
@@ -20,7 +19,8 @@ class TitleComponent extends BlockComponent
     public function fieldsBuilder(): FieldsBuilder
     {
         $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
-        $field->addText('title')
+        $field
+            ->addText('title')
                 ->setLabel(__('Titre', app()->get('settings')['text-domain']))
                 ->setRequired()
             ->addRadio('tag', ['layout' => 'horizontal'])
@@ -31,6 +31,7 @@ class TitleComponent extends BlockComponent
                 ->addChoice('h5')
                 ->setDefaultValue('h2')
                 ->setRequired();
+
         $this->useSettingsOn($field);
         return $field;
     }

@@ -59,7 +59,7 @@ class PageBuilderField
             'acfe_flexible_layouts_previews' => 1,
             'acfe_flexible_layouts_placeholder' => 1,
             'acfe_flexible_title_edition' => 1,
-            'acfe_flexible_clone' => 0,
+            'acfe_flexible_clone' => 1,
             'acfe_flexible_copy_paste' => 1,
             'acfe_flexible_toggle' => 1,
             'acfe_flexible_close_button' => 1,
@@ -79,7 +79,7 @@ class PageBuilderField
             'acfe_flexible_modal' => [
                 'acfe_flexible_modal_enabled' => '1',
                 'acfe_flexible_modal_title' => __('Ajouter un élément', \app()->get('settings')['text-domain']),
-                'acfe_flexible_modal_col' => '3',
+                'acfe_flexible_modal_col' => '4',
                 'acfe_flexible_modal_categories' => '1',
             ],
             'acfe_flexible_layouts_state' => '',

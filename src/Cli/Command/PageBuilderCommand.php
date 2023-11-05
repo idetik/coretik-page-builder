@@ -178,7 +178,7 @@ class PageBuilderCommand
     public function get_blocks($args, $assoc_args)
     {
         $blocks = $this->config->get('blocks')
-                    ->map(fn ($block) => ['category' => $block::category(), 'name' => $block::NAME])
+                    ->map(fn ($block) => ['category' => $block::categoryTitle(), 'name' => $block::NAME])
                     ->all();
 
         $format = \WP_CLI\Utils\get_flag_value($assoc_args, 'format', 'json');
