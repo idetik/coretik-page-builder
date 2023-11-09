@@ -1,0 +1,15 @@
+<?php
+
+namespace Coretik\PageBuilder\Core\Contract;
+
+interface BlockInterface
+{
+    public function getUniqId(): string;
+    public function getName(): string;
+    public function getLabel(): string;
+    public function getCategory(): string;
+    public function setContext(BlockContextInterface $context): self;
+    public function getContext(): ?BlockContextInterface;
+    public function render();
+    public function toArray();
+}

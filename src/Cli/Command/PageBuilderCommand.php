@@ -2,9 +2,9 @@
 
 namespace Coretik\PageBuilder\Cli\Command;
 
-use Coretik\PageBuilder\Job\JobInterface;
+use Coretik\PageBuilder\Core\Contract\JobInterface;
+use Coretik\PageBuilder\Core\Job\Block\BlockType;
 use Illuminate\Support\Collection;
-use Coretik\PageBuilder\Job\Block\BlockType;
 
 class PageBuilderCommand
 {

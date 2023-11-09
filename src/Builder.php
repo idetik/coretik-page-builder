@@ -2,27 +2,32 @@
 
 namespace Coretik\PageBuilder;
 
+use Coretik\PageBuilder\Core\Contract\BlockContextInterface;
+use Coretik\PageBuilder\Core\Contract\BlockFactoryInterface;
+use SplObjectStorage;
+use ArrayAccess;
+
 class Builder
 {
-    protected $context = null;
-    protected $builder_blocks;
-    protected $config;
-    private $factory;
+    protected ?BlockContextInterface $context = null;
+    protected SplObjectStorage $builderBlocks;
+    protected ArrayAccess $config;
+    private BlockFactoryInterface $factory;
 
-    public function __construct($blockFactory, $config = [])
+    public function __construct(BlockFactoryInterface $blockFactory, ?ArrayAccess $config = null)
     {
-        $this->builder_blocks = new \SplObjectStorage();
+        $this->builderBlocks = new SplObjectStorage();
         $this->factory = $blockFactory;
-        $this->config = $config;
+        $this->config = $config ?? \collect([]);
     }
 
-    public function setContext(BlockContextInterface $context)
+    public function setContext(BlockContextInterface $context): self
     {
         $this->context = $context;
         return $this;
     }
 
-    public function setBlocks(array $blocks, callable $wrapAction = null)
+    public function setBlocks(array $blocks, callable $wrapAction = null): self
     {
         foreach ($blocks as $block) {
             $block = $this->factory->create($block, $this->context);
@@ -31,21 +36,22 @@ class Builder
             }
             $this->blocks()->attach($block);
         }
+        return $this;
     }
 
-    public function factory()
+    public function factory(): BlockFactoryInterface
     {
         return $this->factory;
     }
 
-    public function blocks()
+    public function blocks(): SplObjectStorage
     {
-        return $this->builder_blocks;
+        return $this->builderBlocks;
     }
 
-    public function reset()
+    public function reset(): self
     {
-        $this->builder_blocks = new \SplObjectStorage();
+        $this->builderBlocks = new \SplObjectStorage();
         return $this;
     }
 
@@ -79,7 +85,7 @@ class Builder
         $this->blocks()->rewind();
     }
 
-    public function library()
+    public function library(): array
     {
         $blocks = $this->config['blocks']
             ->filter(fn ($block) => $block::IN_LIBRARY)

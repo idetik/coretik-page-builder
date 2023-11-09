@@ -2,27 +2,30 @@
 
 namespace Coretik\PageBuilder;
 
-use Coretik\PageBuilder\Blocks\Component\TitleComponent;
-use Coretik\PageBuilder\Blocks\Layout\ParagraphLayout;
-use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
-use Coretik\PageBuilder\Job\Thumbnail\{
-    GenerateThumbnailJob,
-    ThumbnailGenerator
-};
-use Coretik\PageBuilder\Job\Block\CreateBlockJob;
-use Coretik\PageBuilder\Acf\PageBuilderField;
-use Coretik\PageBuilder\{Builder, BlockFactory};
-use Coretik\PageBuilder\Blocks\Component\{
+use Coretik\PageBuilder\Core\Acf\PageBuilderField;
+use Coretik\PageBuilder\Library\Block\Editorial\{WysiwygBlock, WysiwygDoubleBlock};
+use Coretik\PageBuilder\Core\Block\BlockFactory;
+use Coretik\PageBuilder\Library\Component\{
     ImageComponent,
     ThumbnailComponent,
     WysiwygComponent,
     LinkComponent
 };
-use Coretik\PageBuilder\Blocks\Tools\{Anchor, Breadcrumb};
-use Coretik\PageBuilder\Blocks\Block\Editorial\{WysiwygBlock, WysiwygDoubleBlock};
-use Coretik\PageBuilder\Blocks\Layouts\{PageHeader};
-use Coretik\PageBuilder\Blocks\Headings\{TitlePrimary};
-use Coretik\PageBuilder\Blocks\Container;
+use Coretik\PageBuilder\Library\Component\TitleComponent;
+use Coretik\PageBuilder\Library\Container;
+use Coretik\PageBuilder\Library\Headings\{TitlePrimary};
+use Coretik\PageBuilder\Library\Layout\ParagraphLayout;
+use Coretik\PageBuilder\Library\Layouts\{PageHeader};
+use Coretik\PageBuilder\Library\Tools\{Anchor, Breadcrumb};
+use Coretik\PageBuilder\Builder;
+use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
+use Coretik\PageBuilder\Core\Job\Block\CreateBlockJob;
+use Coretik\PageBuilder\Core\Job\Thumbnail\{
+    GenerateThumbnailJob,
+    ThumbnailGenerator
+};
+use Exception;
+use Illuminate\Support\Collection;
 
 use function Globalis\WP\Cubi\add_action;
 use function Globalis\WP\Cubi\is_cli;
@@ -30,7 +33,7 @@ use function Globalis\WP\Cubi\is_cli;
 /**
  * @todo supprimer
  */
-require_once __DIR__ ."/Blocks/Modifier/modifiers.php";
+require_once __DIR__ ."/Core/Block/Modifier/modifiers.php";
 
 add_action('coretik/container/construct', function ($container) {
 
@@ -46,8 +49,8 @@ add_action('coretik/container/construct', function ($container) {
         }
     }
 
-    // Extend it: $container->extend('pageBuilder.blocks', fn ($blocks, $c) => $blocks->append(...));
-    $container['pageBuilder.blocks'] = function ($c) {
+    // Extend it: $container->extend('pageBuilder.library', fn ($blocks, $c) => $blocks->append(...));
+    $container['pageBuilder.library'] = function ($c) {
         return \collect([
             // Components
             // CtaComponent::class,
@@ -77,7 +80,7 @@ add_action('coretik/container/construct', function ($container) {
         ]);
     };
 
-    $container['pageBuilder.config'] = function ($c) {
+    $container['pageBuilder.config'] = function ($c): Collection {
         $globalSettings = $c->get('settings');
 
         return \collect([
@@ -88,7 +91,7 @@ add_action('coretik/container/construct', function ($container) {
             'blocks.acf.directory' => 'templates/acf/',
             'blocks.src.directory' => 'src/Services/PageBuilder/Blocks/',
             'blocks.rootNamespace' => $globalSettings['rootNamespace'] ?? 'App' . '\\Services\\PageBuilder\\Blocks',
-            'blocks' => $c->get('pageBuilder.blocks')
+            'blocks' => $c->get('pageBuilder.library')
         ])->filter();
     };
 
