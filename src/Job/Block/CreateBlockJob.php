@@ -115,8 +115,8 @@ class CreateBlockJob implements JobInterface
              */
             foreach ([
                 'admin-template' => 'adminTemplate',
-                'admin-style' => 'style',
-                'admin-script' => 'script',
+                'admin-style' => 'adminStyle',
+                'admin-script' => 'adminScript',
             ] as $key => $method) {
                 $path = get_template_directory() . DIRECTORY_SEPARATOR . $block->$method();
 
@@ -140,7 +140,7 @@ class CreateBlockJob implements JobInterface
             app()->notices()->info('');
             app()->notices()->info('-------------------');
             app()->notices()->info('');
-            app()->notices()->info(\WP_CLI::colorize('%U') . 'Don\'t forget to extends the block library:' . \WP_CLI::colorize('%n'));
+            app()->notices()->info(\WP_CLI::colorize('%U') . 'Don\'t forget to extends your block library:' . \WP_CLI::colorize('%n'));
             app()->notices()->info(\WP_CLI::colorize('%Y') . '$container->extend(\'pageBuilder.blocks\', fn ($blocks, $c) => $blocks->append(' . $blockClassName . '::class));' . \WP_CLI::colorize('%n'));
 
         } catch (\Exception $e) {

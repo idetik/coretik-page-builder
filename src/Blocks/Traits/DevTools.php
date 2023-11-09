@@ -2,7 +2,6 @@
 
 namespace Coretik\PageBuilder\Blocks\Traits;
 
-use Coretik\PageBuilder\Blocks\BlockComponent;
 use Coretik\PageBuilder\Blocks\Modifier\DevToolsTabModifier;
 
 trait DevTools
