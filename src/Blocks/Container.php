@@ -87,7 +87,6 @@ class Container extends Block
 
     public function fieldsBuilder(): FieldsBuilder
     {
-        $field_name = 'container_blocks';
         $pageBuilder = app()
                         ->get('pageBuilder.field')
                         ->field(

@@ -8,44 +8,14 @@ class PageBuilderField
 {
     protected $service;
     protected $base;
+    protected array $config = [];
+    protected array $blocks = [];
 
     public function __construct($service)
     {
         $this->service = $service;
-    }
-
-    protected function base(string $field_name = 'base-blocks')
-    {
-        if (empty($this->base)) {
-            $blocks = $this->service->library();
-            $builder = new FieldsBuilder('');
-            $builder->addFlexibleContent($field_name);
-            foreach ($blocks as $layout) {
-                if ('containers.container' === $layout) {
-                    continue;
-                }
-                try {
-                    $block = $this->service->factory()->create(['acf_fc_layout' => $layout]);
-                    $builder->getField($field_name)->addLayout($block->fields(), $block->flexibleLayoutArgs());
-                } catch (\Exception $e) {
-                    \app()->notices()->error($e->getMessage());
-                }
-            }
-            $this->base = $builder;
-        }
-        return $this->base;
-    }
-
-    public function field(string $field_name, array $restricted_layouts = [], array $acfe_config = [], bool $with_containers = true)
-    {
-        $builder = new FieldsBuilder('page_builder', [
-            'position' => 'normal',
-            'style' => 'seamless',
-            'label_placement' => 'top',
-            'instruction_placement' => 'label'
-        ]);
-
-        $acfe_config_default = [
+        $this->blocks = $this->service->library();
+        $this->config = [
             'label' => __('Constructeur de page', \app()->get('settings')['text-domain']),
             'acfe_flexible_advanced' => 1,
             'acfe_flexible_stylised_button' => 1,
@@ -93,28 +63,38 @@ class PageBuilderField
             ],
             'acfe_flexible_grid_container' => '',
         ];
+    }
 
-        $base_layouts = $this->base()->getField('base-blocks')->getLayouts();
+    public function setConfig(array $config): self
+    {
+        $this->config = \wp_parse_args($config, $this->config);
+        return $this;
+    }
 
-        if (!empty($restricted_layouts)) {
-            $layouts = \array_filter($base_layouts, function ($layout) use ($restricted_layouts) {
-                return \in_array($layout->getName(), $restricted_layouts);
-            });
-        } else {
-            $layouts = $base_layouts;
-        }
+    public function setBlocks(array $blocks): self
+    {
+        $this->blocks = $blocks;
+        return $this;
+    }
 
-        $args = \wp_parse_args($acfe_config ?? [], $acfe_config_default);
-        $args = \apply_filters('coretik/page-builder/acf/page-builder-field/args', $args, $field_name);
+    public function field(string $field_name)
+    {
+        $builder = new FieldsBuilder('page_builder', [
+            'position' => 'normal',
+            'style' => 'seamless',
+            'label_placement' => 'top',
+            'instruction_placement' => 'label'
+        ]);
+        $args = \apply_filters('coretik/page-builder/acf/page-builder-field/args', $this->config, $field_name);
+        $flexible = $builder->addFlexibleContent($field_name, $args);
 
-        $builder
-            ->addFlexibleContent($field_name, $args)
-                ->addLayouts($layouts);
-
-        if ($with_containers && \in_array('containers.container', $this->service->library())) {
+        foreach ($this->blocks as $layout) {
+            if ('containers.container' === $layout) {
+                continue;
+            }
             try {
-                $block = $this->service->factory()->create(['acf_fc_layout' => 'containers.container'])->fields();
-                $builder->getField($field_name)->addLayout($block);
+                $block = $this->service->factory()->create(['acf_fc_layout' => $layout]);
+                $flexible->addLayout($block->fields(), $block->flexibleLayoutArgs());
             } catch (\Exception $e) {
                 \app()->notices()->error($e->getMessage());
             }

@@ -121,7 +121,7 @@ add_action('coretik/container/construct', function ($container) {
             ->setBlockJob($c->get('pageBuilder.job.create-block'));
     };
 
-    $container['pageBuilder.field'] = function ($c) {
+    $container['pageBuilder.field'] = $container->factory(function ($c) {
         return new PageBuilderField($c->get('pageBuilder'));
-    };
+    });
 });
