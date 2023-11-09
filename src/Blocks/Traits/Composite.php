@@ -4,6 +4,7 @@ namespace Coretik\PageBuilder\Blocks\Traits;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\BlockInterface;
+use Coretik\PageBuilder\Blocks\ParentContext;
 
 trait Composite
 {
@@ -14,11 +15,8 @@ trait Composite
     protected function initializeComposite()
     {
         $this->children = new \SplObjectStorage();
-
-        if (\method_exists($this, 'prepareComponents')) {
-            $this->prepareComponents();
-        }
-
+        $this->components = $this->prepareComponents();
+        
         foreach ($this->components ?? [] as $key => $componentClass) {
             if (\is_int($key)) {
                 $key = static::undot($componentClass::NAME);
@@ -30,14 +28,13 @@ trait Composite
         }
     }
 
+    protected function prepareComponents(): array
+    {
+        return $this->components;
+    }
+
     public function compose(array|string|BlockInterface $block, ?string $key = null): BlockInterface
     {
-        $context = [
-            'block' => $this->getName(),
-            'type' => $this->getCategory(),
-            'name' => $this->getName(),
-        ];
-
         if (\is_string($block) || \is_array($block)) {
 
             // Handle block class name (block::class)
@@ -48,7 +45,7 @@ trait Composite
             $block = $this->component($block);
         }
 
-        $block->setContext($context);
+        $block->setContext(ParentContext::contextualize($this));
 
         if (!$this->children->contains($block)) {
             $this->children->attach($block, $key);

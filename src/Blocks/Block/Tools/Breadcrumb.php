@@ -5,7 +5,6 @@ namespace Coretik\PageBuilder\Blocks\Block\Tools;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Blocks\Block;
 
-use function Globalis\WP\Cubi\include_template_part;
 
 class Breadcrumb extends Block
 {

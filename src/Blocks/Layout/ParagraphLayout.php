@@ -19,12 +19,10 @@ class ParagraphLayout extends BlockComposite
     const NAME = 'layouts.paragraph';
     const LABEL = 'Titre + Paragraphe';
 
-    protected $components;
-
-    protected function prepareComponents(): void
+    protected function prepareComponents(): array
     {
         $this->addModifier([PersistantIdModifier::make(), 'handle'], 1);
-        $this->components = [
+        return [
             'title' => TitleComponent::class,
             'text' => required(tabless(WysiwygBlock::class)),
             'cta' => LinkComponent::class,

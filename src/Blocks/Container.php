@@ -25,20 +25,16 @@ class Container extends Block
 
     public function __construct(array $props = [])
     {
-        $this->builder = app()->get('pageBuilder')->setContext(static::NAME);
+        $this->builder = app()->get('pageBuilder')->setContext(ParentContext::contextualize($this));
         $this->setProps($props);
         $this->initialize();
 
         if (\is_admin()) {
-            if (!in_array($this->getName(), static::$fieldsHooked)) {
-                $block = $this;
-                \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function () use ($block) {
-                    $data = get_fields();
-                    $data = current(current($data));
-                    $block->setProps($data)->loadPageBuilder()->render();
-                });
-                static::$fieldsHooked[] = $this->getName();
-            }
+            \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function () {
+                $data = get_fields();
+                $data = current(current($data));
+                $this->setProps($data)->loadPageBuilder()->render();
+            });
         }
     }
 

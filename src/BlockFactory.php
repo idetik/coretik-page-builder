@@ -15,7 +15,7 @@ class BlockFactory
         Block::setConfigAsGlobal($config);
     }
 
-    public function create($layout, $context = null): BlockInterface
+    public function create($layout, BlockContextInterface $context = null): BlockInterface
     {
         if (\is_array($layout)) {
             $name = $layout['acf_fc_layout'];

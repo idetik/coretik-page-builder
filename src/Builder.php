@@ -16,7 +16,7 @@ class Builder
         $this->config = $config;
     }
 
-    public function setContext($context)
+    public function setContext(BlockContextInterface $context)
     {
         $this->context = $context;
         return $this;

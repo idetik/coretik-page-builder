@@ -3,20 +3,21 @@
 namespace Coretik\PageBuilder\Blocks;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Coretik\PageBuilder\BlockInterface;
+use Coretik\PageBuilder\BlockContextInterface;
+use Coretik\Core\Utils\Classes;
 use Coretik\Core\Models\Traits\{
     Initializable,
     Bootable
 };
-use Coretik\Core\Utils\Classes;
+use Coretik\PageBuilder\BlockInterface;
+use Coretik\PageBuilder\BlockContextType;
 use Coretik\PageBuilder\Blocks\Traits\{
-    Grid,
     Faker,
     Settings,
     Wrappers,
     Modifiers,
+    DevTools,
 };
-use Coretik\PageBuilder\Blocks\Modifier\PersistantIdModifier;
 
 use function Globalis\WP\Cubi\include_template_part;
 
@@ -25,11 +26,11 @@ abstract class Block implements BlockInterface
 {
     use Initializable;
     use Bootable;
-    // use Grid;
     use Faker;
     use Settings;
     use Wrappers;
     use Modifiers;
+    use DevTools;
 
     // Identifier
     const NAME = '';
@@ -56,14 +57,13 @@ abstract class Block implements BlockInterface
     // Custom thumbnail path to preview block in library
     const THUMBNAIL_PATH = null;
 
-    protected string $uniqId;
-    protected $context = null;
-    protected $fields;
-    protected static $fieldsHooked = [];
-    protected $propsFilled = [];
     protected static $configGlobal = [];
     protected $config = [];
+    protected string $uniqId;
+    protected $fields;
+    protected $propsFilled = [];
     protected static int $counter = 0;
+    protected ?BlockContextInterface $context = null;
 
     abstract public function toArray();
 
@@ -73,11 +73,11 @@ abstract class Block implements BlockInterface
         static::bootIfNotBooted();
         $this->initialize();
 
-        \do_action('pagebuilder/block/initialize', $props, $config, $this);
-        \do_action('pagebuilder/block/initialize/name=' . $this->getName(), $props, $config, $this);
+        \do_action('coretik/page-builder/block/initialize', $props, $config, $this);
+        \do_action('coretik/page-builder/block/initialize/name=' . $this->getName(), $props, $config, $this);
 
-        $props = \apply_filters('pagebuilder/block/props', $props, $this);
-        $props = \apply_filters('pagebuilder/block/props/name=' . $this->getName(), $props, $this);
+        $props = \apply_filters('coretik/page-builder/block/props', $props, $this);
+        $props = \apply_filters('coretik/page-builder/block/props/name=' . $this->getName(), $props, $this);
 
         if (empty($props['uniqId']) && empty($this->uniqId)) {
             $props['uniqId'] = sprintf('%s-%s', $this->getName(), static::$counter);
@@ -86,15 +86,14 @@ abstract class Block implements BlockInterface
         $this->setProps($props);
 
         if (\is_admin()) {
-            if (!in_array($this->getName(), static::$fieldsHooked)) {
-                $block = $this;
-                \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function () use ($block) {
-                    $data = get_fields();
-                    $data = current(current($data));
-                    $block->setProps($data)->render();
-                });
-                static::$fieldsHooked[] = $this->getName();
-            }
+            \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function () {
+                $data = get_fields();
+                $data = current(current($data));
+                $this->setProps($data);
+                \do_action('coretik/page-builder/block/load', $this, $data);
+                \do_action('coretik/page-builder/block/load/id=' . $this->getUniqId(), $this, $data);
+                $this->render();
+            });
         }
     }
 
@@ -149,13 +148,13 @@ abstract class Block implements BlockInterface
         return $this->propsFilled;
     }
 
-    public function setContext($context): self
+    public function setContext(BlockContextInterface $context): self
     {
         $this->context = $context;
         return $this;
     }
 
-    public function getContext()
+    public function getContext(): ?BlockContextInterface
     {
         return $this->context;
     }
@@ -163,8 +162,17 @@ abstract class Block implements BlockInterface
     public function fields()
     {
         if (empty($this->fields)) {
-            $this->fields = $this->fieldsBuilder();
+            \do_action('coretik/page-builder/block/before_generate_fields', $this);
+            \do_action('coretik/page-builder/block/before_generate_fields/name=' . $this->getName(), $this);
+
+            $fields = \apply_filters('coretik/page-builder/block/generate_fields', $this->fieldsBuilder(), $this);
+            $fields = \apply_filters('coretik/page-builder/block/generate_fields/name=' . $this->getName(), $fields, $this);
+            $this->fields = $fields;
+
+            \do_action('coretik/page-builder/block/after_generate_fields', $this);
+            \do_action('coretik/page-builder/block/after_generate_fields/name=' . $this->getName(), $this);
         }
+
         return $this->applyModifiers($this->fields);
     }
 
@@ -273,9 +281,9 @@ abstract class Block implements BlockInterface
         return $categoryTitle;
     }
 
-    protected function getParameters(): array
+    public function getParameters(): array
     {
-        $parameters = $this->toArray() + ['context' => $this->getContext()];
+        $parameters = ['uniqId' => $this->getUniqId()] + $this->toArray() + ['context' => $this->getContext()?->toArray()];
 
         // Call toArray from traits
         foreach (Classes::classUsesDeep($this) as $traitNamespace) {
@@ -297,6 +305,15 @@ abstract class Block implements BlockInterface
 
     protected function getPlainHtml(array $parameters): string
     {
+        if (empty(locate_template($this->template()))) {
+            return \apply_filters(
+                'coretik/page-builder/block/template_placehoder',
+                sprintf('<p>[%s] No template found</p>', $this->getName()),
+                $this,
+                $parameters
+            );
+        }
+
         return include_template_part($this->template(false), $parameters, true);
     }
 
@@ -306,17 +323,55 @@ abstract class Block implements BlockInterface
      */
     public function render($return = false): string
     {
-        \do_action('coretik/page-builder/block/before_render', $this);
-        \do_action('coretik/page-builder/block/before_render/name=' . $this->getName(), $this);
+        // $this->trigger('coretik/page-builder/block/before_render');
+
+        \do_action('coretik/page-builder/block/before_render', $this, $return);
+        \do_action('coretik/page-builder/block/before_render/name=' . $this->getName(), $this, $return);
+        \do_action('coretik/page-builder/block/before_render/id=' . $this->getUniqId(), $this, $return);
+
+        $output = \apply_filters('coretik/page-builder/block/start_output', '', $this, $return);
+        $output = \apply_filters('coretik/page-builder/block/start_output/name=' . $this->getName(), $output, $this, $return);
 
         $output = $this->getPlainHtml($this->getParameters());
         $output = $this->applyWrappers($output);
+
+        $output = \apply_filters('coretik/page-builder/block/end_output', $output, $this, $return);
+        $output = \apply_filters('coretik/page-builder/block/end_output/name=' . $this->getName(), $output, $this, $return);
 
         if (!$return) {
             echo $output;
         }
 
+        \do_action('coretik/page-builder/block/after_render', $this, $return);
+        \do_action('coretik/page-builder/block/after_render/name=' . $this->getName(), $this, $return);
+        \do_action('coretik/page-builder/block/after_render/id=' . $this->getUniqId(), $this, $return);
+
         return $output;
+    }
+
+    public function isChild(): bool
+    {
+        $context = $this->getContext();
+
+        if (empty($context)) {
+            return false;
+        }
+
+        return $context->getType() === BlockContextType::PARENT;
+    }
+
+    public function getParent(): ?BlockInterface
+    {
+        if (!$this->isChild()) {
+            return null;
+        }
+
+        return $this->getContext()->getBlock();
+    }
+
+    public function isParent(): bool
+    {
+        return !$this->isChild();
     }
 
     public function __toString()
