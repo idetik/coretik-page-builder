@@ -9,7 +9,7 @@ use function Coretik\PageBuilder\Core\Block\Modifier\required;
 
 class WysiwygBlock extends BlockComposite
 {
-    const NAME = 'editorial.blockwysiwyg';
+    const NAME = 'editorial.wysiwyg';
     const LABEL = 'Éditeur de texte';
     const SCREEN_PREVIEW_SIZE = [1600, 724];
 

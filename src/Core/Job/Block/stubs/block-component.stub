@@ -14,7 +14,7 @@ class {{ class }} extends BlockComponent
 
     public function fieldsBuilder(): FieldsBuilder
     {
-        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field = $this->createFieldsBuilder();
         //
         $this->useSettingsOn($field);
         return $field;

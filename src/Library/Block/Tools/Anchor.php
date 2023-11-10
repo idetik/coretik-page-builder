@@ -20,7 +20,7 @@ class Anchor extends Block
 
     public function fieldsBuilder($fieldName = 'content'): FieldsBuilder
     {
-        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field = $this->createFieldsBuilder();
         $field->addText('anchor')
                 ->setLabel(__('Ancre', app()->get('settings')['text-domain']))
                 ->setInstructions(__('Permet de cibler une partie de la page via une url se terminant par "#ancre"', app()->get('settings')['text-domain']));

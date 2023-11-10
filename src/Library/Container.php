@@ -97,7 +97,7 @@ class Container extends Block
                             false
                         );
 
-        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field = $this->createFieldsBuilder();
         $field
             ->addFields($pageBuilder);
 

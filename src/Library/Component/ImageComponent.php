@@ -27,7 +27,7 @@ class ImageComponent extends BlockComponent
         // @todo : hide on mobile / desktop
         // $this->addSettings([__CLASS__, 'visibilitySettings']);
 
-        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field = $this->createFieldsBuilder();
         $field
             ->addImage('attachment_id', [
                 'uploader' => 'wp',

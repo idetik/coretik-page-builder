@@ -17,7 +17,7 @@ class DevToolsTabModifier extends Modifier
 
     public function handle(FieldsBuilder $fields, BlockInterface $block): FieldsBuilder
     {
-        $displayDevToolsTab = \apply_filters('coretik/page-builder/block/devtools/display_tab', !$block instanceof BlockComponent, $this);
+        $displayDevToolsTab = \apply_filters('coretik/page-builder/block/devtools/display_tab', !$block instanceof BlockComponent && !$block->isChild(), $this);
         $displayDevToolsTab = \apply_filters('coretik/page-builder/block/devtools/display_tab/id=' . $block->getUniqId(), $displayDevToolsTab, $this);
         if (!$displayDevToolsTab) {
             return $fields;

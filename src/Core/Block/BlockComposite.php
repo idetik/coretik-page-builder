@@ -28,7 +28,7 @@ abstract class BlockComposite extends Block
 
         $tabs = [];
 
-        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field = $this->createFieldsBuilder();
         foreach ($this->fieldsComposite() as $name => $data) {
 
             $tabName = \apply_filters('coretik/page-builder/composite/tab-name', $name, $tabs, $data, $this);

@@ -21,7 +21,7 @@ class Breadcrumb extends Block
 
     public function fieldsBuilder($fieldName = 'content'): FieldsBuilder
     {
-        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field = $this->createFieldsBuilder();
         $field->addMessage(__("Fil d'ariane", app()->get('settings')['text-domain']), __("Afficher le fil d'ariane", app()->get('settings')['text-domain']));
         $this->useSettingsOn($field);
         return $field;

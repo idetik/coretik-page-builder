@@ -19,7 +19,7 @@ class WysiwygComponent extends BlockComponent
     {
         $this->propsFake['content'] = $this->fakeContent;
 
-        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field = $this->createFieldsBuilder();
         $field->addWysiwyg('content', ['media_upload' => 1])
             ->setLabel(__('Contenu', app()->get('settings')['text-domain']));
         return $field;

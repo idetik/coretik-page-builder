@@ -56,6 +56,7 @@ abstract class Block implements BlockInterface
 
     // Custom thumbnail path to preview block in library
     const THUMBNAIL_PATH = null;
+    const FLEXIBLE_LAYOUT_ARGS = [];
 
     protected static $configGlobal = [];
     protected $config = [];
@@ -86,14 +87,17 @@ abstract class Block implements BlockInterface
         $this->setProps($props);
 
         if (\is_admin()) {
-            \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function () {
+            \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function ($field, $layout) {
+                if (!empty($layout['uniqId']) && $layout['uniqId'] !== $this->getUniqId()) {
+                    return;
+                }
                 $data = get_fields();
                 $data = current(current($data));
                 $this->setProps($data);
                 \do_action('coretik/page-builder/block/load', $this, $data);
                 \do_action('coretik/page-builder/block/load/id=' . $this->getUniqId(), $this, $data);
                 $this->render();
-            });
+            }, 10, 2);
         }
     }
 
@@ -187,15 +191,30 @@ abstract class Block implements BlockInterface
         return $this->config('fields.directory') ?? '';
     }
 
+    public function createFieldsBuilder(): FieldsBuilder
+    {
+        return new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+    }
+
     public function fieldsBuilder(): FieldsBuilder
     {
         $block = $this;
+        $field = $this->createFieldsBuilder();
         return include \locate_template($this->fieldsBuilderTemplate() . \str_replace('.', DIRECTORY_SEPARATOR, static::NAME) . '.php');
     }
 
-    public function flexibleLayoutArgs(): array
+    final public function flexibleLayoutArgs(): array
     {
-        return [];
+        $args = [
+            'uniqId' => $this->getUniqId(),
+        ];
+
+        $custom_args = static::FLEXIBLE_LAYOUT_ARGS;
+        if (!\is_array($custom_args)) {
+            $custom_args = [];
+        }
+
+        return \apply_filters('coretik/page-builder/block/flexible_layout_args', $args + $custom_args, $this);
     }
 
     public function fieldsBuilderConfig(array $config = []): array
@@ -210,8 +229,6 @@ abstract class Block implements BlockInterface
             'acfe_flexible_render_script' => $this->adminScript(),
             'acfe_flexible_settings' => '',
             'acfe_flexible_settings_size' => 'medium',
-            'acfe_layout_col' => '12',
-            'acfe_layout_allowed_col' => ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
         ]);
 
         $config = \apply_filters('coretik/page-builder/block/fields-builder-config', $config, $this->getName(), $this);
@@ -323,8 +340,6 @@ abstract class Block implements BlockInterface
      */
     public function render($return = false): string
     {
-        // $this->trigger('coretik/page-builder/block/before_render');
-
         \do_action('coretik/page-builder/block/before_render', $this, $return);
         \do_action('coretik/page-builder/block/before_render/name=' . $this->getName(), $this, $return);
         \do_action('coretik/page-builder/block/before_render/id=' . $this->getUniqId(), $this, $return);

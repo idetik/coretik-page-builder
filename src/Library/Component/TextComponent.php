@@ -14,7 +14,7 @@ class TextComponent extends BlockComponent
 
     public function fieldsBuilder(): FieldsBuilder
     {
-        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field = $this->createFieldsBuilder();
         $field->addWysiwyg('text')
             ->setLabel(__('Texte', app()->get('settings')['text-domain']));
         return $field;

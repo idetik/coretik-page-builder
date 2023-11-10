@@ -18,7 +18,7 @@ class TitleComponent extends BlockComponent
 
     public function fieldsBuilder(): FieldsBuilder
     {
-        $field = new FieldsBuilder($this->getName(), $this->fieldsBuilderConfig());
+        $field = $this->createFieldsBuilder();
         $field
             ->addText('title')
                 ->setLabel(__('Titre', app()->get('settings')['text-domain']))
