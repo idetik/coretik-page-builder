@@ -13,6 +13,7 @@ use Exception;
 class BlockFactory implements BlockFactoryInterface
 {
     protected $config;
+    protected int $counter = 0;
 
     public function __construct(ArrayAccess $config)
     {
@@ -43,6 +44,9 @@ class BlockFactory implements BlockFactoryInterface
 
         $block = $this->config['blocks']->first(fn ($block) => $block::NAME === $name);
         if ($block) {
+            if (empty($layout['layoutId'])) {
+                $layout['layoutId'] = sprintf('%s-%s', $block::NAME, $this->counter++);
+            }
             $block = new $block($layout);
         } else {
             throw new Exception('Undefined layout ' . $layout['acf_fc_layout']);

@@ -128,3 +128,26 @@ add_action('coretik/container/construct', function ($container) {
         return new PageBuilderField($c->get('pageBuilder'));
     });
 });
+
+add_action('admin_init', function () {
+
+    add_action('acfe/flexible/render/before_template', function ($field, $layout) {
+        $layoutName = $layout['name'];
+
+        if (\in_array($layoutName, app()->get('pageBuilder.config')->get('blocks')->map(fn ($block) => $block::NAME)->all())) {
+            $data = get_fields();
+            $data = current(current($data));
+            $block = app()->get('pageBuilder.factory')->create($data);
+
+            if (empty($data['uniqId'])) {
+                $data['uniqId'] = $block->getUniqId();
+            }
+            $block->setProps($data);
+            \do_action('coretik/page-builder/block/load', $block, $data);
+            \do_action('coretik/page-builder/block/load/layoutId=' . $block->getLayoutId(), $block, $data);
+            \do_action('coretik/page-builder/block/load/uniqId=' . $block->getUniqId(), $block, $data);
+            $block->render();
+        }
+    }, 10, 2);
+
+});

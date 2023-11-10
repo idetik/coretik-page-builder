@@ -14,7 +14,7 @@ trait DevTools
         }
     }
 
-    public function getDevToolsView(): string
+    public function getDevToolsView(bool $rendering = false): string
     {
         \ob_start();
         \do_action('coretik/page-builder/block/devtools/start_view', $this);

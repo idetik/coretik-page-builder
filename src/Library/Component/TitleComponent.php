@@ -50,6 +50,6 @@ class TitleComponent extends BlockComponent
             return parent::getPlainHtml($parameters);
         }
 
-        return sprintf('<%1$s>%2$s</%1$s>', $this->tag, $this->title);
+        return sprintf('<%1$s>%2$s</%1$s>', $parameters['tag'], $parameters['title']);
     }
 }

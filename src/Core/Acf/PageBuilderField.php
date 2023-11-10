@@ -88,7 +88,7 @@ class PageBuilderField
         $args = \apply_filters('coretik/page-builder/acf/page-builder-field/args', $this->config, $field_name);
         $flexible = $builder->addFlexibleContent($field_name, $args);
 
-        foreach ($this->blocks as $layout) {
+        foreach ($this->blocks as $i => $layout) {
             if ('containers.container' === $layout) {
                 continue;
             }

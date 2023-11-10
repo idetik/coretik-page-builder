@@ -61,6 +61,7 @@ abstract class Block implements BlockInterface
     protected static $configGlobal = [];
     protected $config = [];
     protected string $uniqId;
+    protected string $layoutId;
     protected $fields;
     protected $propsFilled = [];
     protected static int $counter = 0;
@@ -70,7 +71,6 @@ abstract class Block implements BlockInterface
 
     public function __construct(array $props = [], array $config = [])
     {
-        static::$counter++;
         static::bootIfNotBooted();
         $this->initialize();
 
@@ -80,25 +80,11 @@ abstract class Block implements BlockInterface
         $props = \apply_filters('coretik/page-builder/block/props', $props, $this);
         $props = \apply_filters('coretik/page-builder/block/props/name=' . $this->getName(), $props, $this);
 
-        if (empty($props['uniqId']) && empty($this->uniqId)) {
-            $props['uniqId'] = sprintf('%s-%s', $this->getName(), static::$counter);
+        if (empty($props['layoutId']) && empty($this->layoutId)) {
+            $props['layoutId'] = sprintf('%s-%s', $this->getName(), static::$counter++);
         }
 
         $this->setProps($props);
-
-        if (\is_admin()) {
-            \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function ($field, $layout) {
-                if (!empty($layout['uniqId']) && $layout['uniqId'] !== $this->getUniqId()) {
-                    return;
-                }
-                $data = get_fields();
-                $data = current(current($data));
-                $this->setProps($data);
-                \do_action('coretik/page-builder/block/load', $this, $data);
-                \do_action('coretik/page-builder/block/load/id=' . $this->getUniqId(), $this, $data);
-                $this->render();
-            }, 10, 2);
-        }
     }
 
     public static function setConfigAsGlobal($config): void
@@ -113,7 +99,15 @@ abstract class Block implements BlockInterface
 
     public function getUniqId(): string
     {
+        if (empty($this->uniqId)) {
+            $this->uniqId = sprintf('%s-%s', $this->getName(), uniqid());
+        }
         return $this->uniqId;
+    }
+
+    public function getLayoutId(): string
+    {
+        return $this->layoutId;
     }
 
     public function getName(): string
@@ -206,7 +200,7 @@ abstract class Block implements BlockInterface
     final public function flexibleLayoutArgs(): array
     {
         $args = [
-            'uniqId' => $this->getUniqId(),
+            'layoutId' => $this->getLayoutId(),
         ];
 
         $custom_args = static::FLEXIBLE_LAYOUT_ARGS;
@@ -300,7 +294,7 @@ abstract class Block implements BlockInterface
 
     public function getParameters(): array
     {
-        $parameters = ['uniqId' => $this->getUniqId()] + $this->toArray() + ['context' => $this->getContext()?->toArray()];
+        $parameters = ['uniqId' => $this->getUniqId(), 'layoutId' => $this->getLayoutId()] + $this->toArray() + ['context' => $this->getContext()?->toArray()];
 
         // Call toArray from traits
         foreach (Classes::classUsesDeep($this) as $traitNamespace) {

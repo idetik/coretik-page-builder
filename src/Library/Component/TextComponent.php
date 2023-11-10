@@ -15,7 +15,7 @@ class TextComponent extends BlockComponent
     public function fieldsBuilder(): FieldsBuilder
     {
         $field = $this->createFieldsBuilder();
-        $field->addWysiwyg('text')
+        $field->addText('text')
             ->setLabel(__('Texte', app()->get('settings')['text-domain']));
         return $field;
     }
@@ -23,7 +23,7 @@ class TextComponent extends BlockComponent
     public function toArray()
     {
         return [
-            'wysiwyg' => $this->text
+            'text' => $this->text
         ];
     }
 }

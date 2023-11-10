@@ -29,7 +29,7 @@ class Builder
 
     public function setBlocks(array $blocks, callable $wrapAction = null): self
     {
-        foreach ($blocks as $block) {
+        foreach ($blocks as $i => $block) {
             $block = $this->factory->create($block, $this->context);
             if (!empty($wrapAction)) {
                 $block = \call_user_func($wrapAction, $block, $this);
