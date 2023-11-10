@@ -20,7 +20,7 @@ class ParagraphLayout extends BlockComposite
 
     protected function prepareComponents(): array
     {
-        // $this->addModifier([PersistantIdModifier::make(), 'handle'], 1);
+        PersistantIdModifier::modify($this);
         return [
             'title' => TitleComponent::class,
             'text' => required(WysiwygComponent::class),

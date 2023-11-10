@@ -3,6 +3,7 @@
 namespace Coretik\PageBuilder\Library\Block\Editorial;
 
 use Coretik\PageBuilder\Core\Block\BlockComposite;
+use Coretik\PageBuilder\Core\Block\Modifier\PersistantIdModifier;
 use Coretik\PageBuilder\Library\Component\WysiwygComponent;
 
 use function Coretik\PageBuilder\Core\Block\Modifier\required;
@@ -15,6 +16,8 @@ class WysiwygBlock extends BlockComposite
 
     protected function prepareComponents(): array
     {
+        PersistantIdModifier::modify($this);
+
         return [
             'wysiwyg' => required(WysiwygComponent::class)
         ];

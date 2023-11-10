@@ -34,9 +34,9 @@ class DevToolsTabModifier extends Modifier
 
         \add_action('acf/render_field/name=' . $message->getName(), function ($field) use ($block) {
 
-            $layout = str_replace($field['parent'] . '_', '', $field['parent_layout']);
+            $layout_name = str_replace($field['parent'] . '_', '', $field['parent_layout']);
             $current_layouts = get_field($field['parent']);
-            $layouts_filtered = array_filter($current_layouts, fn ($l) => $l['acf_fc_layout'] === $layout);
+            $layouts_filtered = array_filter($current_layouts, fn ($l) => $l['acf_fc_layout'] === $layout_name);
             $layout = $layouts_filtered[static::$counter];
             static::$counter++;
             $block = app()->get('pageBuilder.factory')->create($layout);
