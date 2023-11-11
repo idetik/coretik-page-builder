@@ -37,7 +37,7 @@ class PageBuilderField
                 'toggle',
                 'close',
                 'clone',
-                'lock',
+                // 'lock',
             ],
             'acfe_flexible_modal_edit' => [
                 'acfe_flexible_modal_edit_enabled' => 0,
@@ -86,9 +86,9 @@ class PageBuilderField
         $flexible = $builder->addFlexibleContent($field_name, $args);
 
         foreach ($this->blocks as $i => $layout) {
-            if ('containers.container' === $layout) {
-                continue;
-            }
+            // if ('containers.container' === $layout) {
+            //     continue;
+            // }
             try {
                 $block = $this->service->factory()->create(['acf_fc_layout' => $layout]);
                 $flexible->addLayout($block->fields(), $block->flexibleLayoutArgs());

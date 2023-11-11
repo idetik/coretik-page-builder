@@ -314,9 +314,14 @@ abstract class Block implements BlockInterface
         return static::TEMPLATE_PATH ?? \sprintf('%s%s%s', $this->config('blocks.template.directory'), \str_replace('.', DIRECTORY_SEPARATOR, $this->getName()), $withExt ? '.php' : '');
     }
 
+    public function templateExists(): bool
+    {
+        return !empty(locate_template($this->template()));
+    }
+
     protected function getPlainHtml(array $parameters): string
     {
-        if (empty(locate_template($this->template()))) {
+        if (!$this->templateExists()) {
             return \apply_filters(
                 'coretik/page-builder/block/template_placehoder',
                 sprintf('<p>[%s] No template found</p>', $this->getName()),

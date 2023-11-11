@@ -44,6 +44,11 @@ class DevToolsTabModifier extends Modifier
         // Get all filled layouts from current pagebuilder
         $current_layouts = get_field($field['parent']);
 
+        if (empty($current_layouts)) {
+            echo "No layout.";
+            return;
+        }
+
         // Pick layouts same as our $layout_name
         $layouts_filtered = array_filter($current_layouts, fn ($l) => $l['acf_fc_layout'] === $layout_name);
 

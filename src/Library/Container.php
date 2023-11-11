@@ -11,6 +11,7 @@ class Container extends Block
     const NAME = 'containers.container';
     const LABEL = 'Conteneur';
     const SCREENSHOTABLE = false;
+    const CONTAINERIZABLE = false;
 
     protected $container_blocks;
     protected $padding;
@@ -24,19 +25,20 @@ class Container extends Block
     public function __construct(array $props = [])
     {
         $this->builder = app()->get('pageBuilder')->setContext(ParentContext::contextualize($this));
-        $this->setProps($props);
-        $this->initialize();
+        parent::__construct($props);
+        // $this->setProps($props);
+        // $this->initialize();
 
-        if (\is_admin()) {
-            \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function () {
-                $data = get_fields();
-                $data = current(current($data));
-                $this->setProps($data)->loadPageBuilder()->render();
-            });
-        }
+        // if (\is_admin()) {
+        //     \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function () {
+        //         $data = get_fields();
+        //         $data = current(current($data));
+        //         $this->setProps($data)->loadPageBuilder()->render();
+        //     });
+        // }
     }
 
-    protected function loadPageBuilder()
+    public function loadPageBuilder()
     {
         $blocks = $this->container_blocks;
 
@@ -53,13 +55,14 @@ class Container extends Block
         return $this;
     }
 
-    public function rewind()
+    public function rewind(): \SplObjectStorage
     {
         if (!$this->builderLoaded) {
             $this->loadPageBuilder();
         }
 
         $this->builder->blocks()->rewind();
+        return $this->builder->blocks();
     }
 
     public function haveBlocks()
@@ -87,15 +90,12 @@ class Container extends Block
     {
         $pageBuilder = app()
                         ->get('pageBuilder.field')
-                        ->field(
-                            'container_blocks',
-                            $this->config('blocks')
-                                ->filter(fn ($block) => $block::IN_LIBRARY && $block::CONTAINERIZABLE)
-                                ->map(fn ($block) => $block::NAME)
-                                ->all(),
-                            [],
-                            false
-                        );
+                        ->setBlocks($this->config('blocks')
+                            ->filter(fn ($block) => $block::IN_LIBRARY && $block::CONTAINERIZABLE)
+                            ->map(fn ($block) => $block::NAME)
+                            ->all()
+                            )
+                        ->field('container_blocks',);
 
         $field = $this->createFieldsBuilder();
         $field
@@ -106,10 +106,31 @@ class Container extends Block
         return $field;
     }
 
+    protected function getPlainHtml(array $parameters): string
+    {
+        return $parameters['render'](true);
+    }
+
     public function toArray()
     {
         return [
-            'blocks' => $this,
+            'render' => function ($return = false) {
+                \ob_start();
+                $this->rewind();
+                while ($this->haveBlocks()) {
+                    $this->getTheBlock();
+                }
+                $render = \ob_get_clean();
+                if ($return) {
+                    return $render;
+                }
+                echo $render;
+            },
+            'blocks' => array_map(fn ($block) => [
+                'name' => $block->getName(),
+                'data' => $block->toArray(),
+                'object' => \is_admin() ? '_this_' : $block
+            ], iterator_to_array($this->rewind())),
         ];
     }
 }
