@@ -6,7 +6,6 @@ use Coretik\PageBuilder\Core\Contract\BlockInterface;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Exception;
 
-
 class ColumnModifier extends Modifier
 {
     const NAME = 'column';
@@ -19,7 +18,7 @@ class ColumnModifier extends Modifier
         if (empty($args) || !\is_int($args)) {
             throw new Exception('Integer ColumnModifier args is expected.');
         }
-        
+
         return parent::make($args);
     }
 

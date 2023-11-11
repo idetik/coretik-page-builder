@@ -30,11 +30,6 @@ use Illuminate\Support\Collection;
 use function Globalis\WP\Cubi\add_action;
 use function Globalis\WP\Cubi\is_cli;
 
-/**
- * @todo supprimer
- */
-require_once __DIR__ ."/Core/Block/Modifier/modifiers.php";
-
 add_action('coretik/container/construct', function ($container) {
 
     if (!\class_exists('ACF')) {
@@ -149,5 +144,4 @@ add_action('admin_init', function () {
             $block->render();
         }
     }, 10, 2);
-
 });

@@ -5,7 +5,6 @@ namespace Coretik\PageBuilder\Core\Block\Modifier;
 use Coretik\PageBuilder\Core\Contract\BlockInterface;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-
 abstract class Modifier
 {
     const NAME = '';
@@ -59,9 +58,9 @@ abstract class Modifier
     {
         return $this->args;
     }
-    
+
     /**
-     * @param mixed $args 
+     * @param mixed $args
      */
     public function setArgs(mixed $args): self
     {

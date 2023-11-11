@@ -19,8 +19,7 @@ class BlockContext implements BlockContextInterface
         ?string $name = null,
         ?string $category = null,
         mixed $data = null,
-        )
-    {
+    ) {
         if (!empty($block)) {
             $this->setBlock($block);
         }

@@ -66,7 +66,7 @@ class LinkComponent extends BlockComponent
                         ->setLabel('Nom')
                         ->setRequired()
             ->endGroup();
-        
+
         return \apply_filters('pagebuilder/block/components/' . static::NAME . '/gtm_fields', $gtm);
     }
 
@@ -106,19 +106,21 @@ class LinkComponent extends BlockComponent
             return '';
         }
 
-        $attr = \apply_filters('pagebuilder/block/components/' . $this->getName() . '/render/advanced_link_attrs', [
+        $attr = \apply_filters(
+            'pagebuilder/block/components/' . $this->getName() . '/render/advanced_link_attrs',
+            [
                 'href' => $link['url'],
                 // 'class' => $className,
             ],
             $link,
             $this
         );
-    
+
         $innerText = $link['title'];
-    
+
         if ((bool)$link['target']) {
             $attr['target'] = '_blank';
-            $innerText.= ' <span class="visuallyhidden">(nouvelle fenêtre)</span>';
+            $innerText .= ' <span class="visuallyhidden">(nouvelle fenêtre)</span>';
         }
 
         return sprintf('<a %s>%s<a>', self::getStringFromAttributes($attr), $innerText);
@@ -130,5 +132,4 @@ class LinkComponent extends BlockComponent
             return $k . '="' . ($k === 'href' ? \esc_url($v) : \esc_attr($v)) . '"';
         }, \array_keys($attr), $attr));
     }
-    
 }

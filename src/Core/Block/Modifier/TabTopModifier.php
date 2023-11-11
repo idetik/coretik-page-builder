@@ -6,7 +6,6 @@ use Coretik\PageBuilder\Core\Contract\BlockInterface;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use StoutLogic\AcfBuilder\TabBuilder;
 
-
 class TabTopModifier extends Modifier
 {
     const NAME = 'tabtop';
@@ -17,11 +16,9 @@ class TabTopModifier extends Modifier
     public function handle(FieldsBuilder $fields, BlockInterface $block): FieldsBuilder
     {
         foreach ($fields->getFields() as $field) {
-
             if ($field instanceof TabBuilder) {
                 $field->setConfig('placement', 'top');
             }
-
         }
 
         return $fields;

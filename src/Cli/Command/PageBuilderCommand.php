@@ -42,7 +42,7 @@ class PageBuilderCommand
      *
      * [<class>]
      * : The block classname
-     * 
+     *
      * [--type=<block_type>]
      * : The block type
      * ---
@@ -58,7 +58,7 @@ class PageBuilderCommand
      *
      * [--label=<label>]
      * : The block title
-     * 
+     *
      * [--verbose]
      * : Echo logs
      *

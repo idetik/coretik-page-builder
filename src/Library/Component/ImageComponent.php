@@ -12,7 +12,7 @@ class ImageComponent extends BlockComponent
 {
     const NAME = 'components.image';
     const LABEL = 'Image';
-    
+
     use AccessibilitySettings;
     use AnchorSettings;
     use VisibilitySettings;

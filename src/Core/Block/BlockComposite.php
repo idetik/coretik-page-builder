@@ -30,7 +30,6 @@ abstract class BlockComposite extends Block
 
         $field = $this->createFieldsBuilder();
         foreach ($this->fieldsComposite() as $name => $data) {
-
             $tabName = \apply_filters('coretik/page-builder/composite/tab-name', $name, $tabs, $data, $this);
 
             $i = 0;

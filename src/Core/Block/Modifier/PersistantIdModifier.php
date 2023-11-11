@@ -5,7 +5,6 @@ namespace Coretik\PageBuilder\Core\Block\Modifier;
 use Coretik\PageBuilder\Core\Contract\BlockInterface;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-
 class PersistantIdModifier extends Modifier
 {
     const NAME = 'persistantId';

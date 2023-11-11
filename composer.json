@@ -20,7 +20,7 @@
         "files": [
             "src/init.php",
             "src/Cli/add-commands.php",
-            "src/Blocks/Modifier/modifiers.php"
+            "src/Core/Block/Modifier/modifiers.php"
         ]
     },
     "require-dev": {

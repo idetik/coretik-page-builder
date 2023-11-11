@@ -23,7 +23,7 @@ class CreateBlockJob implements JobInterface
     public function __construct($app)
     {
         $this->app = $app;
-        $this->files = new Filesystem;
+        $this->files = new Filesystem();
     }
 
     public function setConfig(array $config): self
@@ -70,8 +70,10 @@ class CreateBlockJob implements JobInterface
             // Next, We will check to see if the class already exists. If it does, we don't want
             // to create the class and overwrite the user's code. So, we will bail out so the
             // code is untouched. Otherwise, we will continue generating this class' files.
-            if (!$this->force &&
-                $this->alreadyExists($this->class)) {
+            if (
+                !$this->force &&
+                $this->alreadyExists($this->class)
+            ) {
                 if ($this->verbose) {
                     app()->notices()->error($this->blockType->name . ' already exists.');
                 }
@@ -94,7 +96,7 @@ class CreateBlockJob implements JobInterface
              */
             require_once $blockClassPath;
 
-            $block = new $blockClassName;
+            $block = new $blockClassName();
             $templatePath = get_template_directory() . DIRECTORY_SEPARATOR . $block->template();
 
             if ($this->files->exists($templatePath)) {
@@ -104,7 +106,7 @@ class CreateBlockJob implements JobInterface
             } else {
                 $this->makeDirectory($templatePath);
                 $this->files->put($templatePath, '');
-    
+
                 if ($this->verbose) {
                     app()->notices()->success(sprintf('%s template       [%s] created successfully.', $info->name, $templatePath));
                 }
@@ -113,11 +115,13 @@ class CreateBlockJob implements JobInterface
             /**
              * Create ACF files
              */
-            foreach ([
+            foreach (
+                [
                 'admin-template' => 'adminTemplate',
                 'admin-style' => 'adminStyle',
                 'admin-script' => 'adminScript',
-            ] as $key => $method) {
+                ] as $key => $method
+            ) {
                 $path = get_template_directory() . DIRECTORY_SEPARATOR . $block->$method();
 
                 if ($this->files->exists($path)) {
@@ -142,7 +146,6 @@ class CreateBlockJob implements JobInterface
             app()->notices()->info('');
             app()->notices()->info(\WP_CLI::colorize('%U') . 'Don\'t forget to extends your block library:' . \WP_CLI::colorize('%n'));
             app()->notices()->info(\WP_CLI::colorize('%Y') . '$container->extend(\'pageBuilder.library\', fn ($blocks, $c) => $blocks->append(' . $blockClassName . '::class));' . \WP_CLI::colorize('%n'));
-
         } catch (\Exception $e) {
             if ($this->verbose) {
                 app()->notices()->error(sprintf('%s : %s', $this->class, $e->getMessage()));
@@ -173,7 +176,7 @@ class CreateBlockJob implements JobInterface
         }
 
         return $this->qualifyClass(
-            trim($rootNamespace, '\\').'\\'.$name
+            trim($rootNamespace, '\\') . '\\' . $name
         );
     }
 
@@ -241,11 +244,11 @@ class CreateBlockJob implements JobInterface
         if (!empty($this->path)) {
             return $this->path;
         }
-    
+
         $name = \str_replace($this->rootNamespace(), '', $name);
         $base = rtrim(\get_template_directory() . DIRECTORY_SEPARATOR . $this->app->get('pageBuilder.config')->get('blocks.src.directory'), '/');
 
-        return $base . str_replace('\\', '/', $name).'.php';
+        return $base . str_replace('\\', '/', $name) . '.php';
     }
 
     /**
@@ -282,7 +285,7 @@ class CreateBlockJob implements JobInterface
      */
     protected function replaceClass(&$stub, $name)
     {
-        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
 
         $stub = str_replace(['DummyClass', '{{ class }}', '{{class}}'], $class, $stub);
 

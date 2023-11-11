@@ -17,7 +17,7 @@ trait Composite
     {
         $this->children = new SplObjectStorage();
         $this->components = $this->prepareComponents();
-        
+
         foreach ($this->components ?? [] as $key => $componentClass) {
             if (\is_int($key)) {
                 $key = static::undot($componentClass::NAME);
@@ -37,7 +37,6 @@ trait Composite
     public function compose(array|string|BlockInterface $block, ?string $key = null): BlockInterface
     {
         if (\is_string($block) || \is_array($block)) {
-
             // Handle block class name (block::class)
             if (\is_a($block, BlockInterface::class, true)) {
                 $block = $block::NAME;

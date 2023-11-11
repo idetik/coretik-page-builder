@@ -2,7 +2,8 @@
 
 namespace Coretik\PageBuilder\Core\Job\Block;
 
-enum BlockType {
+enum BlockType
+{
     case Block;
     case Component;
     case Composite;

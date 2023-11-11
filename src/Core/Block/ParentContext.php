@@ -12,8 +12,7 @@ class ParentContext extends BlockContext
         ?string $name = null,
         ?string $category = null,
         mixed $data = null,
-        )
-    {
+    ) {
         parent::__construct($block, $name, $category, $data);
         $this->setType(BlockContextType::PARENT);
     }

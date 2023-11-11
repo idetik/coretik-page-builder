@@ -5,7 +5,6 @@ namespace Coretik\PageBuilder\Library\Block\Tools;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Core\Block\Block;
 
-
 class Breadcrumb extends Block
 {
     const NAME = 'tools.breadcrumb';
