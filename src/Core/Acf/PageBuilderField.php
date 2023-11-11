@@ -28,18 +28,15 @@ class PageBuilderField
             'acfe_flexible_layouts_templates' => 1,
             'acfe_flexible_layouts_previews' => 1,
             'acfe_flexible_layouts_placeholder' => 1,
-            'acfe_flexible_title_edition' => 1,
-            'acfe_flexible_clone' => 1,
-            'acfe_flexible_copy_paste' => 1,
-            'acfe_flexible_toggle' => 1,
-            'acfe_flexible_close_button' => 1,
             'acfe_flexible_remove_add_button' => 0,
             'acfe_flexible_remove_duplicate_button' => 0,
             'acfe_flexible_remove_delete_button' => 0,
-            'acfe_flexible_lock' => 0,
             'acfe_flexible_add_actions' => [
-                // 'title', // inline edit
+                'title', // inline edit
                 'copy',
+                'toggle',
+                'close',
+                'clone',
                 'lock',
             ],
             'acfe_flexible_modal_edit' => [
@@ -52,7 +49,7 @@ class PageBuilderField
                 'acfe_flexible_modal_col' => '4',
                 'acfe_flexible_modal_categories' => '1',
             ],
-            'acfe_flexible_layouts_state' => '',
+            'acfe_flexible_layouts_state' => 'collapse',
             'acfe_flexible_layouts_remove_collapse' => 0,
             'button_label' => __('Ajouter un élément', \app()->get('settings')['text-domain']),
             'acfe_flexible_grid' => [
