@@ -16,8 +16,6 @@ class WysiwygBlock extends BlockComposite
 
     protected function prepareComponents(): array
     {
-        PersistantIdModifier::modify($this);
-
         return [
             'wysiwyg' => required(WysiwygComponent::class)
         ];

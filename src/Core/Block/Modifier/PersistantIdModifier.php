@@ -11,25 +11,22 @@ class PersistantIdModifier extends Modifier
     const NAME = 'persistantId';
     const PRIORITY = 1;
     const SINGLETON = false;
-
-    protected BlockInterface $block;
     protected static bool $hooked = false;
 
     public function handle(FieldsBuilder $fields, BlockInterface $block): FieldsBuilder
     {
-        $this->block = $block;
         $uniqId = $fields->addField('uniqId', 'acfe_hidden')
             ->setUnrequired();
 
         if (!static::$hooked) {
-            \add_filter('acf/load_value/name=' . $uniqId->getName(), [$this, 'resolveId'], 10, 3);
+            \add_filter('acf/load_value/name=' . $uniqId->getName(), [__CLASS__, 'resolveId'], 10, 3);
             static::$hooked = true;
         }
 
         return $fields;
     }
 
-    public function resolveId($value, $post_id, $field)
+    public static function resolveId($value, $post_id, $field)
     {
         $layout = '';
         if (array_key_exists('parent_layout', $field)) {
