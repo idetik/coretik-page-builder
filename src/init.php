@@ -49,50 +49,62 @@ add_action('coretik/container/construct', function ($container) {
         }
     }
 
-    // Extend it: $container->extend('pageBuilder.library', fn ($blocks, $c) => $blocks->append(...));
+    /**
+     * Extend it:
+     * $container->extend('pageBuilder.library', fn ($blocks, $c) => $blocks->append(...));
+     * 
+     * Or filter it:
+     * add_filter('coretik/page-builder/library', function ($library) {
+     *     return $library;
+     * })
+     */
     $container['pageBuilder.library'] = function ($c) {
-        return \collect([
-            // Components
-            // CtaComponent::class,
-            WysiwygComponent::class,
-            ThumbnailComponent::class,
-            TitleComponent::class,
-            LinkComponent::class,
-            ImageComponent::class,
+        return \collect(
+                \apply_filters('coretik/page-builder/library', [
+                    // Components
+                    // CtaComponent::class,
+                    WysiwygComponent::class,
+                    ThumbnailComponent::class,
+                    TitleComponent::class,
+                    LinkComponent::class,
+                    ImageComponent::class,
 
-            // // Tools
-            // Anchor::class,
-            // Breadcrumb::class,
+                    // // Tools
+                    // Anchor::class,
+                    // Breadcrumb::class,
 
-            // // Layouts
-            // PageHeader::class,
-            ParagraphLayout::class,
+                    // // Layouts
+                    // PageHeader::class,
+                    ParagraphLayout::class,
 
-            // // Headings
-            // TitlePrimary::class,
+                    // // Headings
+                    // TitlePrimary::class,
 
-            // // Content
-            WysiwygBlock::class,
-            WysiwygDoubleBlock::class,
+                    // // Content
+                    WysiwygBlock::class,
+                    WysiwygDoubleBlock::class,
 
-            // // Container
-            Container::class,
-        ]);
+                    // // Container
+                    Container::class,
+                ])
+            );
     };
 
     $container['pageBuilder.config'] = function ($c): Collection {
         $globalSettings = $c->get('settings');
 
-        return \collect([
-            'fields.directory' => 'src/admin/fields/blocks/',
-            'fields.thumbnails.directory' => \get_stylesheet_directory() . '/assets/images/admin/acf/',
-            'fields.thumbnails.baseUrl' => '<##ASSETS_URL##>/images/admin/acf/',
-            'blocks.template.directory' => 'templates/blocks/',
-            'blocks.acf.directory' => 'templates/acf/',
-            'blocks.src.directory' => 'src/Services/PageBuilder/Blocks/',
-            'blocks.rootNamespace' => $globalSettings['rootNamespace'] ?? 'App' . '\\Services\\PageBuilder\\Blocks',
-            'blocks' => $c->get('pageBuilder.library')
-        ])->filter();
+        return \collect(
+            \apply_filters('coretik/page-builder/config', [
+                'fields.directory' => 'src/admin/fields/blocks/',
+                'fields.thumbnails.directory' => \get_stylesheet_directory() . '/assets/images/admin/acf/',
+                'fields.thumbnails.baseUrl' => '<##ASSETS_URL##>/images/admin/acf/',
+                'blocks.template.directory' => 'templates/blocks/',
+                'blocks.acf.directory' => 'templates/acf/',
+                'blocks.src.directory' => 'src/Services/PageBuilder/Blocks/',
+                'blocks.rootNamespace' => $globalSettings['rootNamespace'] ?? 'App' . '\\Services\\PageBuilder\\Blocks',
+                'blocks' => $c->get('pageBuilder.library')
+            ])
+            )->filter();
     };
 
     $container['pageBuilder.factory'] = function ($c) {
@@ -129,8 +141,14 @@ add_action('coretik/container/construct', function ($container) {
     });
 });
 
+/**
+ * Admin hooks
+ */
 add_action('admin_init', function () {
 
+    /**
+     * Blocks preview
+     */
     add_action('acfe/flexible/render/before_template', function ($field, $layout) {
         $layoutName = $layout['name'];
 

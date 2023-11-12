@@ -2,8 +2,8 @@
 
 namespace Coretik\PageBuilder\Library;
 
-use Coretik\PageBuilder\Core\Block\ParentContext;
 use Coretik\PageBuilder\Core\Block\Block;
+use Coretik\PageBuilder\Core\Block\ContainerContext;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class Container extends Block
@@ -14,28 +14,14 @@ class Container extends Block
     const CONTAINERIZABLE = false;
 
     protected $container_blocks;
-    protected $padding;
     protected $builder;
     protected $builderLoaded = false;
-    protected $border_customizer;
-    protected $border_width;
-    protected $border_color;
 
 
     public function __construct(array $props = [])
     {
-        $this->builder = app()->get('pageBuilder')->setContext(ParentContext::contextualize($this));
+        $this->builder = app()->get('pageBuilder')->setContext(ContainerContext::contextualize($this));
         parent::__construct($props);
-        // $this->setProps($props);
-        // $this->initialize();
-
-        // if (\is_admin()) {
-        //     \add_action('acfe/flexible/render/before_template/layout=' . $this->fields()->getName(), function () {
-        //         $data = get_fields();
-        //         $data = current(current($data));
-        //         $this->setProps($data)->loadPageBuilder()->render();
-        //     });
-        // }
     }
 
     public function loadPageBuilder()
