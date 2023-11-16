@@ -24,9 +24,6 @@ class ImageComponent extends BlockComponent
     {
         $this->addSettings([$this, 'seoSettings'], 1);
 
-        // @todo : hide on mobile / desktop
-        // $this->addSettings([__CLASS__, 'visibilitySettings']);
-
         $field = $this->createFieldsBuilder();
         $field
             ->addImage('attachment_id', [
@@ -34,8 +31,8 @@ class ImageComponent extends BlockComponent
                 'acfe_thumbnail' => 0,
                 'preview_size' => 'medium',
                 'library' => 'all',
+                'return_format' => 'id'
             ])
-                ->setSelector('id')
                 ->setLabel('Image');
 
         $this->useSettingsOn($field);
@@ -54,18 +51,27 @@ class ImageComponent extends BlockComponent
                     ->setUnrequired()
             ->endGroup();
 
-        return \apply_filters('pagebuilder/block/components/' . static::NAME . '/seo_fields', $seo);
+        return \apply_filters('pagebuilder/block/' . static::NAME . '/seo_fields', $seo);
     }
 
     public function imageTag(string $image_size, array $attrs = [])
     {
         $parameters = $this->getParameters();
 
-        $defaultAttrs = [
+        $defaultAttrs = \apply_filters('pagebuilder/block/' . static::NAME . '/image_tag_default_attrs', [
             'alt' => !empty($parameters['seo']['alt']) ? $parameters['seo']['alt'] : false,
-            'aria-hidden' => !empty($parameters['aria-hidden']) ? $parameters['aria-hidden'] : false,
-            'aria-label' => !empty($parameters['aria-label']) ? $parameters['aria-label'] : false,
-        ];
+            'aria-hidden' => !empty($parameters['accessibility']['aria_hidden']) ? $parameters['accessibility']['aria_hidden'] : false,
+            'aria-label' => !empty($parameters['accessibility']['aria_label']) ? $parameters['accessibility']['aria_label'] : false,
+            'class' => !empty($parameters['visibility']['breakpoint'])
+                ? implode(
+                    ' ',
+                    array_map(
+                        fn ($breakpints) => 'hide-if-' . $breakpints,
+                        $parameters['visibility']['breakpoint']
+                    )
+                )
+                : false,
+        ], $parameters, $image_size);
 
         return \wp_get_attachment_image($parameters['attachment_id'], $image_size, false, \array_filter(\wp_parse_args($attrs, $defaultAttrs)));
     }

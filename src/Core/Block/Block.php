@@ -301,6 +301,8 @@ abstract class Block implements BlockInterface
             $ref = new \ReflectionClass($traitNamespace);
             $traitName = $ref->getShortName();
             $method = $traitName . 'ToArray';
+            $method = strtolower(substr($method, 0, 1)) . substr($method, 1);
+
             if (method_exists($this, $method)) {
                 $parameters = array_merge($parameters, $this->$method());
             }

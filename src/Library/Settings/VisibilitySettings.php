@@ -20,10 +20,10 @@ trait VisibilitySettings
         $visibility = $visibility
             ->addGroup('visibility', ['layout' => 'row'])
                 ->setLabel('Affichage')
-                ->addCheckbox('breakpoint', ['layout' => 'horizontal', 'default_value' => ['mobile', 'tablet', 'desktop']])
-                    ->setRequired()
-                    ->setLabel('Afficher sur les écrans')
-                    ->setInstructions('Cocher les tailles d\'écrans dont vous souhaitez que l\'élément s\'affiche.')
+                ->addCheckbox('breakpoint', ['layout' => 'horizontal'])
+                    ->setUnrequired()
+                    ->setLabel('Cacher sur les écrans')
+                    ->setInstructions('Cocher les tailles d\'écrans dont vous souhaitez que l\'élément ne s\'affiche pas.')
                     ->addChoice('mobile', 'Mobile')
                     ->addChoice('tablet', 'Tablette')
                     ->addChoice('desktop', 'Grand écran');
