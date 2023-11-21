@@ -16,13 +16,13 @@ class LinkComponent extends BlockComponent
 
     public function fieldsBuilder(): FieldsBuilder
     {
-        if (\apply_filters('pagebuilder/block/components/' . $this->getName() . '/gtm_enabled', true)) {
+        if (\apply_filters('pagebuilder/block/' . $this->getName() . '/gtm_enabled', true)) {
             $this->addSettings([$this, 'gtmFields']);
         }
 
         $this->addSettings([$this, 'seoSettings'], 1);
 
-        $advancedLinkArgs = \apply_filters('pagebuilder/block/components/' . $this->getName() . '/advanced_link_args', [
+        $advancedLinkArgs = \apply_filters('pagebuilder/block/' . $this->getName() . '/advanced_link_args', [
             'label' => 'Lien',
             // 'post_type' => [],
             // 'taxonomy' => [],
@@ -32,7 +32,7 @@ class LinkComponent extends BlockComponent
         $link
             ->addField('link', 'acfe_advanced_link', $advancedLinkArgs);
 
-        \do_action('pagebuilder/block/components/' . $this->getName() . '/build_fields', $link, $this);
+        \do_action('pagebuilder/block/' . $this->getName() . '/build_fields', $link, $this);
 
         $this->useSettingsOn($link);
 
@@ -67,7 +67,7 @@ class LinkComponent extends BlockComponent
                         ->setRequired()
             ->endGroup();
 
-        return \apply_filters('pagebuilder/block/components/' . static::NAME . '/gtm_fields', $gtm);
+        return \apply_filters('pagebuilder/block/' . static::NAME . '/gtm_fields', $gtm);
     }
 
     public function seoSettings()
@@ -82,7 +82,7 @@ class LinkComponent extends BlockComponent
                     ->setUnrequired()
             ->endGroup();
 
-        return \apply_filters('pagebuilder/block/components/' . static::NAME . '/seo_fields', $seo);
+        return \apply_filters('pagebuilder/block/' . static::NAME . '/seo_fields', $seo);
     }
 
     public function toArray()
@@ -107,7 +107,7 @@ class LinkComponent extends BlockComponent
         }
 
         $attr = \apply_filters(
-            'pagebuilder/block/components/' . $this->getName() . '/render/advanced_link_attrs',
+            'pagebuilder/block/' . $this->getName() . '/render/advanced_link_attrs',
             [
                 'href' => $link['url'],
                 // 'class' => $className,

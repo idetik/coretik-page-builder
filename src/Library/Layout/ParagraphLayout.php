@@ -10,6 +10,7 @@ use Coretik\PageBuilder\Library\{
 use Coretik\PageBuilder\Library\Component\ImageComponent;
 use Coretik\PageBuilder\Library\Component\LinkComponent;
 use Coretik\PageBuilder\Core\Block\Modifier\PersistantIdModifier;
+use Coretik\PageBuilder\Library\Component\TableComponent;
 
 use function Coretik\PageBuilder\Core\Block\Modifier\required;
 
@@ -26,11 +27,12 @@ class ParagraphLayout extends BlockComposite
             'text' => required(WysiwygComponent::class),
             'cta' => LinkComponent::class,
             'image' => ImageComponent::class,
+            'tableau' => TableComponent::class,
         ];
     }
 
     protected function getPlainHtml(array $parameters): string
     {
-        return sprintf('%s%s', $parameters['title'], $parameters['text']);
+        return sprintf('%s%s%s', $parameters['title'], $parameters['text'], $parameters['tableau']);
     }
 }

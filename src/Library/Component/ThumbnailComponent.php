@@ -2,10 +2,9 @@
 
 namespace Coretik\PageBuilder\Library\Component;
 
-use Coretik\PageBuilder\Core\Block\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-class ThumbnailComponent extends BlockComponent
+class ThumbnailComponent extends ImageComponent
 {
     const NAME = 'components.thumbnail';
     const LABEL = 'Image à la une';
@@ -28,20 +27,5 @@ class ThumbnailComponent extends BlockComponent
             'library' => 'all',
         ]);
         return $field;
-    }
-
-    /**
-     * @todo renderIfNoTemplate
-     */
-    // public function render()
-    // {
-    //     wp_get_attachment_image();
-    // }
-
-    public function toArray()
-    {
-        return [
-            'id' => $this->thumbnail
-        ];
     }
 }

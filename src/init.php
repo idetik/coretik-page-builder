@@ -9,6 +9,7 @@ use Coretik\PageBuilder\Library\Component\{
     ImageComponent,
     ThumbnailComponent,
     WysiwygComponent,
+    TableComponent,
     LinkComponent
 };
 use Coretik\PageBuilder\Library\Component\TitleComponent;
@@ -68,6 +69,7 @@ add_action('coretik/container/construct', function ($container) {
                     TitleComponent::class,
                     LinkComponent::class,
                     ImageComponent::class,
+                    TableComponent::class,
 
                     // // Tools
                     // Anchor::class,
