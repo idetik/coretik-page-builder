@@ -83,11 +83,43 @@ class TableComponent extends BlockComponent
 
     protected function getPlainHtml(array $parameters): string
     {
-        if (\locate_template($this->template())) {
-            return parent::getPlainHtml($parameters);
-        }
+        // if ($this->templateExists()) {
+        //     return parent::getPlainHtml($parameters);
+        // }
 
-        return $this->cols_number;
+        \ob_start();
+        \extract($parameters);
+        ?>
+        <table>
+            <?php if ($add_headline) : ?>
+                <thead>
+                    <tr>
+                        <?php
+                        for ($i = 1; $i <= $cols_number; $i++) :
+                            printf('<th>%s</td>', $head[0]['column_' . $i]);
+                        endfor;
+                        ?>
+                    </tr>
+                </thead>
+            <?php endif; ?>
+            <tbody>
+                <?php foreach ($body as $row) : ?>
+                    <tr>
+                        <?php
+                        for ($i = 1; $i <= $cols_number; $i++) :
+                            printf(
+                                '<td><div aria-hidden="true">%s</div><span>%s</span></td>',
+                                $add_headline ? $head[0]['column_' . $i] : '',
+                                $row['column_' . $i]
+                            );
+                        endfor;
+                        ?>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php
+        return \ob_get_clean();
     }
 
     public function toArray()
