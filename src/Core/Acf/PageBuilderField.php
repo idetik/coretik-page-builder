@@ -86,9 +86,6 @@ class PageBuilderField
         $flexible = $builder->addFlexibleContent($field_name, $args);
 
         foreach ($this->blocks as $i => $layout) {
-            // if ('containers.container' === $layout) {
-            //     continue;
-            // }
             try {
                 $block = $this->service->factory()->create(['acf_fc_layout' => $layout]);
                 $flexible->addLayout($block->fields(), $block->flexibleLayoutArgs());

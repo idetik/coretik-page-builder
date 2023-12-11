@@ -300,8 +300,7 @@ abstract class Block implements BlockInterface
         foreach (Classes::classUsesDeep($this) as $traitNamespace) {
             $ref = new \ReflectionClass($traitNamespace);
             $traitName = $ref->getShortName();
-            $method = $traitName . 'ToArray';
-            $method = strtolower(substr($method, 0, 1)) . substr($method, 1);
+            $method = \lcfirst($traitName) . 'ToArray';
 
             if (method_exists($this, $method)) {
                 $parameters = array_merge($parameters, $this->$method());
