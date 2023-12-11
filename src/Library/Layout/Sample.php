@@ -14,7 +14,7 @@ use Coretik\PageBuilder\Library\Component\TableComponent;
 
 use function Coretik\PageBuilder\Core\Block\Modifier\required;
 
-class ParagraphLayout extends BlockComposite
+class Sample extends BlockComposite
 {
     const NAME = 'layouts.paragraph';
     const LABEL = 'Titre + Paragraphe';

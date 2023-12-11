@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use Coretik\PageBuilder\Library\BlockComposite;
+use Coretik\PageBuilder\Core\Block\BlockComposite;
 
 class {{ class }} extends BlockComposite
 {
@@ -12,6 +12,13 @@ class {{ class }} extends BlockComposite
     protected $components = [
         // 'wysiwyg' => WysiwygComponent::class,
     ];
+
+    protected function prepareComponents(): array
+    {
+        return [
+            // 'component' => MyComponent::class,
+        ];
+    }
 
     /*
     protected function getPlainHtml(array $parameters): string

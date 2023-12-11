@@ -15,7 +15,7 @@ use Coretik\PageBuilder\Library\Component\{
 use Coretik\PageBuilder\Library\Component\TitleComponent;
 use Coretik\PageBuilder\Library\Container;
 use Coretik\PageBuilder\Library\Headings\{TitlePrimary};
-use Coretik\PageBuilder\Library\Layout\ParagraphLayout;
+use Coretik\PageBuilder\Library\Layout\Sample;
 use Coretik\PageBuilder\Library\Layouts\{PageHeader};
 use Coretik\PageBuilder\Library\Tools\{Anchor, Breadcrumb};
 use Coretik\PageBuilder\Builder;
@@ -77,7 +77,7 @@ add_action('coretik/container/construct', function ($container) {
 
                     // // Layouts
                     // PageHeader::class,
-                    ParagraphLayout::class,
+                    // Sample::class,
 
                     // // Headings
                     // TitlePrimary::class,
