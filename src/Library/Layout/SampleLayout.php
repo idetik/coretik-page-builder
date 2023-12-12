@@ -14,10 +14,15 @@ use Coretik\PageBuilder\Library\Component\TableComponent;
 
 use function Coretik\PageBuilder\Core\Block\Modifier\required;
 
-class Sample extends BlockComposite
+class SampleLayout extends BlockComposite
 {
     const NAME = 'layouts.paragraph';
     const LABEL = 'Titre + Paragraphe';
+
+    const FLEXIBLE_LAYOUT_ARGS = [
+        'max' => 1,
+        'min' => 0,
+    ];
 
     protected function prepareComponents(): array
     {

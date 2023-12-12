@@ -5,14 +5,15 @@ namespace Coretik\PageBuilder\Library\Component;
 use Coretik\PageBuilder\Core\Block\BlockComponent;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-class LinkComponent extends BlockComponent
+class CtaComponent extends BlockComponent
 {
-    const NAME = 'components.link';
+    const NAME = 'components.cta';
     const LABEL = 'Call-to-action';
 
     protected $link;
     protected $gtm;
     protected $seo;
+    private array $cssClasses = [];
 
     public function fieldsBuilder(): FieldsBuilder
     {
@@ -85,6 +86,16 @@ class LinkComponent extends BlockComponent
         return \apply_filters('pagebuilder/block/' . static::NAME . '/seo_fields', $seo);
     }
 
+    public function withCssClasses(string|array $cssClasses): self
+    {
+        if (is_string($cssClasses)) {
+            $cssClasses = explode(' ', $cssClasses);
+        }
+
+        $this->cssClasses = array_merge($this->cssClasses, $cssClasses);
+        return $this;
+    }
+
     public function toArray()
     {
         return [
@@ -96,7 +107,7 @@ class LinkComponent extends BlockComponent
 
     protected function getPlainHtml(array $parameters): string
     {
-        if (\locate_template($this->template())) {
+        if ($this->templateExists()) {
             return parent::getPlainHtml($parameters);
         }
 
@@ -107,11 +118,11 @@ class LinkComponent extends BlockComponent
         }
 
         $attr = \apply_filters(
-            'pagebuilder/block/' . $this->getName() . '/render/advanced_link_attrs',
-            [
+            'pagebuilder/block/components.cta/render/advanced_link_attrs',
+            array_filter([
                 'href' => $link['url'],
-                // 'class' => $className,
-            ],
+                'class' => !empty($this->cssClasses) ? implode(' ', $this->cssClasses) : false,
+            ]),
             $link,
             $this
         );

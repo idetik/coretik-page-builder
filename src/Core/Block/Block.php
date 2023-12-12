@@ -325,7 +325,7 @@ abstract class Block implements BlockInterface
         if (!$this->templateExists()) {
             return \apply_filters(
                 'coretik/page-builder/block/template_placehoder',
-                sprintf('<p>[%s] No template found</p>', $this->getName()),
+                sprintf('<p style="padding:15px;"><b>[%s]</b> No template found</p>', $this->getName()),
                 $this,
                 $parameters
             );

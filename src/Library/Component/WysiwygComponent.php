@@ -25,6 +25,15 @@ class WysiwygComponent extends BlockComponent
         return $field;
     }
 
+    protected function getPlainHtml(array $parameters): string
+    {
+        if ($this->templateExists()) {
+            return parent::getPlainHtml($parameters);
+        }
+
+        return sprintf('<div class="u-format">%s</div>', $parameters['wysiwyg']);
+    }
+
     public function toArray()
     {
         return [

@@ -8,7 +8,7 @@ use Coretik\PageBuilder\Core\Block\Traits\Composite;
 abstract class BlockComposite extends Block
 {
     const AUTO_BUILD_FIELDS = true;
-    const RENDER_COMPONENTS = true;
+    const RENDER_COMPONENTS = RenderingType::Html;
 
     use Composite;
 
@@ -57,9 +57,11 @@ abstract class BlockComposite extends Block
                 $key = $component;
             }
 
-            $data[(string)$key] = static::RENDER_COMPONENTS
-                ? $this->renderComponent($key)
-                : $this->componentToArray($key);
+            $data[(string)$key] = match(static::RENDER_COMPONENTS) {
+                RenderingType::Html => $this->renderComponent($key),
+                RenderingType::Array => $this->componentToArray($key),
+                RenderingType::Object => $this->resolveComponent($key),
+            };
         }
 
         return $data;

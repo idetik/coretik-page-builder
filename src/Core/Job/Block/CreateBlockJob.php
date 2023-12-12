@@ -146,6 +146,8 @@ class CreateBlockJob implements JobInterface
             app()->notices()->info('');
             app()->notices()->info(\WP_CLI::colorize('%U') . 'Don\'t forget to extends your block library:' . \WP_CLI::colorize('%n'));
             app()->notices()->info(\WP_CLI::colorize('%Y') . '$container->extend(\'pageBuilder.library\', fn ($blocks, $c) => $blocks->append(' . $blockClassName . '::class));' . \WP_CLI::colorize('%n'));
+            app()->notices()->info('or');
+            app()->notices()->info(\WP_CLI::colorize('%Y') . 'add_filter(\'coretik/page-builder/library\', fn ($blocks) => array_merge($blocks, [' . $blockClassName . '::class]));' . \WP_CLI::colorize('%n'));
         } catch (\Exception $e) {
             if ($this->verbose) {
                 app()->notices()->error(sprintf('%s : %s', $this->class, $e->getMessage()));

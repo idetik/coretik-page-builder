@@ -3,21 +3,20 @@
 namespace Coretik\PageBuilder;
 
 use Coretik\PageBuilder\Core\Acf\PageBuilderField;
-use Coretik\PageBuilder\Library\Block\Editorial\{WysiwygBlock, WysiwygDoubleBlock};
 use Coretik\PageBuilder\Core\Block\BlockFactory;
 use Coretik\PageBuilder\Library\Component\{
+    AnchorComponent,
+    BreadcrumbComponent,
+    CtaComponent,
     ImageComponent,
     ThumbnailComponent,
     WysiwygComponent,
     TableComponent,
-    LinkComponent
+    TitleComponent,
+    TextComponent,
 };
-use Coretik\PageBuilder\Library\Component\TitleComponent;
 use Coretik\PageBuilder\Library\Container;
-use Coretik\PageBuilder\Library\Headings\{TitlePrimary};
-use Coretik\PageBuilder\Library\Layout\Sample;
-use Coretik\PageBuilder\Library\Layouts\{PageHeader};
-use Coretik\PageBuilder\Library\Tools\{Anchor, Breadcrumb};
+use Coretik\PageBuilder\Library\Layout\SampleLayout;
 use Coretik\PageBuilder\Builder;
 use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Core\Job\Block\CreateBlockJob;
@@ -25,7 +24,6 @@ use Coretik\PageBuilder\Core\Job\Thumbnail\{
     GenerateThumbnailJob,
     ThumbnailGenerator
 };
-use Exception;
 use Illuminate\Support\Collection;
 
 use function Globalis\WP\Cubi\add_action;
@@ -63,28 +61,23 @@ add_action('coretik/container/construct', function ($container) {
         return \collect(
                 \apply_filters('coretik/page-builder/library', [
                     // Components
-                    // CtaComponent::class,
-                    WysiwygComponent::class,
-                    ThumbnailComponent::class,
-                    TitleComponent::class,
-                    LinkComponent::class,
+                    AnchorComponent::class,
+                    BreadcrumbComponent::class,
+                    CtaComponent::class,
                     ImageComponent::class,
                     TableComponent::class,
+                    TextComponent::class,
+                    ThumbnailComponent::class,
+                    TitleComponent::class,
+                    WysiwygComponent::class,
 
-                    // // Tools
-                    // Anchor::class,
-                    // Breadcrumb::class,
 
-                    // // Layouts
-                    // PageHeader::class,
-                    // Sample::class,
+                    // Blocks
 
-                    // // Headings
-                    // TitlePrimary::class,
 
-                    // // Content
-                    WysiwygBlock::class,
-                    WysiwygDoubleBlock::class,
+                    // Layouts
+                    // SampleLayout::class,
+
 
                     // // Container
                     Container::class,
@@ -93,8 +86,6 @@ add_action('coretik/container/construct', function ($container) {
     };
 
     $container['pageBuilder.config'] = function ($c): Collection {
-        $globalSettings = $c->get('settings');
-
         return \collect(
             \apply_filters('coretik/page-builder/config', [
                 'fields.directory' => 'src/admin/fields/blocks/',
@@ -103,7 +94,7 @@ add_action('coretik/container/construct', function ($container) {
                 'blocks.template.directory' => 'templates/blocks/',
                 'blocks.acf.directory' => 'templates/acf/',
                 'blocks.src.directory' => 'src/Services/PageBuilder/Blocks/',
-                'blocks.rootNamespace' => $globalSettings['rootNamespace'] ?? 'App' . '\\Services\\PageBuilder\\Blocks',
+                'blocks.rootNamespace' => ($c['rootNamespace'] ?? 'App') . '\\Services\\PageBuilder\\Blocks',
                 'blocks' => $c->get('pageBuilder.library')
             ])
             )->filter();

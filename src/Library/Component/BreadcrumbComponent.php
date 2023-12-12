@@ -1,13 +1,13 @@
 <?php
 
-namespace Coretik\PageBuilder\Library\Block\Tools;
+namespace Coretik\PageBuilder\Library\Component;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use Coretik\PageBuilder\Core\Block\Block;
+use Coretik\PageBuilder\Core\Block\BlockComponent;
 
-class Breadcrumb extends Block
+class BreadcrumbComponent extends BlockComponent
 {
-    const NAME = 'tools.breadcrumb';
+    const NAME = 'component.breadcrumb';
     const LABEL = "Fil d'ariane";
 
     protected $breadcrumb = null;

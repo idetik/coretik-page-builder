@@ -92,6 +92,16 @@ trait Composite
 
     protected function renderComponent(BlockInterface|string $key)
     {
+        return $this->resolveComponent($this->$key)->render(true);
+    }
+
+    protected function componentToArray(BlockInterface|string $key): array
+    {
+        return $this->resolveComponent($this->$key)->toArray();
+    }
+
+    protected function resolveComponent(BlockInterface|string $key): BlockInterface
+    {
         if ($key instanceof BlockInterface) {
             $key = static::undot($key::NAME);
         }
@@ -100,19 +110,6 @@ trait Composite
             return null;
         }
 
-        return $this->compose($this->$key)->render(true);
-    }
-
-    protected function componentToArray(BlockInterface|string $key): array
-    {
-        if ($key instanceof BlockInterface) {
-            $key = static::undot($key::NAME);
-        }
-
-        if (empty($this->$key)) {
-            return [];
-        }
-
-        return $this->compose($this->$key)->toArray();
+        return $this->compose($this->$key);
     }
 }
