@@ -92,12 +92,12 @@ trait Composite
 
     protected function renderComponent(BlockInterface|string $key)
     {
-        return $this->resolveComponent($this->$key)->render(true);
+        return $this->resolveComponent($key)->render(true);
     }
 
     protected function componentToArray(BlockInterface|string $key): array
     {
-        return $this->resolveComponent($this->$key)->toArray();
+        return $this->resolveComponent($key)->getParameters();
     }
 
     protected function resolveComponent(BlockInterface|string $key): BlockInterface

@@ -134,7 +134,7 @@ class CtaComponent extends BlockComponent
             $innerText .= ' <span class="visuallyhidden">(nouvelle fenêtre)</span>';
         }
 
-        return sprintf('<a %s>%s<a>', self::getStringFromAttributes($attr), $innerText);
+        return sprintf('<a %s>%s</a>', self::getStringFromAttributes($attr), $innerText);
     }
 
     protected static function getStringFromAttributes($attr)

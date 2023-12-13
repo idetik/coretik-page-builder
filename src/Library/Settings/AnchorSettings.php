@@ -19,7 +19,7 @@ trait AnchorSettings
         $anchor
             ->addGroup('anchor', ['layout' => 'row'])
                 ->setLabel('Ancre')
-                ->addText('attr_id')
+                ->addField('attr_id', 'acfe_slug')
                     ->setInstructions('Placer un identifiant unique. Celui-ci pourra être ciblé par une ancre.')
                     ->setUnrequired()
                     ->setLabel('Id')

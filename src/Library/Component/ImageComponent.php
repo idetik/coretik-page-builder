@@ -63,15 +63,17 @@ class ImageComponent extends BlockComponent
             'aria-hidden' => !empty($parameters['accessibility']['aria_hidden']) ? $parameters['accessibility']['aria_hidden'] : false,
             'aria-label' => !empty($parameters['accessibility']['aria_label']) ? $parameters['accessibility']['aria_label'] : false,
             'class' => !empty($parameters['visibility']['breakpoint'])
-                ? implode(
+                ? ltrim(($attrs['class'] ?? '') . ' ' . implode(
                     ' ',
                     array_map(
                         fn ($breakpints) => 'hide-if-' . $breakpints,
                         $parameters['visibility']['breakpoint']
                     )
-                )
-                : false,
+                ))
+                : ($attrs['class'] ?? false),
         ], $parameters, $image_size);
+        
+        unset($attrs['class']);
 
         return \wp_get_attachment_image($parameters['attachment_id'], $image_size, false, \array_filter(\wp_parse_args($attrs, $defaultAttrs)));
     }
