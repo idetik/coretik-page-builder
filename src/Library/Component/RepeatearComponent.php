@@ -42,6 +42,9 @@ class RepeatearComponent extends BlockComponent
             if ($key === 'repeater_name') {
                 $this->repeater_name = $value;
                 $this->propsFilled[$key] = $value;
+            } elseif (\property_exists($this, $key)) {
+                $this->$key = $value;
+                $this->propsFilled[$key] = $value;
             }
         }
 

@@ -297,7 +297,7 @@ abstract class Block implements BlockInterface
         $parameters = array_merge(
             [
                 'uniqId' => $this->getUniqId(),
-                // 'layoutId' => $this->getLayoutId()
+                'layoutId' => $this->getLayoutId()
             ],
             $this->toArray(),
             [
