@@ -157,7 +157,7 @@ abstract class Block implements BlockInterface
         return $this->context;
     }
 
-    public function fields()
+    public function fields(): FieldsBuilder
     {
         if (empty($this->fields)) {
             \do_action('coretik/page-builder/block/before_generate_fields', $this);
@@ -294,7 +294,16 @@ abstract class Block implements BlockInterface
 
     public function getParameters(): array
     {
-        $parameters = ['uniqId' => $this->getUniqId(), 'layoutId' => $this->getLayoutId()] + $this->toArray() + ['context' => $this->getContext()?->toArray()];
+        $parameters = array_merge(
+            [
+                'uniqId' => $this->getUniqId(),
+                // 'layoutId' => $this->getLayoutId()
+            ],
+            $this->toArray(),
+            [
+                'context' => $this->getContext()?->toArray()
+            ]
+        );
 
         // Call toArray from traits
         foreach (Classes::classUsesDeep($this) as $traitNamespace) {

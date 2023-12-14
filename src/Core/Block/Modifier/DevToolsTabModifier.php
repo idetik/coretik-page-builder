@@ -38,6 +38,11 @@ class DevToolsTabModifier extends Modifier
 
     public static function loadBlockAndPrintView($field)
     {
+        if (!array_key_exists('parent', $field) || !array_key_exists('parent_layout', $field)) {
+            echo "No layout.";
+            return;
+        }
+
         // Get layout name from current acf field
         $layout_name = str_replace($field['parent'] . '_', '', $field['parent_layout']);
 

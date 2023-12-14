@@ -2,6 +2,8 @@
 
 namespace Coretik\PageBuilder\Core\Contract;
 
+use StoutLogic\AcfBuilder\FieldsBuilder;
+
 interface BlockInterface
 {
     public function getUniqId(): string;
@@ -10,6 +12,8 @@ interface BlockInterface
     public function getCategory(): string;
     public function setContext(BlockContextInterface $context): self;
     public function getContext(): ?BlockContextInterface;
+    public function fields(): FieldsBuilder;
+    public function fieldsBuilder(): FieldsBuilder;
     public function render();
     public function toArray();
 }

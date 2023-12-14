@@ -100,7 +100,7 @@ trait Composite
         return $this->resolveComponent($key)->getParameters();
     }
 
-    protected function resolveComponent(BlockInterface|string $key): BlockInterface
+    protected function resolveComponent(BlockInterface|string $key): ?BlockInterface
     {
         if ($key instanceof BlockInterface) {
             $key = static::undot($key::NAME);

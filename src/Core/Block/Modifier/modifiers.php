@@ -28,3 +28,8 @@ function tap(BlockInterface|string $block, callable $callback): BlockInterface
 {
     return TapModifier::modify($block, $callback);
 }
+
+function repeat(BlockInterface|string $block, string|array $nameOrArgs): BlockInterface
+{
+    return RepeatModifier::modify($block, $nameOrArgs);
+}

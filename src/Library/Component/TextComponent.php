@@ -20,6 +20,15 @@ class TextComponent extends BlockComponent
         return $field;
     }
 
+    protected function getPlainHtml(array $parameters): string
+    {
+        if (\locate_template($this->template())) {
+            return parent::getPlainHtml($parameters);
+        }
+
+        return $this->text;
+    }
+
     public function toArray()
     {
         return [

@@ -9,6 +9,7 @@ use Coretik\PageBuilder\Library\Component\{
     BreadcrumbComponent,
     CtaComponent,
     ImageComponent,
+    RepeatearComponent,
     ThumbnailComponent,
     WysiwygComponent,
     TableComponent,
@@ -70,6 +71,7 @@ add_action('coretik/container/construct', function ($container) {
                     ThumbnailComponent::class,
                     TitleComponent::class,
                     WysiwygComponent::class,
+                    RepeatearComponent::class,
 
 
                     // Blocks
