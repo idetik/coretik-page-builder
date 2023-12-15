@@ -1,4 +1,4 @@
-# [1.2.0](https://github.com/idetik/coretik-page-builder/compare/v1.1.4...v1.2.0) (2023-12-15)
+# [2.0.0](https://github.com/idetik/coretik-page-builder/compare/v1.1.4...v2.0.0) (2023-12-15)
 
 
 ### Features
