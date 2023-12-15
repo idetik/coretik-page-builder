@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/idetik/coretik-page-builder/compare/v1.1.4...v1.2.0) (2023-12-15)
+
+
+### Features
+
+* V2 ([#3](https://github.com/idetik/coretik-page-builder/issues/3)) ([3f08372](https://github.com/idetik/coretik-page-builder/commit/3f0837284989834c47f0dfbef4a0a43c833e3f15))
+
 ## [1.1.4](https://github.com/idetik/coretik-page-builder/compare/v1.1.3...v1.1.4) (2023-10-25)
 
 
