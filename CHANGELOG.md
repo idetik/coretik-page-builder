@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/idetik/coretik-page-builder/compare/v2.0.1...v2.0.2) (2023-12-15)
+
+
+### Bug Fixes
+
+* Faker wysiwyg ([41e057d](https://github.com/idetik/coretik-page-builder/commit/41e057d5744414a29cec640c671f714d0d0cb61f))
+
 ## [2.0.1](https://github.com/idetik/coretik-page-builder/compare/v2.0.0...v2.0.1) (2023-12-15)
 
 
