@@ -2,6 +2,11 @@
 
 namespace Coretik\PageBuilder;
 
+/**
+ * Coretik Pagebuilder v2
+ * ----------------------
+ */
+
 use Coretik\PageBuilder\Core\Acf\PageBuilderField;
 use Coretik\PageBuilder\Core\Block\BlockFactory;
 use Coretik\PageBuilder\Library\Component\{
