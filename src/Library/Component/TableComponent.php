@@ -58,9 +58,9 @@ class TableComponent extends BlockComponent
                 ->setRequired()
                 ->setLabel('Entête');
 
-            foreach ($columns as $column) {
-                $head->addFields($column);
-            }
+        foreach ($columns as $column) {
+            $head->addFields($column);
+        }
 
         $head->end();
         $field->addFields($head);
@@ -72,9 +72,9 @@ class TableComponent extends BlockComponent
             ->setLabel('Lignes')
             ->setRequired();
 
-            foreach ($columns as $column) {
-                $body->addFields($column);
-            }
+        foreach ($columns as $column) {
+            $body->addFields($column);
+        }
         $body->end();
         $field->addFields($body);
 

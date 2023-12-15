@@ -72,7 +72,7 @@ class ImageComponent extends BlockComponent
                 ))
                 : ($attrs['class'] ?? false),
         ], $parameters, $image_size);
-        
+
         unset($attrs['class']);
 
         return \wp_get_attachment_image($parameters['attachment_id'], $image_size, false, \array_filter(\wp_parse_args($attrs, $defaultAttrs)));

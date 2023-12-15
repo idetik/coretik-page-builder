@@ -30,11 +30,6 @@ use Illuminate\Support\Collection;
 use function Globalis\WP\Cubi\add_action;
 use function Globalis\WP\Cubi\is_cli;
 
-/**
- * @todo supprimer
- */
-require_once __DIR__ ."/Core/Block/Modifier/modifiers.php";
-
 add_action('coretik/container/construct', function ($container) {
 
     if (!\class_exists('ACF')) {
@@ -52,7 +47,7 @@ add_action('coretik/container/construct', function ($container) {
     /**
      * Extend it:
      * $container->extend('pageBuilder.library', fn ($blocks, $c) => $blocks->append(...));
-     * 
+     *
      * Or filter it:
      * add_filter('coretik/page-builder/library', function ($library) {
      *     return $library;
@@ -60,7 +55,7 @@ add_action('coretik/container/construct', function ($container) {
      */
     $container['pageBuilder.library'] = function ($c) {
         return \collect(
-                \apply_filters('coretik/page-builder/library', [
+            \apply_filters('coretik/page-builder/library', [
                     // Components
                     AnchorComponent::class,
                     BreadcrumbComponent::class,
@@ -84,7 +79,7 @@ add_action('coretik/container/construct', function ($container) {
                     // // Container
                     Container::class,
                 ])
-            );
+        );
     };
 
     $container['pageBuilder.config'] = function ($c): Collection {
@@ -99,7 +94,7 @@ add_action('coretik/container/construct', function ($container) {
                 'blocks.rootNamespace' => ($c['rootNamespace'] ?? 'App') . '\\Services\\PageBuilder\\Blocks',
                 'blocks' => $c->get('pageBuilder.library')
             ])
-            )->filter();
+        )->filter();
     };
 
     $container['pageBuilder.factory'] = function ($c) {
@@ -162,5 +157,4 @@ add_action('admin_init', function () {
             $block->render();
         }
     }, 10, 2);
-
 });

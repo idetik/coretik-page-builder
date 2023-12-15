@@ -26,11 +26,11 @@ class RepeatModifier extends Modifier
             if (!\array_key_exists('name', $args)) {
                 throw new Exception('[RepeatModifier] Repeater modifiers doesn\'t contains \'name\' or \'args\' keys.');
             }
-            
+
             if (!\is_string($args['name'])) {
                 throw new Exception('[RepeatModifier] Repeater modifiers \'name\' must be a string.');
             }
-            
+
             if (!\is_array($args['args'] ?? [])) {
                 throw new Exception('[RepeatModifier] Repeater modifiers \'args\' must be a array.');
             }

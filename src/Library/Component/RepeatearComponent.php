@@ -13,7 +13,7 @@ class RepeatearComponent extends BlockComponent
     const LABEL = 'Répéteur';
 
     use Components;
-    
+
     protected string $repeater_name = 'rows';
     private array $args = [];
     private BlockInterface $component;
@@ -87,8 +87,8 @@ class RepeatearComponent extends BlockComponent
         return [
             'repeater_name' => $this->repeater_name,
             $this->repeater_name => collect($this->{$this->repeater_name})->map(
-                    fn ($component) => $this->component($component)->render(true)
-                )->all()
+                fn ($component) => $this->component($component)->render(true)
+            )->all()
         ];
     }
 }

@@ -57,7 +57,7 @@ abstract class BlockComposite extends Block
                 $key = $component;
             }
 
-            $data[(string)$key] = match(static::RENDER_COMPONENTS) {
+            $data[(string)$key] = match (static::RENDER_COMPONENTS) {
                 RenderingType::Html => $this->renderComponent($key),
                 RenderingType::Array => $this->componentToArray($key),
                 RenderingType::Object => $this->resolveComponent($key),
