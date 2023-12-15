@@ -2,6 +2,7 @@
 
 namespace Coretik\PageBuilder\Core\Job\Thumbnail;
 
+use Coretik\PageBuilder\Core\Block\Context\ScreenshotContext;
 use function Globalis\WP\Cubi\include_template_part;
 
 class ThumbnailGenerator
@@ -68,7 +69,7 @@ class ThumbnailGenerator
             $base = include_template_part('base', ['html' => '%%CONTENT%%', 'header' => false, 'footer' => false], true);
         }
 
-        $block = $this->builder->factory()->create(['acf_fc_layout' => $layout], 'screenshot');
+        $block = $this->builder->factory()->create(['acf_fc_layout' => $layout], new ScreenshotContext());
 
         if (!$block::SCREENSHOTABLE) {
             throw new \Exception('Unscreenshotable');
