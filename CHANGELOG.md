@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/idetik/coretik-page-builder/compare/v2.0.0...v2.0.1) (2023-12-15)
+
+
+### Bug Fixes
+
+* Debug thumbnail generator CLI ([1e296e9](https://github.com/idetik/coretik-page-builder/commit/1e296e9ecbd93631fb1b37bce3412655d0ea6f16))
+
 # [2.0.0](https://github.com/idetik/coretik-page-builder/compare/v1.1.4...v2.0.0) (2023-12-15)
 
 
