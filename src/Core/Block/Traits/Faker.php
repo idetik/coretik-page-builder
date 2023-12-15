@@ -102,7 +102,7 @@ trait Faker
             case 'wysiwyg':
                 return implode('', \array_map(function ($p) {
                     return sprintf('<p>%s</p>', $p);
-                }, app()->faker()->paragraphs(5)));
+                }, app()->faker()->paragraphs(2)));
             case 'page_link':
                 return app()->faker()->pageId();
             case 'true_false':
