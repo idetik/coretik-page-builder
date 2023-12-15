@@ -1,6 +1,6 @@
 <?php
 
-namespace Coretik\PageBuilder\Core\Block;
+namespace Coretik\PageBuilder\Core\Block\Context;
 
 enum BlockContextType
 {
@@ -9,4 +9,5 @@ enum BlockContextType
     case SIBLING;
     case RELATED;
     case OTHER;
+    case SCREENSHOT;
 }

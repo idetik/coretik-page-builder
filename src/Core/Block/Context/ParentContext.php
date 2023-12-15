@@ -1,11 +1,11 @@
 <?php
 
-namespace Coretik\PageBuilder\Core\Block;
+namespace Coretik\PageBuilder\Core\Block\Context;
 
-use Coretik\PageBuilder\Core\Block\BlockContextType;
+use Coretik\PageBuilder\Core\Block\Context\BlockContextType;
 use Coretik\PageBuilder\Core\Contract\BlockInterface;
 
-class ContainerContext extends BlockContext
+class ParentContext extends BlockContext
 {
     public function __construct(
         ?BlockInterface $block = null,
@@ -14,6 +14,6 @@ class ContainerContext extends BlockContext
         mixed $data = null,
     ) {
         parent::__construct($block, $name, $category, $data);
-        $this->setType(BlockContextType::CONTAINER);
+        $this->setType(BlockContextType::PARENT);
     }
 }

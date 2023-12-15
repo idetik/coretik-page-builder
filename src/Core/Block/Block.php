@@ -7,7 +7,7 @@ use Coretik\Core\Models\Traits\{
     Bootable
 };
 use Coretik\Core\Utils\Classes;
-use Coretik\PageBuilder\Core\Block\BlockContextType;
+use Coretik\PageBuilder\Core\Block\Context\BlockContextType;
 use Coretik\PageBuilder\Core\Block\Traits\{
     Faker,
     Settings,

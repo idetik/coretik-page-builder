@@ -4,7 +4,7 @@ namespace Coretik\PageBuilder\Core\Block\Traits;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Core\Contract\BlockInterface;
-use Coretik\PageBuilder\Core\Block\ParentContext;
+use Coretik\PageBuilder\Core\Block\Context\ParentContext;
 use SplObjectStorage;
 
 trait Composite

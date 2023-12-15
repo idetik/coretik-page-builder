@@ -1,10 +1,10 @@
 <?php
 
-namespace Coretik\PageBuilder\Core\Block;
+namespace Coretik\PageBuilder\Core\Block\Context;
 
 use Coretik\PageBuilder\Core\Contract\BlockContextInterface;
 use Coretik\PageBuilder\Core\Contract\BlockInterface;
-use Coretik\PageBuilder\Core\Block\BlockContextType;
+use Coretik\PageBuilder\Core\Block\Context\BlockContextType;
 
 class BlockContext implements BlockContextInterface
 {
@@ -46,9 +46,9 @@ class BlockContext implements BlockContextInterface
         return $context;
     }
 
-    public function getBlock(): BlockInterface
+    public function getBlock(): ?BlockInterface
     {
-        return $this->block;
+        return $this->block ?? null;
     }
 
     public function setBlock(BlockInterface $block): self
@@ -59,7 +59,7 @@ class BlockContext implements BlockContextInterface
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name ?? '';
     }
 
     public function setName(string $name): self
@@ -70,7 +70,7 @@ class BlockContext implements BlockContextInterface
 
     public function getCategory(): string
     {
-        return $this->category;
+        return $this->category ?? '';
     }
 
     public function setCategory(string $category): self
@@ -105,7 +105,7 @@ class BlockContext implements BlockContextInterface
     {
         return [
             'name' => $this->getName(),
-            'uniqId' => $this->getBlock()->getUniqId(),
+            'uniqId' => $this->getBlock()?->getUniqId(),
             'category' => $this->getCategory(),
             'data' => $this->getData(),
             'type' => $this->getType()->name,
