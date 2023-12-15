@@ -2,16 +2,94 @@
 
 namespace Coretik\PageBuilder\Cli\Command;
 
+use Coretik\PageBuilder\Core\Contract\JobInterface;
+use Coretik\PageBuilder\Core\Job\Block\BlockType;
+use Illuminate\Support\Collection;
+
 class PageBuilderCommand
 {
     protected $progress;
-    protected $job;
+    protected JobInterface $thumbnailJob;
+    protected JobInterface $blockJob;
     protected $config;
 
-    public function __construct($job, $config)
+    public function __construct(Collection $config)
     {
-        $this->job = $job;
         $this->config = $config;
+    }
+
+    public static function make(Collection $config): self
+    {
+        return new static($config);
+    }
+
+    public function setThumbnailJob(JobInterface $job): self
+    {
+        $this->thumbnailJob = $job;
+        return $this;
+    }
+
+    public function setBlockJob(JobInterface $job): self
+    {
+        $this->blockJob = $job;
+        return $this;
+    }
+
+    /**
+     * Create block
+     *
+     * ## OPTIONS
+     *
+     * [<class>]
+     * : The block classname
+     *
+     * [--type=<block_type>]
+     * : The block type
+     * ---
+     * default: block
+     * options:
+     *   - block
+     *   - component
+     *   - composite
+     * ---
+     *
+     * [--name=<name>]
+     * : The block name to retrieve template (ex: components.title, template based in blocks/components/title.php)
+     *
+     * [--label=<label>]
+     * : The block title
+     *
+     * [--verbose]
+     * : Echo logs
+     *
+     * [--force]
+     * : Override existings files
+     *
+     * ## EXAMPLES
+     *
+     *     wp page-builder create Components/MyComponent --name=components.my-component --type=component --label="My super Component" --verbose --force
+     */
+    public function create($args, $assoc_args)
+    {
+        $class = \rtrim($args[0], '.php');
+        $verbose = $assoc_args['verbose'] ?? false;
+        $name = $assoc_args['name'] ?? null;
+        $label = $assoc_args['label'] ?? null;
+        $type = $assoc_args['type'] ?? false;
+        $force = $assoc_args['force'] ?? false;
+
+        $this->blockJob->setConfig([
+            'class' => $class,
+            'force' => $force,
+            'verbose' => $verbose,
+            'name' => $name,
+            'label' => $label,
+        ])->setBlockType(match ($type) {
+            'component' => BlockType::Component,
+            'block' => BlockType::Block,
+            'composite' => BlockType::Composite,
+            default => BlockType::Block,
+        })->handle();
     }
 
     /**
@@ -53,11 +131,13 @@ class PageBuilderCommand
             });
         }
 
-        $results = $this->job->setConfig([
+        $this->thumbnailJob->setConfig([
             'layout' => $args[0] ?? null,
             'override' => $assoc_args['override'] ?? false,
             'verbose' => $verbose,
         ])->handle();
+
+        $results = $this->thumbnailJob->getPayload();
 
         if ('json' === $format) {
             $formatted = [];
@@ -98,7 +178,7 @@ class PageBuilderCommand
     public function get_blocks($args, $assoc_args)
     {
         $blocks = $this->config->get('blocks')
-                    ->map(fn ($block) => ['category' => $block::category(), 'name' => $block::NAME])
+                    ->map(fn ($block) => ['category' => $block::categoryTitle(), 'name' => $block::NAME])
                     ->all();
 
         $format = \WP_CLI\Utils\get_flag_value($assoc_args, 'format', 'json');

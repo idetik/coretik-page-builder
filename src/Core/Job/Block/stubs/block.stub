@@ -1,0 +1,29 @@
+<?php
+
+namespace {{ namespace }};
+
+use StoutLogic\AcfBuilder\FieldsBuilder;
+use Coretik\PageBuilder\Core\Block\Block;
+
+class {{ class }} extends Block
+{
+    const NAME = '{{ name }}';
+    const LABEL = '{{ label }}';
+
+    // props
+
+    public function fieldsBuilder(): FieldsBuilder
+    {
+        $field = $this->createFieldsBuilder();
+        // 
+        $this->useSettingsOn($field);
+        return $field;
+    }
+
+    public function toArray()
+    {
+        return [
+            //
+        ];
+    }
+}

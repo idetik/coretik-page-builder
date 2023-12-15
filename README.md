@@ -6,3 +6,5 @@
 - Create your own blocks
 
 ... Wiki in progress
+
+Components -> blocks -> layouts -> templates
