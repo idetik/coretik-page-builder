@@ -3,6 +3,7 @@
 namespace Coretik\PageBuilder\Library\Component;
 
 use Coretik\PageBuilder\Core\Block\BlockComponent;
+use Coretik\PageBuilder\Core\Block\Traits\Customizable;
 use Coretik\PageBuilder\Library\Settings\AnchorSettings;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
@@ -12,6 +13,7 @@ class TitleComponent extends BlockComponent
     const LABEL = 'Titre';
 
     use AnchorSettings;
+    use Customizable;
 
     protected $title;
     protected $tag;
@@ -50,6 +52,13 @@ class TitleComponent extends BlockComponent
             return parent::getPlainHtml($parameters);
         }
 
-        return sprintf('<%1$s>%2$s</%1$s>', $parameters['tag'], $parameters['title']);
+        $css = $this->getCssClasses();
+        return sprintf(
+            '<%1$s id="%3$s" %4$s>%2$s</%1$s>',
+            $parameters['tag'],
+            $parameters['title'],
+            $parameters['anchor']['attr_id'] ?: $parameters['uniqId'],
+            !empty($css) ? ' class="' . $css . '"' : null
+        );
     }
 }

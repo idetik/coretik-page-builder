@@ -100,7 +100,7 @@ abstract class Block implements BlockInterface
     public function getUniqId(): string
     {
         if (empty($this->uniqId)) {
-            $this->uniqId = sprintf('%s-%s', $this->getName(), uniqid());
+            $this->uniqId = sprintf('%s-%s', str_replace('.', '-', $this->getName()), uniqid());
         }
         return $this->uniqId;
     }

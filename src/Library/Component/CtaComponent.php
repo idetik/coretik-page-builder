@@ -3,12 +3,15 @@
 namespace Coretik\PageBuilder\Library\Component;
 
 use Coretik\PageBuilder\Core\Block\BlockComponent;
+use Coretik\PageBuilder\Core\Block\Traits\Customizable;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class CtaComponent extends BlockComponent
 {
     const NAME = 'components.cta';
     const LABEL = 'Call-to-action';
+
+    use Customizable;
 
     protected $link;
     protected $gtm;
@@ -86,16 +89,6 @@ class CtaComponent extends BlockComponent
         return \apply_filters('pagebuilder/block/' . static::NAME . '/seo_fields', $seo);
     }
 
-    public function withCssClasses(string|array $cssClasses): self
-    {
-        if (is_string($cssClasses)) {
-            $cssClasses = explode(' ', $cssClasses);
-        }
-
-        $this->cssClasses = array_merge($this->cssClasses, $cssClasses);
-        return $this;
-    }
-
     public function toArray()
     {
         return [
@@ -121,7 +114,7 @@ class CtaComponent extends BlockComponent
             'pagebuilder/block/components.cta/render/advanced_link_attrs',
             array_filter([
                 'href' => $link['url'],
-                'class' => !empty($this->cssClasses) ? implode(' ', $this->cssClasses) : false,
+                'class' => $this->getCssClasses(),
             ]),
             $link,
             $this

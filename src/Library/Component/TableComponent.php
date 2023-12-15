@@ -83,9 +83,9 @@ class TableComponent extends BlockComponent
 
     protected function getPlainHtml(array $parameters): string
     {
-        // if ($this->templateExists()) {
-        //     return parent::getPlainHtml($parameters);
-        // }
+        if ($this->templateExists()) {
+            return parent::getPlainHtml($parameters);
+        }
 
         \ob_start();
         \extract($parameters);
