@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/idetik/coretik-page-builder/compare/v2.0.2...v2.0.3) (2024-01-02)
+
+
+### Bug Fixes
+
+* move filesystem dependency to require ([7b7f7b1](https://github.com/idetik/coretik-page-builder/commit/7b7f7b1b07850137c10bd71cc072042ae8767cc6))
+
 ## [2.0.2](https://github.com/idetik/coretik-page-builder/compare/v2.0.1...v2.0.2) (2023-12-15)
 
 
