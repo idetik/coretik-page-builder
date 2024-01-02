@@ -15,8 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      packages: write
-      contents: read
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
 
     strategy:
       matrix:
