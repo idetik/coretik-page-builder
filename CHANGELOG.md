@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/idetik/coretik-page-builder/compare/v2.0.3...v2.0.4) (2024-01-02)
+
+
+### Bug Fixes
+
+* relationship faker ([1a8a466](https://github.com/idetik/coretik-page-builder/commit/1a8a4661144948628dd9e455df18c116f7fc8bb9))
+
 ## [2.0.3](https://github.com/idetik/coretik-page-builder/compare/v2.0.2...v2.0.3) (2024-01-02)
 
 
