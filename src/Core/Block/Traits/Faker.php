@@ -77,14 +77,20 @@ trait Faker
                 $max = $field['max'] ?? ($min + 3);
                 $average = ceil(($min + $max) / 2);
 
+                $types = $field['post_type'] ?? ['post'];
+                if (!is_array($types)) {
+                    $types = [$types];
+                }
+
                 switch ($field['return_format']) {
+                    case 'id':
                     case 'ids':
-                        return \array_map(function () {
-                            return app()->faker()->postId();
+                        return \array_map(function () use ($types) {
+                            return app()->faker()->postId($types[array_rand($types)]);
                         }, range(0, $average));
                     default:
-                        return \array_map(function () {
-                            return app()->faker()->post();
+                        return \array_map(function () use ($types) {
+                            return app()->faker()->post($types[array_rand($types)]);
                         }, range(0, $average));
                 }
             case 'gallery':
