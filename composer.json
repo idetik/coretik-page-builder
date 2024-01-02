@@ -7,7 +7,8 @@
     "require": {
         "globalis/wp-cubi-helpers": "^1.0",
         "stoutlogic/acf-builder": "^1.12",
-        "idetik/coretik-faker": "^1.1"
+        "idetik/coretik-faker": "^1.1",
+        "illuminate/filesystem": "^10.39"
     },
     "authors": [
         {
@@ -24,8 +25,7 @@
         ]
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.7",
-        "illuminate/filesystem": "^10.30"
+        "squizlabs/php_codesniffer": "^3.7"
     },
     "suggest": {
         "daandesmedt/phpheadlesschrome": "PHPHeadlessChrome provides a simple usage helper class to create PDF and / or screenshots using a Headless Chrome instance."
