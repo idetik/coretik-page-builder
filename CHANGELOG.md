@@ -1,3 +1,20 @@
+# [2.1.0](https://github.com/idetik/coretik-page-builder/compare/v2.0.4...v2.1.0) (2024-02-02)
+
+
+### Bug Fixes
+
+* license ([d6496e2](https://github.com/idetik/coretik-page-builder/commit/d6496e28fa54b386402c4ebae4e326383bacf8cd))
+
+
+### Features
+
+* Enhance CLI commands & add create-block, create-component and create-composite subcommands ([c5db2c6](https://github.com/idetik/coretik-page-builder/commit/c5db2c6b55adb3f0bdb05b2f85d6cac0891c1134))
+
+
+### Performance Improvements
+
+* Upgrade composer dependencies ([98c861a](https://github.com/idetik/coretik-page-builder/commit/98c861a2712ff6ec1090762a39ec7fbc926d57cd))
+
 ## [2.0.4](https://github.com/idetik/coretik-page-builder/compare/v2.0.3...v2.0.4) (2024-01-02)
 
 
