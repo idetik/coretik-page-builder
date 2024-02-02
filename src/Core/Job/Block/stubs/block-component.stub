@@ -20,6 +20,14 @@ class {{ class }} extends BlockComponent
         return $field;
     }
 
+    /**
+     * This is usefull to bypass the template file and return small html pieces.
+     */
+    // protected function getPlainHtml(array $parameters): string
+    // {
+    //     return '';
+    // }
+
     public function toArray()
     {
         return [

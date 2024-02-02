@@ -15,6 +15,8 @@ class CreateBlockJob implements JobInterface
     protected ?string $path;
     protected ?string $name;
     protected ?string $label;
+    protected bool $createTemplateFile;
+    protected bool $createAcfAdminFiles;
     protected bool $force;
     protected bool $verbose;
     protected array $payload = [];
@@ -34,6 +36,8 @@ class CreateBlockJob implements JobInterface
         $this->force = $config['force'] ?? false;
         $this->verbose = $config['verbose'] ?? true;
         $this->label = $config['label'] ?? null;
+        $this->createTemplateFile = $config['createTemplateFile'] ?? true;
+        $this->createAcfAdminFiles = $config['createAcfAdminFiles'] ?? true;
         return $this;
     }
 
@@ -92,62 +96,71 @@ class CreateBlockJob implements JobInterface
             }
 
             /**
-             * Create template file
+             * Load the block instance
              */
             require_once $blockClassPath;
-
             $block = new $blockClassName();
-            $templatePath = get_template_directory() . DIRECTORY_SEPARATOR . $block->template();
 
-            if ($this->files->exists($templatePath)) {
-                if ($this->verbose) {
-                    app()->notices()->warning(sprintf('%s template       [%s] already exists.', $info->name, $blockClassPath));
-                }
-            } else {
-                $this->makeDirectory($templatePath);
-                $this->files->put($templatePath, '');
-
-                if ($this->verbose) {
-                    app()->notices()->success(sprintf('%s template       [%s] created successfully.', $info->name, $templatePath));
+            /**
+             * Create template file
+             */
+            if ($this->createTemplateFile) {
+                $templatePath = get_template_directory() . DIRECTORY_SEPARATOR . $block->template();
+                if ($this->files->exists($templatePath)) {
+                    if ($this->verbose) {
+                        app()->notices()->warning(sprintf('%s template       [%s] already exists.', $info->name, $blockClassPath));
+                    }
+                } else {
+                    $this->makeDirectory($templatePath);
+                    $this->files->put($templatePath, '');
+    
+                    if ($this->verbose) {
+                        app()->notices()->success(sprintf('%s template       [%s] created successfully.', $info->name, $templatePath));
+                    }
                 }
             }
 
             /**
              * Create ACF files
              */
-            foreach (
-                [
-                'admin-template' => 'adminTemplate',
-                'admin-style' => 'adminStyle',
-                'admin-script' => 'adminScript',
-                ] as $key => $method
-            ) {
-                $path = get_template_directory() . DIRECTORY_SEPARATOR . $block->$method();
-
-                if ($this->files->exists($path)) {
-                    if ($this->verbose) {
-                        app()->notices()->warning(sprintf('%s %s [%s] already exists.', $info->name, str_pad($key, 14), $path));
-                    }
-                } else {
-                    $this->makeDirectory($path);
-                    $this->files->put($path, '');
-
-                    if ($this->verbose) {
-                        app()->notices()->success(sprintf('%s %s [%s] created successfully.', $info->name, str_pad($key, 14), $path));
+            if ($this->createAcfAdminFiles) {
+                foreach (
+                    [
+                    'admin-template' => 'adminTemplate',
+                    'admin-style' => 'adminStyle',
+                    'admin-script' => 'adminScript',
+                    ] as $key => $method
+                ) {
+                    $path = get_template_directory() . DIRECTORY_SEPARATOR . $block->$method();
+    
+                    if ($this->files->exists($path)) {
+                        if ($this->verbose) {
+                            app()->notices()->warning(sprintf('%s %s [%s] already exists.', $info->name, str_pad($key, 14), $path));
+                        }
+                    } else {
+                        $this->makeDirectory($path);
+                        $this->files->put($path, '');
+    
+                        if ($this->verbose) {
+                            app()->notices()->success(sprintf('%s %s [%s] created successfully.', $info->name, str_pad($key, 14), $path));
+                        }
                     }
                 }
             }
 
-            /**
-             * Extends DI
-             */
-            app()->notices()->info('');
-            app()->notices()->info('-------------------');
-            app()->notices()->info('');
-            app()->notices()->info(\WP_CLI::colorize('%U') . 'Don\'t forget to extends your block library:' . \WP_CLI::colorize('%n'));
-            app()->notices()->info(\WP_CLI::colorize('%Y') . '$container->extend(\'pageBuilder.library\', fn ($blocks, $c) => $blocks->append(' . $blockClassName . '::class));' . \WP_CLI::colorize('%n'));
-            app()->notices()->info('or');
-            app()->notices()->info(\WP_CLI::colorize('%Y') . 'add_filter(\'coretik/page-builder/library\', fn ($blocks) => array_merge($blocks, [' . $blockClassName . '::class]));' . \WP_CLI::colorize('%n'));
+            if ($this->verbose) {
+                /**
+                 * Extends DI
+                 */
+                app()->notices()->info('');
+                app()->notices()->info('-------------------');
+                app()->notices()->info('');
+                app()->notices()->info(\WP_CLI::colorize('%U') . 'Don\'t forget to extends your block library:' . \WP_CLI::colorize('%n'));
+                app()->notices()->info('');
+                app()->notices()->info(\WP_CLI::colorize('%Y') . '$container->extend(\'pageBuilder.library\', fn ($blocks, $c) => $blocks->append(' . $blockClassName . '::class));' . \WP_CLI::colorize('%n'));
+                app()->notices()->info('or');
+                app()->notices()->info(\WP_CLI::colorize('%Y') . 'add_filter(\'coretik/page-builder/library\', fn ($blocks) => array_merge($blocks, [' . $blockClassName . '::class]));' . \WP_CLI::colorize('%n'));
+            }
         } catch (\Exception $e) {
             if ($this->verbose) {
                 app()->notices()->error(sprintf('%s : %s', $this->class, $e->getMessage()));

@@ -2,12 +2,22 @@
 
 namespace Coretik\PageBuilder\Cli\Command;
 
+use Coretik\PageBuilder\Cli\Command\SubCommand\{
+    CreateBlockSubCommand,
+    CreateComponentSubCommand,
+    CreateCompositeSubCommand,
+    CreateSubCommand,
+};
 use Coretik\PageBuilder\Core\Contract\JobInterface;
-use Coretik\PageBuilder\Core\Job\Block\BlockType;
 use Illuminate\Support\Collection;
 
 class PageBuilderCommand
 {
+    use CreateSubCommand;
+    use CreateComponentSubCommand;
+    use CreateBlockSubCommand;
+    use CreateCompositeSubCommand;
+
     protected $progress;
     protected JobInterface $thumbnailJob;
     protected JobInterface $blockJob;
@@ -33,63 +43,6 @@ class PageBuilderCommand
     {
         $this->blockJob = $job;
         return $this;
-    }
-
-    /**
-     * Create block
-     *
-     * ## OPTIONS
-     *
-     * [<class>]
-     * : The block classname
-     *
-     * [--type=<block_type>]
-     * : The block type
-     * ---
-     * default: block
-     * options:
-     *   - block
-     *   - component
-     *   - composite
-     * ---
-     *
-     * [--name=<name>]
-     * : The block name to retrieve template (ex: components.title, template based in blocks/components/title.php)
-     *
-     * [--label=<label>]
-     * : The block title
-     *
-     * [--verbose]
-     * : Echo logs
-     *
-     * [--force]
-     * : Override existings files
-     *
-     * ## EXAMPLES
-     *
-     *     wp page-builder create Components/MyComponent --name=components.my-component --type=component --label="My super Component" --verbose --force
-     */
-    public function create($args, $assoc_args)
-    {
-        $class = \rtrim($args[0], '.php');
-        $verbose = $assoc_args['verbose'] ?? false;
-        $name = $assoc_args['name'] ?? null;
-        $label = $assoc_args['label'] ?? null;
-        $type = $assoc_args['type'] ?? false;
-        $force = $assoc_args['force'] ?? false;
-
-        $this->blockJob->setConfig([
-            'class' => $class,
-            'force' => $force,
-            'verbose' => $verbose,
-            'name' => $name,
-            'label' => $label,
-        ])->setBlockType(match ($type) {
-            'component' => BlockType::Component,
-            'block' => BlockType::Block,
-            'composite' => BlockType::Composite,
-            default => BlockType::Block,
-        })->handle();
     }
 
     /**
@@ -187,5 +140,20 @@ class PageBuilderCommand
             $blocks,
             ['category', 'name']
         );
+    }
+
+    protected static function strToPascalCase(string $src): string
+    {
+        return ucfirst(str_replace(' ', '', ucwords(strtr($src, '_-', ' '))));
+    }
+
+    protected static function strToSnakeCase(string $src): string
+    {
+        return strtolower(str_replace([' ', '-'], '_', \remove_accents($src)));
+    }
+
+    protected static function strToKebabCase(string $src): string
+    {
+        return strtolower(str_replace([' ', '-'], '-', \remove_accents($src)));
     }
 }

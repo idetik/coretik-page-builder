@@ -9,10 +9,6 @@ class {{ class }} extends BlockComposite
     const NAME = '{{ name }}';
     const LABEL = '{{ label }}';
 
-    protected $components = [
-        // 'wysiwyg' => WysiwygComponent::class,
-    ];
-
     protected function prepareComponents(): array
     {
         return [
@@ -20,10 +16,11 @@ class {{ class }} extends BlockComposite
         ];
     }
 
-    /*
-    protected function getPlainHtml(array $parameters): string
-    {
-        return '';
-    }
-    */
+    /**
+     * This is usefull to bypass the template file and return small html pieces.
+     */
+    // protected function getPlainHtml(array $parameters): string
+    // {
+    //     return '';
+    // }
 }
