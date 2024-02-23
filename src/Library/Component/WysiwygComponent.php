@@ -7,7 +7,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class WysiwygComponent extends BlockComponent
 {
-    const NAME = 'components.wysiwyg';
+    const NAME = 'component.wysiwyg';
     const LABEL = 'Éditeur de texte';
     const SCREEN_PREVIEW_SIZE = [1600, 724];
 

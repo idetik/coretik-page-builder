@@ -9,7 +9,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class TitleComponent extends BlockComponent
 {
-    const NAME = 'components.title';
+    const NAME = 'component.title';
     const LABEL = 'Titre';
 
     use AnchorSettings;

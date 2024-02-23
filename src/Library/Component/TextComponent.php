@@ -7,7 +7,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class TextComponent extends BlockComponent
 {
-    const NAME = 'components.text';
+    const NAME = 'component.text';
     const LABEL = 'Texte';
 
     protected $text;

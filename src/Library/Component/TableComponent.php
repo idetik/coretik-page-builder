@@ -7,7 +7,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class TableComponent extends BlockComponent
 {
-    const NAME = 'components.table';
+    const NAME = 'component.table';
     const LABEL = 'Tableau';
 
     const COLUMNS_MIN = 2;

@@ -8,7 +8,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class CtaComponent extends BlockComponent
 {
-    const NAME = 'components.cta';
+    const NAME = 'component.cta';
     const LABEL = 'Call-to-action';
 
     use Customizable;

@@ -10,7 +10,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class ImageComponent extends BlockComponent
 {
-    const NAME = 'components.image';
+    const NAME = 'component.image';
     const LABEL = 'Image';
 
     use AccessibilitySettings;
