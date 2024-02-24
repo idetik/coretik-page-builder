@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/idetik/coretik-page-builder/compare/v2.1.2...v2.1.3) (2024-02-24)
+
+
+### Bug Fixes
+
+* clean & force release ([34d3153](https://github.com/idetik/coretik-page-builder/commit/34d31532a9c93e2b5f2d9aafaaac7bb5a60b28ab))
+
 ## [2.1.2](https://github.com/idetik/coretik-page-builder/compare/v2.1.1...v2.1.2) (2024-02-24)
 
 
