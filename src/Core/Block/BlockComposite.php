@@ -2,6 +2,7 @@
 
 namespace Coretik\PageBuilder\Core\Block;
 
+use Coretik\Core\Utils\Arr;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 use Coretik\PageBuilder\Core\Block\Traits\Composite;
 
@@ -19,6 +20,38 @@ abstract class BlockComposite extends Block
      * ]
      */
     protected $components = [];
+
+    public function setProps(array $props)
+    {
+        foreach ($props as $key => $value) {
+
+            if (\property_exists($this, $key)) {
+                
+                $filled = false;
+                foreach ($this->components ?? [] as $compositeKey => $componentClass) {
+
+                    $componentKey = $compositeKey;
+
+                    if (\is_int($compositeKey)) {
+                        $componentKey = static::undot($componentClass::NAME);
+                    }
+
+                    if ($componentKey === $key) {
+                        $this->$key = array_merge(['acf_fc_layout' => $componentClass::NAME], Arr::wrap($value));
+                        $this->propsFilled[$key] = array_merge(['acf_fc_layout' => $componentClass::NAME], Arr::wrap($value));
+                        $filled = true;
+                    }
+                }
+
+                if (!$filled) {
+                    $this->$key = $value;
+                    $this->propsFilled[$key] = $value;
+                }
+            }
+
+        }
+        return $this;
+    }
 
     public function fieldsBuilder(): FieldsBuilder
     {
