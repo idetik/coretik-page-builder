@@ -22,7 +22,6 @@ use Coretik\PageBuilder\Library\Component\{
     TextComponent,
 };
 use Coretik\PageBuilder\Library\Container;
-use Coretik\PageBuilder\Library\Layout\SampleLayout;
 use Coretik\PageBuilder\Builder;
 use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Core\Job\Block\CreateBlockJob;
