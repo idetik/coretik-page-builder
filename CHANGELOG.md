@@ -1,3 +1,11 @@
+## [2.1.1](https://github.com/idetik/coretik-page-builder/compare/v2.1.0...v2.1.1) (2024-02-24)
+
+
+### Bug Fixes
+
+* Components name & thumbnail component ([5e979e1](https://github.com/idetik/coretik-page-builder/commit/5e979e193db0445f3821568e9a40c7c4795c6e07))
+* Readme wip ([32cf6cc](https://github.com/idetik/coretik-page-builder/commit/32cf6cc70a6df8513baf2d46a806d086c8e39027))
+
 # [2.1.0](https://github.com/idetik/coretik-page-builder/compare/v2.0.4...v2.1.0) (2024-02-02)
 
 
