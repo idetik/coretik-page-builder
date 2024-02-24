@@ -57,7 +57,7 @@ class TitleComponent extends BlockComponent
             '<%1$s id="%3$s" %4$s>%2$s</%1$s>',
             $parameters['tag'],
             $parameters['title'],
-            $parameters['anchor']['attr_id'] ?: $parameters['uniqId'],
+            !empty($parameters['anchor']) ? $parameters['anchor']['attr_id'] : $parameters['uniqId'],
             !empty($css) ? ' class="' . $css . '"' : null
         );
     }
