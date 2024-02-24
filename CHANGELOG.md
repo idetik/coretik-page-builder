@@ -1,3 +1,15 @@
+# [2.2.0](https://github.com/idetik/coretik-page-builder/compare/v2.1.3...v2.2.0) (2024-02-24)
+
+
+### Bug Fixes
+
+* Fix title component php error ([c87a514](https://github.com/idetik/coretik-page-builder/commit/c87a51458b57e0268a580b52d35b9926f8819faa))
+
+
+### Features
+
+* Populate composite block outside builder context ([bcf8db7](https://github.com/idetik/coretik-page-builder/commit/bcf8db79a88b253d8f9d3e4457f9563a28787dd5))
+
 ## [2.1.3](https://github.com/idetik/coretik-page-builder/compare/v2.1.2...v2.1.3) (2024-02-24)
 
 
