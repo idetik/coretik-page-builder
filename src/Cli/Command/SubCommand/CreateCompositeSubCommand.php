@@ -4,12 +4,13 @@ namespace Coretik\PageBuilder\Cli\Command\SubCommand;
 
 use Coretik\PageBuilder\Core\Job\Block\BlockType;
 
-trait CreateCompositeSubCommand {
+trait CreateCompositeSubCommand
+{
     /**
      * Create composite
      *
      * @subcommand create-composite
-     * 
+     *
      * ## OPTIONS
      *
      * [<label>]

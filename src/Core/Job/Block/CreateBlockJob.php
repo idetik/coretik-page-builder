@@ -113,7 +113,7 @@ class CreateBlockJob implements JobInterface
                 } else {
                     $this->makeDirectory($templatePath);
                     $this->files->put($templatePath, '');
-    
+
                     if ($this->verbose) {
                         app()->notices()->success(sprintf('%s template       [%s] created successfully.', $info->name, $templatePath));
                     }
@@ -132,7 +132,7 @@ class CreateBlockJob implements JobInterface
                     ] as $key => $method
                 ) {
                     $path = get_template_directory() . DIRECTORY_SEPARATOR . $block->$method();
-    
+
                     if ($this->files->exists($path)) {
                         if ($this->verbose) {
                             app()->notices()->warning(sprintf('%s %s [%s] already exists.', $info->name, str_pad($key, 14), $path));
@@ -140,7 +140,7 @@ class CreateBlockJob implements JobInterface
                     } else {
                         $this->makeDirectory($path);
                         $this->files->put($path, '');
-    
+
                         if ($this->verbose) {
                             app()->notices()->success(sprintf('%s %s [%s] created successfully.', $info->name, str_pad($key, 14), $path));
                         }

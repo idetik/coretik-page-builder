@@ -4,7 +4,8 @@ namespace Coretik\PageBuilder\Cli\Command\SubCommand;
 
 use Coretik\PageBuilder\Core\Job\Block\BlockType;
 
-trait CreateSubCommand {
+trait CreateSubCommand
+{
     /**
      * Create block
      *
@@ -31,7 +32,7 @@ trait CreateSubCommand {
      *
      * [--without-acf-admin-files]
      * : Avoid to create ACF admin files (script, style and template)
-     * 
+     *
      * [--without-template-file]
      * : Avoid to create template file
      *

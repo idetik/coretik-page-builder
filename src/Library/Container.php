@@ -79,8 +79,7 @@ class Container extends Block
                         ->setBlocks($this->config('blocks')
                             ->filter(fn ($block) => $block::IN_LIBRARY && $block::CONTAINERIZABLE)
                             ->map(fn ($block) => $block::NAME)
-                            ->all()
-                            )
+                            ->all())
                         ->field('container_blocks',);
 
         $field = $this->createFieldsBuilder();

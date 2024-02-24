@@ -3,6 +3,7 @@
 namespace Coretik\PageBuilder\Core\Job\Thumbnail;
 
 use Coretik\PageBuilder\Core\Block\Context\ScreenshotContext;
+
 use function Globalis\WP\Cubi\include_template_part;
 
 class ThumbnailGenerator
