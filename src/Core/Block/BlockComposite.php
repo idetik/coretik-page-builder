@@ -76,7 +76,21 @@ abstract class BlockComposite extends Block
                 ->addFields($data['fields']);
         }
 
-        $this->useSettingsOn($field);
+        if (empty($this->settings)) {
+            return $field;
+        }
+
+        $tabSettings = $this->fieldSettingsName() . '_tab';
+        if (!$field->fieldExists($tabSettings)) {
+            $field
+                ->addTab($this->fieldSettingsName(), ['label' => __('Paramètres du bloc ', app()->get('settings')['text-domain']), 'placement' => 'left'])
+                ->endpoint()
+                ->setAttr('class', 'settings-tab--composite');
+        } else {
+            $field->getField($tabSettings);
+        }
+
+        $this->applySettings($field);
 
         return $field;
     }
