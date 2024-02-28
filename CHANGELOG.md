@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/idetik/coretik-page-builder/compare/v2.2.0...v2.2.1) (2024-02-28)
+
+
+### Bug Fixes
+
+* Enhance composite blocks settings fields ([9c84759](https://github.com/idetik/coretik-page-builder/commit/9c84759b90ad5ab61fc77d7f925bd45fcf61ac98))
+
 # [2.2.0](https://github.com/idetik/coretik-page-builder/compare/v2.1.3...v2.2.0) (2024-02-24)
 
 
