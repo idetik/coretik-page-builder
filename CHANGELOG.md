@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/idetik/coretik-page-builder/compare/v2.2.1...v2.2.2) (2024-08-15)
+
+
+### Bug Fixes
+
+* Add config paramters and filters to composite fields groups ([07386cb](https://github.com/idetik/coretik-page-builder/commit/07386cbf822560e79206cf3bc7952563156e0b0c))
+
 ## [2.2.1](https://github.com/idetik/coretik-page-builder/compare/v2.2.0...v2.2.1) (2024-02-28)
 
 
