@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/idetik/coretik-page-builder/compare/v2.2.2...v2.2.3) (2024-08-15)
+
+
+### Bug Fixes
+
+* Fix seoSettings, force field unrequired ([13247d5](https://github.com/idetik/coretik-page-builder/commit/13247d511cba62bff26b7f57d02258e3de4a3f2b))
+
 ## [2.2.2](https://github.com/idetik/coretik-page-builder/compare/v2.2.1...v2.2.2) (2024-08-15)
 
 
