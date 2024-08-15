@@ -63,7 +63,7 @@ trait Composite
         return \str_replace('_dot_', '.', $undotted);
     }
 
-    public function fieldsComposite()
+    public function fieldsComposite(array $groupConfig = [])
     {
         $fields = [];
 
@@ -72,9 +72,16 @@ trait Composite
             $blockFields = $block->fields();
             $blockFields->addField('acf_fc_layout', 'acfe_hidden', ['default_value' => $block->getName()]);
 
+            $groupName = $this->children->getInfo() ?? static::undot($block->getName());
+            $groupConfig = \apply_filters(
+                'coretik/page-builder/block/composite_group_config',
+                array_merge(['acfe_seamless_style' => 1], $groupConfig),
+                $this
+            );
+
             $compositeField = new FieldsBuilder('');
             $compositeField
-                ->addGroup($this->children->getInfo() ?? static::undot($block->getName()), ['acfe_seamless_style' => 1])
+                ->addGroup($groupName, $groupConfig)
                     ->setLabel('')
                     ->addFields($blockFields)
                 ->end();
