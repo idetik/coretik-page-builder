@@ -78,7 +78,7 @@ class CtaComponent extends BlockComponent
     {
         $seo = new FieldsBuilder('settings.seo');
         $seo
-            ->addGroup('seo', ['layout' => 'row'])
+            ->addGroup('seo', ['layout' => 'row', 'required' => 0])
                 ->addCheckbox('rel')
                     ->setLabel('Rel')
                     ->setInstructions('Si non renseignée, l\'alternative textuelle de l\'image sera utilisée.')
