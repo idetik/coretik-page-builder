@@ -34,7 +34,7 @@ class ColumnModifier extends Modifier
             ])
             ->addFields($fields);
 
-        return $fields;
+        return $wrapper;
     }
 
     protected function setUniqId(): self
