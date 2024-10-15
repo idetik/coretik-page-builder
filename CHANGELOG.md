@@ -1,3 +1,10 @@
+## [2.2.4](https://github.com/idetik/coretik-page-builder/compare/v2.2.3...v2.2.4) (2024-10-15)
+
+
+### Bug Fixes
+
+* Fix column modifier ([756706c](https://github.com/idetik/coretik-page-builder/commit/756706cf36d537ee099c09d364d7f3976c6eb9b3))
+
 ## [2.2.3](https://github.com/idetik/coretik-page-builder/compare/v2.2.2...v2.2.3) (2024-08-15)
 
 
