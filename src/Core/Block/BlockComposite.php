@@ -24,12 +24,9 @@ abstract class BlockComposite extends Block
     public function setProps(array $props)
     {
         foreach ($props as $key => $value) {
-
             if (\property_exists($this, $key)) {
-                
                 $filled = false;
                 foreach ($this->components ?? [] as $compositeKey => $componentClass) {
-
                     $componentKey = $compositeKey;
 
                     if (\is_int($compositeKey)) {
@@ -48,7 +45,6 @@ abstract class BlockComposite extends Block
                     $this->propsFilled[$key] = $value;
                 }
             }
-
         }
         return $this;
     }
