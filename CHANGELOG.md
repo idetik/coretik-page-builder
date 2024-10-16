@@ -1,3 +1,10 @@
+## [2.2.6](https://github.com/idetik/coretik-page-builder/compare/v2.2.5...v2.2.6) (2024-10-16)
+
+
+### Bug Fixes
+
+* CtaComponent use link name if title not set ([eb669bb](https://github.com/idetik/coretik-page-builder/commit/eb669bb96ed78d362f362d9c11842c7d92e6c718))
+
 ## [2.2.5](https://github.com/idetik/coretik-page-builder/compare/v2.2.4...v2.2.5) (2024-10-16)
 
 
