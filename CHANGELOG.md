@@ -1,3 +1,12 @@
+## [2.2.5](https://github.com/idetik/coretik-page-builder/compare/v2.2.4...v2.2.5) (2024-10-16)
+
+
+### Bug Fixes
+
+* Better DevTools integration (requires Coretik 1.11.0) ([e18e23d](https://github.com/idetik/coretik-page-builder/commit/e18e23d82701b7133e448285375e44193a14eb67))
+* Sniff ([74977d5](https://github.com/idetik/coretik-page-builder/commit/74977d513fa6a1758848b8557119d3fb01214a8f))
+* Up dependencies ([cad8265](https://github.com/idetik/coretik-page-builder/commit/cad826584de88024c5807c6f70679d71cede8176))
+
 ## [2.2.4](https://github.com/idetik/coretik-page-builder/compare/v2.2.3...v2.2.4) (2024-10-15)
 
 
