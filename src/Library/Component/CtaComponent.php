@@ -120,7 +120,7 @@ class CtaComponent extends BlockComponent
             $this
         );
 
-        $innerText = $link['title'];
+        $innerText = $link['title'] ?: $link['name'];
 
         if ((bool)$link['target']) {
             $attr['target'] = '_blank';
