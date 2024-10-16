@@ -6,11 +6,17 @@ use Coretik\PageBuilder\Core\Block\Modifier\DevToolsTabModifier;
 
 trait DevTools
 {
+    public static function bootDevToolsOnce(): void
+    {
+        // // Prepare and hide dev fields on production envs
+        \add_filter('acf/prepare_field/name=devtools', [__CLASS__, 'prepareDevToolsView']);
+        \add_filter('acf/prepare_field/name=devtools_tab', [__CLASS__, 'prepareDevToolsTab']);
+    }
+
     public function initializeDevTools()
     {
-        if ('development' === WP_ENV) {
-            DevToolsTabModifier::modify($this);
-        }
+        // Apply modifier, add tab and dynamic render field
+        DevToolsTabModifier::modify($this);
     }
 
     public function getDevToolsView(bool $rendering = false): string
@@ -42,5 +48,31 @@ trait DevTools
         \do_action('coretik/page-builder/block/devtools/end_view', $this);
 
         return \apply_filters('coretik/page-builder/block/devtools/view', \ob_get_clean(), $this);
+    }
+
+    public static function prepareDevToolsTab(array $field): array
+    {
+        if (!static::shouldDisplayDevTools()) {
+            return [];
+        }
+
+        return $field;
+    }
+
+    public static function prepareDevToolsView(array $field): array
+    {
+        if (!static::shouldDisplayDevTools()) {
+            return [];
+        }
+
+        return $field;
+    }
+
+    public static function shouldDisplayDevTools(): bool
+    {
+        return \apply_filters(
+            'coretik/page-builder/block/devtools/enabled',
+            (defined('WP_ENV') && 'development' === WP_ENV) || (!defined('WP_ENV') && \current_user_can('manage_options'))
+        );
     }
 }
