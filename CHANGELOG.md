@@ -1,3 +1,10 @@
+## [2.2.7](https://github.com/idetik/coretik-page-builder/compare/v2.2.6...v2.2.7) (2024-10-23)
+
+
+### Bug Fixes
+
+* Block __toString may not display anything ([9766ee2](https://github.com/idetik/coretik-page-builder/commit/9766ee2f1d9f76ff265a70cc8121815ef388089c))
+
 ## [2.2.6](https://github.com/idetik/coretik-page-builder/compare/v2.2.5...v2.2.6) (2024-10-16)
 
 
