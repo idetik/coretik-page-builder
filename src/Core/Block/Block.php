@@ -398,8 +398,8 @@ abstract class Block implements BlockInterface
         return !$this->isChild();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->render();
+        return $this->render(true);
     }
 }
