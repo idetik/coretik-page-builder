@@ -1,3 +1,10 @@
+## [2.2.8](https://github.com/idetik/coretik-page-builder/compare/v2.2.7...v2.2.8) (2024-11-03)
+
+
+### Bug Fixes
+
+* Add getItems callable on repeater components result ([41f12bd](https://github.com/idetik/coretik-page-builder/commit/41f12bdff1ef798633f070021f58ff9a74218a7d))
+
 ## [2.2.7](https://github.com/idetik/coretik-page-builder/compare/v2.2.6...v2.2.7) (2024-10-23)
 
 
