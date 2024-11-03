@@ -5,6 +5,7 @@ namespace Coretik\PageBuilder\Library\Component;
 use Coretik\PageBuilder\Core\Block\BlockComponent;
 use Coretik\PageBuilder\Core\Block\Traits\Components;
 use Coretik\PageBuilder\Core\Contract\BlockInterface;
+use Illuminate\Support\Collection;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class RepeatearComponent extends BlockComponent
@@ -88,7 +89,10 @@ class RepeatearComponent extends BlockComponent
             'repeater_name' => $this->repeater_name,
             $this->repeater_name => collect($this->{$this->repeater_name})->map(
                 fn ($component) => $this->component($component)->render(true)
-            )->all()
+            )->all(),
+            'getItems' => fn (): Collection => collect($this->{$this->repeater_name})->map(
+                fn ($component): BlockInterface => $this->component($component)
+            ),
         ];
     }
 }
