@@ -1,3 +1,10 @@
+## [2.2.9](https://github.com/idetik/coretik-page-builder/compare/v2.2.8...v2.2.9) (2024-11-30)
+
+
+### Performance Improvements
+
+* Repeater component perf ([cfbce2a](https://github.com/idetik/coretik-page-builder/commit/cfbce2aef6dde4c876884db5234036a1952200e8))
+
 ## [2.2.8](https://github.com/idetik/coretik-page-builder/compare/v2.2.7...v2.2.8) (2024-11-03)
 
 
