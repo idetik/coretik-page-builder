@@ -14,6 +14,6 @@ interface BlockInterface
     public function getContext(): ?BlockContextInterface;
     public function fields(): FieldsBuilder;
     public function fieldsBuilder(): FieldsBuilder;
-    public function render();
+    public function render(bool $return);
     public function toArray();
 }

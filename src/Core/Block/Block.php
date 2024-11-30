@@ -347,7 +347,7 @@ abstract class Block implements BlockInterface
      * Rendering block
      * Return or echo html
      */
-    public function render($return = false): string
+    public function render(bool $return = false): string
     {
         \do_action('coretik/page-builder/block/before_render', $this, $return);
         \do_action('coretik/page-builder/block/before_render/name=' . $this->getName(), $this, $return);
