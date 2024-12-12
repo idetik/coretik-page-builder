@@ -88,10 +88,10 @@ class RepeatearComponent extends BlockComponent
         return [
             'repeater_name' => $this->repeater_name,
             $this->repeater_name => collect($this->{$this->repeater_name})->map(
-                fn ($component) => $this->component($component)
+                fn ($component) => !empty($component) ? $this->component($component) : null
             )->all(),
             'getItems' => fn (): Collection => collect($this->{$this->repeater_name})->map(
-                fn ($component): BlockInterface => $this->component($component)
+                fn ($component): ?BlockInterface => !empty($component) ? $this->component($component) : null
             ),
         ];
     }
