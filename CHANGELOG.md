@@ -1,3 +1,10 @@
+## [2.2.10](https://github.com/idetik/coretik-page-builder/compare/v2.2.9...v2.2.10) (2024-12-12)
+
+
+### Bug Fixes
+
+* RepeaterComponent typecheck ([e034bf8](https://github.com/idetik/coretik-page-builder/commit/e034bf81bee11301736ee518291abca8424e9e30))
+
 ## [2.2.9](https://github.com/idetik/coretik-page-builder/compare/v2.2.8...v2.2.9) (2024-11-30)
 
 
