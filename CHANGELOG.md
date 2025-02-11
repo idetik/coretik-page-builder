@@ -1,3 +1,10 @@
+## [2.2.11](https://github.com/idetik/coretik-page-builder/compare/v2.2.10...v2.2.11) (2025-02-11)
+
+
+### Bug Fixes
+
+* init pagebuilder library, change hook name 'coretik/page-builder/init_library' ([27b5bd7](https://github.com/idetik/coretik-page-builder/commit/27b5bd7bade50387c3401668e962265b8536b6e4))
+
 ## [2.2.10](https://github.com/idetik/coretik-page-builder/compare/v2.2.9...v2.2.10) (2024-12-12)
 
 
