@@ -1,3 +1,10 @@
+## [2.2.12](https://github.com/idetik/coretik-page-builder/compare/v2.2.11...v2.2.12) (2025-02-11)
+
+
+### Bug Fixes
+
+* add filter 'coretik/page-builder/in_library' Builder::library() ([91bbc06](https://github.com/idetik/coretik-page-builder/commit/91bbc064b804ff4e1e497befbf88c7afc52d3d9e))
+
 ## [2.2.11](https://github.com/idetik/coretik-page-builder/compare/v2.2.10...v2.2.11) (2025-02-11)
 
 

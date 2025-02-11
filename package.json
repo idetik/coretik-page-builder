@@ -1,6 +1,6 @@
 {
     "name": "@idetik-group/coretik-page-builder",
-    "version": "2.2.11",
+    "version": "2.2.12",
     "description": "Coretik page builder service",
     "scripts": {
         "semantic-release": "semantic-release"
