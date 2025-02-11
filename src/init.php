@@ -59,7 +59,7 @@ add_action('coretik/container/construct', function ($container) {
      */
     $container['pageBuilder.library'] = function ($c) {
         return \collect(
-            \apply_filters('coretik/page-builder/library', [
+            \apply_filters('coretik/page-builder/init_library', [
                     // Components
                     AnchorComponent::class,
                     BreadcrumbComponent::class,
