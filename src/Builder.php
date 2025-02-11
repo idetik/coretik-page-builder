@@ -88,7 +88,7 @@ class Builder
     public function library(): array
     {
         $blocks = $this->config['blocks']
-            ->filter(fn ($block) => $block::IN_LIBRARY)
+            ->filter(fn ($block) => apply_filters('coretik/page-builder/in_library', $block::IN_LIBRARY, $block))
             ->map(fn ($block) => $block::NAME)
             ->all();
 
