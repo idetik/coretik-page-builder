@@ -10,6 +10,7 @@ interface BlockInterface
     public function getName(): string;
     public function getLabel(): string;
     public function getCategory(): string;
+    public function setProps(array $props);
     public function setContext(BlockContextInterface $context): self;
     public function getContext(): ?BlockContextInterface;
     public function fields(): FieldsBuilder;

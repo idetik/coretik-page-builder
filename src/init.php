@@ -61,7 +61,7 @@ add_action('coretik/container/construct', function ($container) {
      * })
      */
     $container['pageBuilder.library'] = function ($c) {
-        return \collect(
+        $blocks = \collect(
             \apply_filters('coretik/page-builder/init_library', [
                     // Components
                     AnchorComponent::class,
@@ -86,7 +86,11 @@ add_action('coretik/container/construct', function ($container) {
                     // // Container
                     Container::class,
                 ])
-        );
+            );
+        $blocks->macro('find', function ($name) {
+            return $this->first(fn ($block) => $block::NAME === $name);
+        });
+        return $blocks;
     };
 
     $container['pageBuilder.config'] = function ($c): Collection {
@@ -152,7 +156,7 @@ add_action('admin_init', function () {
         if (\in_array($layoutName, app()->get('pageBuilder.config')->get('blocks')->map(fn ($block) => $block::NAME)->all())) {
             $data = get_fields();
             $data = current(current($data));
-            $block = app()->get('pageBuilder.factory')->create($data);
+            $block = factory()->create($data);
 
             if (empty($data['uniqId'])) {
                 $data['uniqId'] = $block->getUniqId();
@@ -168,7 +172,7 @@ add_action('admin_init', function () {
 
 
 add_action('acf/init', function() {
-    foreach (blocks() as $block) {
+    foreach (library() as $block) {
         $block = factory()->create(['acf_fc_layout' => $block]);
 
         $fields = $block->fields();
@@ -178,6 +182,18 @@ add_action('acf/init', function() {
     }
 });
 
+add_action('init', function () {
+    foreach (library() as $blockName) {
+
+        $block = blocks()->find($blockName);
+        if (in_array(ShouldBuildBlockType::class, class_implements($block))) {
+            $block = factory()->create($blockName)->registerBlockType();
+        }
+    }
+});
+
+
+/** TMP */
 if (!function_exists(__NAMESPACE__ . '\\factory')) {
     function factory(): BlockFactoryInterface
     {
@@ -185,52 +201,23 @@ if (!function_exists(__NAMESPACE__ . '\\factory')) {
     }
 }
 
-if (!function_exists(__NAMESPACE__ . '\\blocks')) {
-    function blocks(): Collection
+if (!function_exists(__NAMESPACE__ . '\\library')) {
+    /**
+     * Return all published blocks in library
+     */
+    function library(): array
     {
         return app()->get('pageBuilder')->library();
     }
 }
 
-add_action('init', function () {
-    foreach (blocks() as $blockName) {
-
-        $block = factory()->find($blockName);
-        if (in_array(ShouldBuildBlockType::class, class_implements($block))) {
-            $block = factory()->create($blockName)->registerBlockType();
-            // $block = factory()->create(['acf_fc_layout' => $block])->registerBlockType();
-        }
-
-
-        //@todo json($block) => format block_type
-        //@todo filter library to get only blocks with JSONABLE
-
-        // acf_register_block_type([
-        //     'name' => 'acf/' . \str_replace('.', '-', $block::NAME),
-        //     'title' => $block::LABEL,
-        //     'category' => $block::CATEGORY ?? 'common',
-        //     // 'icon' => $block::ICON ?? 'block-default-icon',
-        //     // 'keywords' => $block::KEYWORDS ?? [],
-        //     'render_callback' => function ($attributes, $content) use ($block) {
-        //         // $attributes['acf_fc_layout'] = $block::NAME;
-
-        //         $data = array_merge($attributes['data'], [
-        //             'acf_fc_layout' => $block::NAME,
-        //         ]);
-
-        //         $data = get_fields();
-        //         $data['acf_fc_layout'] = $block::NAME;
-
-        //         $block = app()->get('pageBuilder.factory')->create($data);
-        //         if (empty($data['uniqId'])) {
-        //             $data['uniqId'] = $block->getUniqId();
-        //         }
-        //         $block->setProps($data);
-        //         \do_action('coretik/page-builder/block/load', $block, $attributes);
-        //         \do_action('coretik/page-builder/block/load/layoutId=' . $block->getLayoutId(), $block, $attributes);
-        //         \do_action('coretik/page-builder/block/load/uniqId=' . $block->getUniqId(), $block, $attributes);
-        //         $block->render();
-        //     }
-        // ]);
+if (!function_exists(__NAMESPACE__ . '\\blocks')) {
+    /**
+     * Return all registered blocks
+     * @return \Illuminate\Support\Collection
+     */
+    function blocks(): Collection
+    {
+        return app()->get('pageBuilder.config')->get('blocks');
     }
-});
+}
