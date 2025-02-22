@@ -7,6 +7,7 @@ namespace Coretik\PageBuilder;
  * ----------------------
  */
 
+use Coretik\Core\Utils\Arr;
 use Coretik\PageBuilder\Core\Acf\PageBuilderField;
 use Coretik\PageBuilder\Core\Block\BlockFactory;
 use Coretik\PageBuilder\Library\Component\{
@@ -24,6 +25,8 @@ use Coretik\PageBuilder\Library\Component\{
 use Coretik\PageBuilder\Library\Container;
 use Coretik\PageBuilder\Builder;
 use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
+use Coretik\PageBuilder\Core\Contract\BlockFactoryInterface;
+use Coretik\PageBuilder\Core\Contract\ShouldBuildBlockType;
 use Coretik\PageBuilder\Core\Job\Block\CreateBlockJob;
 use Coretik\PageBuilder\Core\Job\Thumbnail\{
     GenerateThumbnailJob,
@@ -161,4 +164,73 @@ add_action('admin_init', function () {
             $block->render();
         }
     }, 10, 2);
+});
+
+
+add_action('acf/init', function() {
+    foreach (blocks() as $block) {
+        $block = factory()->create(['acf_fc_layout' => $block]);
+
+        $fields = $block->fields();
+        $fields->setLocation('block', '==', 'acf/acf-' . \str_replace('.', '-', $block::NAME));
+        
+        acf_add_local_field_group($fields->build());
+    }
+});
+
+if (!function_exists(__NAMESPACE__ . '\\factory')) {
+    function factory(): BlockFactoryInterface
+    {
+        return app()->get('pageBuilder.factory');
+    }
+}
+
+if (!function_exists(__NAMESPACE__ . '\\blocks')) {
+    function blocks(): Collection
+    {
+        return app()->get('pageBuilder')->library();
+    }
+}
+
+add_action('init', function () {
+    foreach (blocks() as $blockName) {
+
+        $block = factory()->find($blockName);
+        if (in_array(ShouldBuildBlockType::class, class_implements($block))) {
+            $block = factory()->create($blockName)->registerBlockType();
+            // $block = factory()->create(['acf_fc_layout' => $block])->registerBlockType();
+        }
+
+
+        //@todo json($block) => format block_type
+        //@todo filter library to get only blocks with JSONABLE
+
+        // acf_register_block_type([
+        //     'name' => 'acf/' . \str_replace('.', '-', $block::NAME),
+        //     'title' => $block::LABEL,
+        //     'category' => $block::CATEGORY ?? 'common',
+        //     // 'icon' => $block::ICON ?? 'block-default-icon',
+        //     // 'keywords' => $block::KEYWORDS ?? [],
+        //     'render_callback' => function ($attributes, $content) use ($block) {
+        //         // $attributes['acf_fc_layout'] = $block::NAME;
+
+        //         $data = array_merge($attributes['data'], [
+        //             'acf_fc_layout' => $block::NAME,
+        //         ]);
+
+        //         $data = get_fields();
+        //         $data['acf_fc_layout'] = $block::NAME;
+
+        //         $block = app()->get('pageBuilder.factory')->create($data);
+        //         if (empty($data['uniqId'])) {
+        //             $data['uniqId'] = $block->getUniqId();
+        //         }
+        //         $block->setProps($data);
+        //         \do_action('coretik/page-builder/block/load', $block, $attributes);
+        //         \do_action('coretik/page-builder/block/load/layoutId=' . $block->getLayoutId(), $block, $attributes);
+        //         \do_action('coretik/page-builder/block/load/uniqId=' . $block->getUniqId(), $block, $attributes);
+        //         $block->render();
+        //     }
+        // ]);
+    }
 });

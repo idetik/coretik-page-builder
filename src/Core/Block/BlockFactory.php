@@ -22,6 +22,20 @@ class BlockFactory implements BlockFactoryInterface
         Block::setConfigAsGlobal($config);
     }
 
+    public function find(string $name): ?string
+    {
+        // $custom = \apply_filters('coretik/page-builder/factory/create', null, $name, $layout, $context, $this->config);
+        // $custom = \apply_filters('coretik/page-builder/factory/create/name=' . $name, $custom, $name, $layout, $context, $this->config);
+        // if (!empty($custom) && $custom instanceof BlockInterface) {
+        //     if (!empty($context)) {
+        //         $custom->setContext($context);
+        //     }
+        //     return $custom;
+        // }
+// var_dump($this->config['blocks']->first(fn ($block) => $block::NAME === $name));
+        return $this->config['blocks']->first(fn ($block) => $block::NAME === $name);
+    }
+
     public function create(string|array $layout, BlockContextInterface $context = null): BlockInterface
     {
         if (\is_array($layout)) {
