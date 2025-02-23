@@ -4,9 +4,9 @@ namespace Coretik\PageBuilder\Core\Block\Traits;
 
 trait BlockType
 {
-    public function registerBlockType(): void
+    public function registerBlockType(): array|bool
     {
-        \acf_register_block_type($this->getBlockType());
+        return \acf_register_block_type($this->getBlockType());
     }
 
     public function getBlockType(): array
@@ -29,13 +29,13 @@ trait BlockType
             'enqueue_script' => $this->getBlockTypeEnqueueScript(),
             'enqueue_assets' => $this->getBlockTypeEnqueueAssets(),
             'supports' => $this->getBlockTypeSupports(),
-            'example' => $this->getBlockTypeExample(),
+            // 'example' => $this->getBlockTypeExample(),
         ], fn ($value) => isset($value));
     }
 
     public function getBlockTypeName(): string
     {
-        return 'acf/' . \str_replace('.', '-', $this->getName());
+        return \str_replace('.', '-', $this->getName());
     }
 
     public function getBlockTypeTitle(): string
@@ -96,7 +96,12 @@ trait BlockType
     public function getBlockTypeRender(): ?callable
     {
         return function ($attributes, $content) {
-            $data = get_fields();
+            if (array_key_exists('data', $attributes) && ($attributes['data']['is_preview'] ?? false)) {
+                $data = $attributes['data'];
+            } else {
+                $data = get_fields();
+            }
+
             $data['acf_fc_layout'] = static::NAME;
 
             $block = app()->get('pageBuilder.factory')->create($data);
@@ -136,7 +141,7 @@ trait BlockType
         return [
             'attributes' => [
                 'mode' => 'preview',
-                'data' => $this->fakeIt()->toArray(),
+                'data' => (clone $this)->fakeIt()->getPropsFilled() + ['is_preview' => true],
             ],
         ];
     }

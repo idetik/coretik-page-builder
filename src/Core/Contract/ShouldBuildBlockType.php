@@ -4,7 +4,7 @@ namespace Coretik\PageBuilder\Core\Contract;
 
 interface ShouldBuildBlockType
 {
-    public function registerBlockType(): void;
+    public function registerBlockType(): array|bool;
     public function getBlockType(): array;
     public function getBlockTypeName(): string;
     public function getBlockTypeTitle(): string;

@@ -148,7 +148,7 @@ add_action('coretik/container/construct', function ($container) {
 add_action('admin_init', function () {
 
     /**
-     * Blocks preview
+     * Blocks Flexible Content preview
      */
     add_action('acfe/flexible/render/before_template', function ($field, $layout) {
         $layoutName = $layout['name'];
@@ -162,35 +162,34 @@ add_action('admin_init', function () {
                 $data['uniqId'] = $block->getUniqId();
             }
             $block->setProps($data);
+
             \do_action('coretik/page-builder/block/load', $block, $data);
             \do_action('coretik/page-builder/block/load/layoutId=' . $block->getLayoutId(), $block, $data);
             \do_action('coretik/page-builder/block/load/uniqId=' . $block->getUniqId(), $block, $data);
+
             $block->render();
         }
     }, 10, 2);
 });
 
-
-add_action('acf/init', function() {
-    foreach (library() as $block) {
-        $block = factory()->create(['acf_fc_layout' => $block]);
-
-        $fields = $block->fields();
-        $fields->setLocation('block', '==', 'acf/acf-' . \str_replace('.', '-', $block::NAME));
-        
-        acf_add_local_field_group($fields->build());
-    }
-});
-
 add_action('init', function () {
     foreach (library() as $blockName) {
-
         $block = blocks()->find($blockName);
         if (in_array(ShouldBuildBlockType::class, class_implements($block))) {
-            $block = factory()->create($blockName)->registerBlockType();
+            $block = factory()->create($blockName);
+            $block->registerBlockType();
+
+            add_action('acf/init', function () use ($block) {
+                $fields = $block->fields();
+                $fields->setLocation('block', '==', 'acf/' . $block->getBlockTypeName());
+
+                // var_dump($fields->build());
+
+                \acf_add_local_field_group($fields->build());
+            });
         }
     }
-});
+}, 3);
 
 
 /** TMP */

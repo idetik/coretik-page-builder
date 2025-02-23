@@ -398,6 +398,14 @@ abstract class Block implements BlockInterface
         return !$this->isChild();
     }
 
+    public function __clone()
+    {
+        // $this->uniqId = null;
+        // $this->layoutId = null;
+        $this->fields = null;
+        $this->propsFilled = [];
+    }
+
     public function __toString(): string
     {
         return $this->render(true);
