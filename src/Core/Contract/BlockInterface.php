@@ -6,6 +6,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 interface BlockInterface
 {
+    public static function supportsBlockType(): bool;
     public function getUniqId(): string;
     public function getLayoutId(): string;
     public function getName(): string;

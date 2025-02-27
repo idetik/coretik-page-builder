@@ -7,7 +7,6 @@ namespace Coretik\PageBuilder;
  * ----------------------
  */
 
-use Coretik\Core\Utils\Arr;
 use Coretik\PageBuilder\Core\Acf\PageBuilderField;
 use Coretik\PageBuilder\Core\Block\BlockFactory;
 use Coretik\PageBuilder\Library\Component\{
@@ -26,7 +25,6 @@ use Coretik\PageBuilder\Library\Container;
 use Coretik\PageBuilder\Builder;
 use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Core\Contract\BlockFactoryInterface;
-use Coretik\PageBuilder\Core\Contract\ShouldBuildBlockType;
 use Coretik\PageBuilder\Core\Job\Block\CreateBlockJob;
 use Coretik\PageBuilder\Core\Job\Thumbnail\{
     GenerateThumbnailJob,
@@ -151,9 +149,7 @@ add_action('admin_init', function () {
      * Blocks Flexible Content preview
      */
     add_action('acfe/flexible/render/before_template', function ($field, $layout) {
-        $layoutName = $layout['name'];
-
-        if (\in_array($layoutName, app()->get('pageBuilder.config')->get('blocks')->map(fn ($block) => $block::NAME)->all())) {
+        if (blocks()->find($layout['name'])) {
             $data = get_fields();
             $data = current(current($data));
             $block = factory()->create($data);
@@ -170,12 +166,15 @@ add_action('admin_init', function () {
             $block->render();
         }
     }, 10, 2);
+
 });
 
 add_action('init', function () {
+
     foreach (library() as $blockName) {
+
         $block = blocks()->find($blockName);
-        if (in_array(ShouldBuildBlockType::class, class_implements($block))) {
+        if ($block && $block::supportsBlockType()) {
             $block = factory()->create($blockName);
             $block->registerBlockType();
 
@@ -183,12 +182,12 @@ add_action('init', function () {
                 $fields = $block->fields();
                 $fields->setLocation('block', '==', 'acf/' . $block->getBlockTypeName());
 
-                // var_dump($fields->build());
-
                 \acf_add_local_field_group($fields->build());
             });
         }
+
     }
+
 }, 3);
 
 

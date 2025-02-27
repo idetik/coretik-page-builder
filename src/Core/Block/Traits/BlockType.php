@@ -2,16 +2,32 @@
 
 namespace Coretik\PageBuilder\Core\Block\Traits;
 
+use Coretik\PageBuilder\Core\Block\Context\ContainerContext;
+use Coretik\PageBuilder\Core\Contract\BlockContextInterface;
+
 trait BlockType
 {
+    protected array $blockTypeProps = [];
+    protected static BlockContextInterface $blockTypeContext;
+
+    public static function bootBlockType(): void
+    {
+        static::$blockTypeContext = new ContainerContext(
+            null,
+            'wp-block-editor',
+            null,
+            null,
+        );
+    }
+
     public function registerBlockType(): array|bool
     {
         return \acf_register_block_type($this->getBlockType());
     }
 
-    public function getBlockType(): array
+    protected function prepareBlockTypeProps(array $customProps = []): array
     {
-        return array_filter([
+        $props = array_filter([
             'name' => $this->getBlockTypeName(),
             'title' => $this->getBlockTypeTitle(),
             'description' => $this->getBlockTypeDescription(),
@@ -29,8 +45,15 @@ trait BlockType
             'enqueue_script' => $this->getBlockTypeEnqueueScript(),
             'enqueue_assets' => $this->getBlockTypeEnqueueAssets(),
             'supports' => $this->getBlockTypeSupports(),
-            // 'example' => $this->getBlockTypeExample(),
+            'example' => $this->getBlockTypeExample(),
         ], fn ($value) => isset($value));
+
+        return array_merge($props, $this->blockTypeProps, $customProps);
+    }
+
+    public function getBlockType(array $customProps = []): array
+    {
+        return $this->prepareBlockTypeProps($customProps);
     }
 
     public function getBlockTypeName(): string
@@ -98,8 +121,18 @@ trait BlockType
         return function ($attributes, $content) {
             if (array_key_exists('data', $attributes) && ($attributes['data']['is_preview'] ?? false)) {
                 $data = $attributes['data'];
+
+                if (!empty($data['preview_image'])) {
+                    printf(
+                        '<div class="block-preview-image block-preview-image--%s"><img style="width:100%%; height: auto;" src="%s" alt="Previewing %s" /></div>',
+                        str_replace('.', '-', static::NAME),
+                        $data['preview_image'],
+                        static::LABEL,
+                    );
+                    return;
+                }
             } else {
-                $data = get_fields();
+                $data = get_fields() ?: [];
             }
 
             $data['acf_fc_layout'] = static::NAME;
@@ -108,6 +141,9 @@ trait BlockType
             if (empty($data['uniqId'])) {
                 $data['uniqId'] = $block->getUniqId();
             }
+
+            $block->setContext(static::$blockTypeContext);
+
             $block->setProps($data);
             \do_action('coretik/page-builder/block/load', $block, $attributes);
             \do_action('coretik/page-builder/block/load/layoutId=' . $block->getLayoutId(), $block, $attributes);
@@ -118,7 +154,7 @@ trait BlockType
 
     public function getBlockTypeEnqueueStyle(): ?string
     {
-        return null;
+        return \app()->assets()->url('styles/admin.css', ASSETS_VERSIONING_STYLES);
     }
 
     public function getBlockTypeEnqueueScript(): ?string
@@ -141,7 +177,13 @@ trait BlockType
         return [
             'attributes' => [
                 'mode' => 'preview',
-                'data' => (clone $this)->fakeIt()->getPropsFilled() + ['is_preview' => true],
+                'data' => [
+                    'is_preview' => true,
+                    'preview_image' => apply_filters(
+                        'coretik/block_type/preview_image',
+                        str_replace('<##ASSETS_URL##>', app()->assets()->url(''), $this->thumbnail())
+                    ),
+                ],
             ],
         ];
     }

@@ -17,6 +17,7 @@ use Coretik\PageBuilder\Core\Block\Traits\{
 };
 use Coretik\PageBuilder\Core\Contract\BlockContextInterface;
 use Coretik\PageBuilder\Core\Contract\BlockInterface;
+use Coretik\PageBuilder\Core\Contract\ShouldBuildBlockType;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
 use function Globalis\WP\Cubi\include_template_part;
@@ -90,6 +91,18 @@ abstract class Block implements BlockInterface
     public static function setConfigAsGlobal($config): void
     {
         static::$configGlobal = $config;
+    }
+
+    /**
+     * Check if this block supports block type
+     */
+    public static function supportsBlockType(): bool
+    {
+        if (in_array(ShouldBuildBlockType::class, class_implements(static::class))) {
+            return true;
+        }
+
+        return false;
     }
 
     public function config(string $key): mixed
@@ -396,14 +409,6 @@ abstract class Block implements BlockInterface
     public function isParent(): bool
     {
         return !$this->isChild();
-    }
-
-    public function __clone()
-    {
-        // $this->uniqId = null;
-        // $this->layoutId = null;
-        $this->fields = null;
-        $this->propsFilled = [];
     }
 
     public function __toString(): string

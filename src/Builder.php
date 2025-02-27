@@ -9,6 +9,8 @@ use ArrayAccess;
 
 class Builder
 {
+    const GRID_ENABLED = 'auto'; // 'auto', true, false
+
     protected ?BlockContextInterface $context = null;
     protected SplObjectStorage $builderBlocks;
     protected ArrayAccess $config;
@@ -57,6 +59,10 @@ class Builder
 
     public function hasGridEnabled(): bool
     {
+        if (static::GRID_ENABLED !== 'auto') {
+            return static::GRID_ENABLED === true;
+        }
+
         $gridFounded = false;
 
         while ($this->blocks()->valid() && !$gridFounded) {
