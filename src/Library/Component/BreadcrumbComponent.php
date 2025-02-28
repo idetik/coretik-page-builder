@@ -11,12 +11,16 @@ class BreadcrumbComponent extends BlockComponent
     const LABEL = "Fil d'ariane";
 
     protected $breadcrumb = null;
-    protected $propsFake = [
-        'breadcrumb' => [
-            ['url' => '#', 'title' => 'Lorem', 'current' => false],
-            ['url' => '#', 'title' => 'Ipsum', 'current' => true],
-        ]
-    ];
+
+    protected function getFakeProps(): array
+    {
+        return [
+            'breadcrumb' => [
+                ['url' => '#', 'title' => 'Lorem', 'current' => false],
+                ['url' => '#', 'title' => 'Ipsum', 'current' => true],
+            ]
+        ];
+    }
 
     public function fieldsBuilder($fieldName = 'content'): FieldsBuilder
     {

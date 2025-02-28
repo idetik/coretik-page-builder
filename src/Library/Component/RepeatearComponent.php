@@ -83,6 +83,13 @@ class RepeatearComponent extends BlockComponent
         return implode('', $parameters[$this->repeater_name]);
     }
 
+    public function getItems(): Collection
+    {
+        return collect($this->{$this->repeater_name})->map(
+            fn ($component): ?BlockInterface => !empty($component) ? $this->component($component) : null
+        );
+    }
+
     public function toArray()
     {
         return [
@@ -90,9 +97,7 @@ class RepeatearComponent extends BlockComponent
             $this->repeater_name => collect($this->{$this->repeater_name})->map(
                 fn ($component) => !empty($component) ? $this->component($component) : null
             )->all(),
-            'getItems' => fn (): Collection => collect($this->{$this->repeater_name})->map(
-                fn ($component): ?BlockInterface => !empty($component) ? $this->component($component) : null
-            ),
+            'getItems' => fn (): Collection => $this->getItems(),
         ];
     }
 }

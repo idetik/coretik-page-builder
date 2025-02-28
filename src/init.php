@@ -24,6 +24,8 @@ use Coretik\PageBuilder\Library\Component\{
 use Coretik\PageBuilder\Library\Container;
 use Coretik\PageBuilder\Builder;
 use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
+use Coretik\PageBuilder\Core\Contract\BlockFactoryInterface;
+use Coretik\PageBuilder\Core\Contract\ShouldBuildBlockType;
 use Coretik\PageBuilder\Core\Job\Block\CreateBlockJob;
 use Coretik\PageBuilder\Core\Job\Thumbnail\{
     GenerateThumbnailJob,
@@ -58,7 +60,7 @@ add_action('coretik/container/construct', function ($container) {
      * })
      */
     $container['pageBuilder.library'] = function ($c) {
-        return \collect(
+        $blocks = \collect(
             \apply_filters('coretik/page-builder/init_library', [
                     // Components
                     AnchorComponent::class,
@@ -83,7 +85,11 @@ add_action('coretik/container/construct', function ($container) {
                     // // Container
                     Container::class,
                 ])
-        );
+            );
+        $blocks->macro('find', function ($name) {
+            return $this->first(fn ($block) => $block::NAME === $name);
+        });
+        return $blocks;
     };
 
     $container['pageBuilder.config'] = function ($c): Collection {
@@ -141,24 +147,60 @@ add_action('coretik/container/construct', function ($container) {
 add_action('admin_init', function () {
 
     /**
-     * Blocks preview
+     * Blocks Flexible Content preview
      */
     add_action('acfe/flexible/render/before_template', function ($field, $layout) {
-        $layoutName = $layout['name'];
-
-        if (\in_array($layoutName, app()->get('pageBuilder.config')->get('blocks')->map(fn ($block) => $block::NAME)->all())) {
+        if (blocks()->find($layout['name'])) {
             $data = get_fields();
             $data = current(current($data));
-            $block = app()->get('pageBuilder.factory')->create($data);
+            $block = factory()->create($data);
 
             if (empty($data['uniqId'])) {
                 $data['uniqId'] = $block->getUniqId();
             }
             $block->setProps($data);
+
             \do_action('coretik/page-builder/block/load', $block, $data);
             \do_action('coretik/page-builder/block/load/layoutId=' . $block->getLayoutId(), $block, $data);
             \do_action('coretik/page-builder/block/load/uniqId=' . $block->getUniqId(), $block, $data);
+
             $block->render();
         }
     }, 10, 2);
+
 });
+
+/**
+ * Autoload block types from library
+ * Should be unplugged and replaced by a personal loader (like an ACF composer) to avoid building all blocks every time
+ */
+add_action(
+    'init',
+    function (): void
+    {
+        if (defined('CORETIK_PAGEBUILDER_AUTOLOAD_BLOCK_TYPES') && CORETIK_PAGEBUILDER_AUTOLOAD_BLOCK_TYPES === false) {
+            return;
+        }
+
+        foreach (library() as $blockName) {
+            $block = blocks()->find($blockName);
+            if ($block && $block::supportsBlockType()) {
+                $block = factory()->create($blockName);
+
+                if (!$block instanceof ShouldBuildBlockType) {
+                    continue;
+                }
+
+                $block->registerBlockType();
+
+                add_action('acf/init', function () use ($block) {
+                    $fields = $block->fields();
+                    $fields->setLocation('block', '==', 'acf/' . $block->getBlockTypeName());
+
+                    \acf_add_local_field_group($fields->build());
+                });
+            }
+        }
+    },
+    3
+);

@@ -8,7 +8,7 @@ trait Faker
 
     public function fakeIt(): self
     {
-        $props = \apply_filters('coretik/page-builder/fake-it/name=' . $this->getName(), $this->propsFake ?? []);
+        $props = \apply_filters('coretik/page-builder/fake-it/name=' . $this->getName(), $this->getFakeProps());
 
         $build = $this->fields()->build();
         foreach ($build['fields'] as $field) {
@@ -19,6 +19,11 @@ trait Faker
 
         $this->setProps($props);
         return $this;
+    }
+
+    protected function getFakeProps(): array
+    {
+        return $this->propsFake;
     }
 
     protected static function fakeField($field): mixed

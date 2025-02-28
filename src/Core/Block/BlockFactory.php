@@ -42,7 +42,7 @@ class BlockFactory implements BlockFactoryInterface
             return $custom;
         }
 
-        $block = $this->config['blocks']->first(fn ($block) => $block::NAME === $name);
+        $block = $this->config['blocks']->find($name);
         if ($block) {
             if (empty($layout['layoutId'])) {
                 $layout['layoutId'] = sprintf('%s-%s', $block::NAME, $this->counter++);

@@ -2,7 +2,7 @@
 # Pagebuilder with ACF for Coretik
 
 Coretik page builder provides a modern way for developers to build blocks for page builder with **live admin preview** (and it is WP-CLI friendly !).
-It uses framework logic containing reusable components and composite blocks and it manages as many components levels as necessary.
+It uses framework logic containing reusable components and composite blocks and it manages as many components levels as necessary. It also provides a way to build block types for the block editor (Gutenberg) with the same logic.
 
 ## Overview
 This package works with [StoutLogic/acf-builder](https://github.com/StoutLogic/acf-builder) to create fields and just provide a way to build `StoutLogic\AcfBuilder\FieldsBuilder` blocks. You have to include them in any other fields you want.
@@ -10,8 +10,9 @@ This package works with [StoutLogic/acf-builder](https://github.com/StoutLogic/a
 Block instance defined all its features :
 - rendering method ;
 - admin fields and admin preview ;
+- block type to register a block.json.
 
-Three blocks types exists :
+Three block levels exist :
 - **Components** : the lower block level, used to build other blocks ;
 - **Block** : a free way to build a complete block instance ;
 - **Composite** : a fast way to build blocks based on many components or others blocks ;
@@ -72,6 +73,8 @@ add_filter('coretik/page-builder/config', function ($config) {
 
 ### Blocks classes
 
+**Every block and composite have the capability to build a block.json** file to register a block type in the block editor (Gutenberg) simply by implementing the `Coretik\PageBuilder\Core\Contract\ShouldBuildBlockType` interface. You can use the `Coretik\PageBuilder\Core\Block\Traits\BlockType` trait to do it.
+
 #### Component
 This lower block level allow you to reuse some basics fields in your theme. Simplified example for the titleComponent provided in this package as ready to use.
 ```php
@@ -80,10 +83,14 @@ This lower block level allow you to reuse some basics fields in your theme. Simp
 namespace Coretik\PageBuilder\Library\Component;
 
 use Coretik\PageBuilder\Core\Block\BlockComponent;
+use Coretik\PageBuilder\Core\Contract\ShouldBuildBlockType;
+use Coretik\PageBuilder\Core\Block\Traits\BlockType;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-class TitleComponent extends BlockComponent
+class TitleComponent extends BlockComponent implements ShouldBuildBlockType
 {
+    use BlockType; // Use this trait to build a block.json file
+
     const NAME = 'component.title';
     const LABEL = 'My title'; // Admin label
 

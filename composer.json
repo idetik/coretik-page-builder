@@ -20,6 +20,7 @@
         "psr-4": { "Coretik\\PageBuilder\\": ["src"] },
         "files": [
             "src/init.php",
+            "src/helpers.php",
             "src/Cli/add-commands.php",
             "src/Core/Block/Modifier/modifiers.php"
         ]
