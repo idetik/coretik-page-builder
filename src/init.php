@@ -169,26 +169,28 @@ add_action('admin_init', function () {
 
 });
 
-add_action('init', function () {
+// add_action('init', function () {
 
-    foreach (library() as $blockName) {
+//     foreach (library() as $blockName) {
 
-        $block = blocks()->find($blockName);
-        if ($block && $block::supportsBlockType()) {
-            $block = factory()->create($blockName);
-            $block->registerBlockType();
+//         $block = blocks()->find($blockName);
+//         if ($block && $block::supportsBlockType()) {
+//             $block = factory()->create($blockName);
+//             $block->registerBlockType();
 
-            add_action('acf/init', function () use ($block) {
-                $fields = $block->fields();
-                $fields->setLocation('block', '==', 'acf/' . $block->getBlockTypeName());
+//             // add_action('acf/init', function () use ($block) {
+//             //     $fields = $block->fields();
+//             //     $fields->setLocation('block', '==', 'acf/' . $block->getBlockTypeName());
+//             //     // set autosync
+//             //     $fields->set('acfe_autosync', ['php']);
 
-                \acf_add_local_field_group($fields->build());
-            });
-        }
+//             //     \acf_add_local_field_group($fields->build());
+//             // });
+//         }
 
-    }
+//     }
 
-}, 3);
+// }, 3);
 
 
 /** TMP */

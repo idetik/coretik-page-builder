@@ -20,9 +20,9 @@ trait BlockType
         );
     }
 
-    public function registerBlockType(): array|bool
+    public function registerBlockType(array $props = []): array|bool
     {
-        return \acf_register_block_type($this->getBlockType());
+        return \acf_register_block_type($this->getBlockType($props));
     }
 
     protected function prepareBlockTypeProps(array $customProps = []): array
@@ -118,38 +118,41 @@ trait BlockType
 
     public function getBlockTypeRender(): ?callable
     {
-        return function ($attributes, $content) {
-            if (array_key_exists('data', $attributes) && ($attributes['data']['is_preview'] ?? false)) {
-                $data = $attributes['data'];
+        return [static::class, 'getBlockTypeRenderCallback'];
+    }
 
-                if (!empty($data['preview_image'])) {
-                    printf(
-                        '<div class="block-preview-image block-preview-image--%s"><img style="width:100%%; height: auto;" src="%s" alt="Previewing %s" /></div>',
-                        str_replace('.', '-', static::NAME),
-                        $data['preview_image'],
-                        static::LABEL,
-                    );
-                    return;
-                }
-            } else {
-                $data = get_fields() ?: [];
+    public static function getBlockTypeRenderCallback($attributes, $content): void
+    {
+        if (array_key_exists('data', $attributes) && ($attributes['data']['is_preview'] ?? false)) {
+            $data = $attributes['data'];
+
+            if (!empty($data['preview_image'])) {
+                printf(
+                    '<div class="block-preview-image block-preview-image--%s"><img style="width:100%%; height: auto;" src="%s" alt="Previewing %s" /></div>',
+                    str_replace('.', '-', static::NAME),
+                    $data['preview_image'],
+                    static::LABEL,
+                );
+                return;
             }
+        } else {
+            $data = get_fields() ?: [];
+        }
 
-            $data['acf_fc_layout'] = static::NAME;
+        $data['acf_fc_layout'] = static::NAME;
 
-            $block = app()->get('pageBuilder.factory')->create($data);
-            if (empty($data['uniqId'])) {
-                $data['uniqId'] = $block->getUniqId();
-            }
+        $block = app()->get('pageBuilder.factory')->create($data);
+        if (empty($data['uniqId'])) {
+            $data['uniqId'] = $block->getUniqId();
+        }
 
-            $block->setContext(static::$blockTypeContext);
+        $block->setContext(static::$blockTypeContext);
 
-            $block->setProps($data);
-            \do_action('coretik/page-builder/block/load', $block, $attributes);
-            \do_action('coretik/page-builder/block/load/layoutId=' . $block->getLayoutId(), $block, $attributes);
-            \do_action('coretik/page-builder/block/load/uniqId=' . $block->getUniqId(), $block, $attributes);
-            $block->render();
-        };
+        $block->setProps($data);
+        \do_action('coretik/page-builder/block/load', $block, $attributes);
+        \do_action('coretik/page-builder/block/load/layoutId=' . $block->getLayoutId(), $block, $attributes);
+        \do_action('coretik/page-builder/block/load/uniqId=' . $block->getUniqId(), $block, $attributes);
+        $block->render();
     }
 
     public function getBlockTypeEnqueueStyle(): ?string
