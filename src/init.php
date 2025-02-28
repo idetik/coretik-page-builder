@@ -25,6 +25,7 @@ use Coretik\PageBuilder\Library\Container;
 use Coretik\PageBuilder\Builder;
 use Coretik\PageBuilder\Cli\Command\PageBuilderCommand;
 use Coretik\PageBuilder\Core\Contract\BlockFactoryInterface;
+use Coretik\PageBuilder\Core\Contract\ShouldBuildBlockType;
 use Coretik\PageBuilder\Core\Job\Block\CreateBlockJob;
 use Coretik\PageBuilder\Core\Job\Thumbnail\{
     GenerateThumbnailJob,
@@ -169,55 +170,37 @@ add_action('admin_init', function () {
 
 });
 
-// add_action('init', function () {
-
-//     foreach (library() as $blockName) {
-
-//         $block = blocks()->find($blockName);
-//         if ($block && $block::supportsBlockType()) {
-//             $block = factory()->create($blockName);
-//             $block->registerBlockType();
-
-//             // add_action('acf/init', function () use ($block) {
-//             //     $fields = $block->fields();
-//             //     $fields->setLocation('block', '==', 'acf/' . $block->getBlockTypeName());
-//             //     // set autosync
-//             //     $fields->set('acfe_autosync', ['php']);
-
-//             //     \acf_add_local_field_group($fields->build());
-//             // });
-//         }
-
-//     }
-
-// }, 3);
-
-
-/** TMP */
-if (!function_exists(__NAMESPACE__ . '\\factory')) {
-    function factory(): BlockFactoryInterface
+/**
+ * Autoload block types from library
+ * Should be unplugged and replaced by a personal loader (like an ACF composer) to avoid building all blocks every time
+ */
+add_action(
+    'init',
+    function (): void
     {
-        return app()->get('pageBuilder.factory');
-    }
-}
+        if (defined('CORETIK_PAGEBUILDER_AUTOLOAD_BLOCK_TYPES') && CORETIK_PAGEBUILDER_AUTOLOAD_BLOCK_TYPES === false) {
+            return;
+        }
 
-if (!function_exists(__NAMESPACE__ . '\\library')) {
-    /**
-     * Return all published blocks in library
-     */
-    function library(): array
-    {
-        return app()->get('pageBuilder')->library();
-    }
-}
+        foreach (library() as $blockName) {
+            $block = blocks()->find($blockName);
+            if ($block && $block::supportsBlockType()) {
+                $block = factory()->create($blockName);
 
-if (!function_exists(__NAMESPACE__ . '\\blocks')) {
-    /**
-     * Return all registered blocks
-     * @return \Illuminate\Support\Collection
-     */
-    function blocks(): Collection
-    {
-        return app()->get('pageBuilder.config')->get('blocks');
-    }
-}
+                if (!$block instanceof ShouldBuildBlockType) {
+                    continue;
+                }
+
+                $block->registerBlockType();
+
+                add_action('acf/init', function () use ($block) {
+                    $fields = $block->fields();
+                    $fields->setLocation('block', '==', 'acf/' . $block->getBlockTypeName());
+
+                    \acf_add_local_field_group($fields->build());
+                });
+            }
+        }
+    },
+    3
+);
