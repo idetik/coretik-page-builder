@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/idetik/coretik-page-builder/compare/v2.2.12...v2.3.0) (2025-02-28)
+
+
+### Features
+
+* Every block and composite may implement the ShouldBuildBlockType interface to create the block.json file used by the WordPress block editor ([#4](https://github.com/idetik/coretik-page-builder/issues/4)) ([f256f89](https://github.com/idetik/coretik-page-builder/commit/f256f891c0c4c9c544709c7bd495289999d96ace))
+
 ## [2.2.12](https://github.com/idetik/coretik-page-builder/compare/v2.2.11...v2.2.12) (2025-02-11)
 
 
