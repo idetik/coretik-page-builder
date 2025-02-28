@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/idetik/coretik-page-builder/compare/v2.3.0...v2.3.1) (2025-02-28)
+
+
+### Bug Fixes
+
+* TypeHint library helper ([dd055bd](https://github.com/idetik/coretik-page-builder/commit/dd055bd70c84213911f63d65ac9c415a6ed61797))
+
 # [2.3.0](https://github.com/idetik/coretik-page-builder/compare/v2.2.12...v2.3.0) (2025-02-28)
 
 
