@@ -4,6 +4,15 @@
 Coretik page builder provides a modern way for developers to build blocks for page builder with **live admin preview** (and it is WP-CLI friendly !).
 It uses framework logic containing reusable components and composite blocks and it manages as many components levels as necessary. It also provides a way to build block types for the block editor (Gutenberg) with the same logic.
 
+Coding
+----------
+![004 (3)](https://github.com/user-attachments/assets/b595cc34-c3c6-4b1b-bdbc-55aa6738f010)
+
+Editing | Rendering
+--|--
+![004 (2)](https://github.com/user-attachments/assets/b90ba875-86e6-4bcf-9004-c781c30a8fbc) | ![004](https://github.com/user-attachments/assets/9ed2f8da-73af-4de1-987c-ffb60fd3f6c9)
+
+
 ## Overview
 This package works with [StoutLogic/acf-builder](https://github.com/StoutLogic/acf-builder) to create fields and just provide a way to build `StoutLogic\AcfBuilder\FieldsBuilder` blocks. You have to include them in any other fields you want.
 
@@ -22,7 +31,7 @@ Components doesn't appear in the user library. There are only used to build othe
 ## Requirements
 - PHP >= 8.0
 - `idetik/coretik` : https://github.com/idetik/coretik
-- Plugin ACF : https://www.advancedcustomfields.com/
+- Plugin ACF : https://www.advancedcustomfields.com/ (PRO recommended)
 - Plugin ACF Extended : https://acf-extended.com/
 
 ## Installation
