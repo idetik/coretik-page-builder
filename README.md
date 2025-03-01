@@ -1,4 +1,4 @@
-[![Latest Stable Version](http://poser.pugx.org/idetik/coretik-page-builder/v)](https://packagist.org/packages/idetik/coretik-page-builder) [![License](http://poser.pugx.org/idetik/coretik-page-builder/license)](https://github.com/idetik/coretik-page-builder/blob/master/LICENSE.md)
+[![Latest Stable Version](https://poser.pugx.org/idetik/coretik-page-builder/v)](https://packagist.org/packages/idetik/coretik-page-builder) [![License](https://poser.pugx.org/idetik/coretik-page-builder/license)](https://github.com/idetik/coretik-page-builder/blob/master/LICENSE.md)
 # Pagebuilder with ACF for Coretik
 
 Coretik page builder provides a modern way for developers to build blocks for page builder with **live admin preview** (and it is WP-CLI friendly !).
