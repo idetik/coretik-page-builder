@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/idetik/coretik-page-builder/compare/v2.3.1...v2.3.2) (2025-03-01)
+
+
+### Bug Fixes
+
+* enhance Repeater builtin feature ([9b0010a](https://github.com/idetik/coretik-page-builder/commit/9b0010a8e86d15c8457c18028c93e12cbaae8536))
+
 ## [2.3.1](https://github.com/idetik/coretik-page-builder/compare/v2.3.0...v2.3.1) (2025-02-28)
 
 
