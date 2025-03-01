@@ -37,6 +37,48 @@ class RepeatearComponent extends BlockComponent
         return $this;
     }
 
+    public function tableLayout(): self
+    {
+        $this->args['layout'] = 'table';
+        return $this;
+    }
+
+    public function blockLayout(): self
+    {
+        $this->args['layout'] = 'block';
+        return $this;
+    }
+
+    public function rowLayout(): self
+    {
+        $this->args['layout'] = 'row';
+        return $this;
+    }
+
+    public function buttonLabel(string $label): self
+    {
+        $this->args['button_label'] = $label;
+        return $this;
+    }
+
+    public function min(int $min): self
+    {
+        $this->args['min'] = $min;
+        return $this;
+    }
+
+    public function max(int $max): self
+    {
+        $this->args['max'] = $max;
+        return $this;
+    }
+
+    public function required(bool $required = true): self
+    {
+        $this->args['required'] = $required;
+        return $this;
+    }
+
     public function setProps(array $props)
     {
         foreach ($props as $key => $value) {
@@ -94,9 +136,7 @@ class RepeatearComponent extends BlockComponent
     {
         return [
             'repeater_name' => $this->repeater_name,
-            $this->repeater_name => collect($this->{$this->repeater_name})->map(
-                fn ($component) => !empty($component) ? $this->component($component) : null
-            )->all(),
+            $this->repeater_name => $this->getItems()->all(),
             'getItems' => fn (): Collection => $this->getItems(),
         ];
     }

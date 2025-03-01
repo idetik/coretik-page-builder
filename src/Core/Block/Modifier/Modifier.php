@@ -56,7 +56,7 @@ abstract class Modifier
 
     public function getArgs(): mixed
     {
-        return $this->args;
+        return $this->args ?? null;
     }
 
     /**

@@ -13,33 +13,8 @@ class RepeatModifier extends Modifier
     const PRIORITY = 100;
 
     protected string $repeaterName;
-    protected array $repeaterArgs;
+    protected array $repeaterArgs = [];
     protected BlockInterface $repeaterFields;
-
-    public static function make(mixed $args = null): self
-    {
-        if (empty($args)) {
-            throw new Exception('[RepeatModifier] String $repeaterName or array $repeaterArgs args are expected.');
-        }
-
-        if (\is_array($args)) {
-            if (!\array_key_exists('name', $args)) {
-                throw new Exception('[RepeatModifier] Repeater modifiers doesn\'t contains \'name\' or \'args\' keys.');
-            }
-
-            if (!\is_string($args['name'])) {
-                throw new Exception('[RepeatModifier] Repeater modifiers \'name\' must be a string.');
-            }
-
-            if (!\is_array($args['args'] ?? [])) {
-                throw new Exception('[RepeatModifier] Repeater modifiers \'args\' must be a array.');
-            }
-        } elseif (!\is_string($args)) {
-            throw new Exception('[RepeatModifier] String $repeaterName or array $repeaterArgs args are expected.');
-        }
-
-        return parent::make($args);
-    }
 
     public static function modify(BlockInterface|string $block, mixed $args = null): BlockInterface
     {
@@ -57,8 +32,15 @@ class RepeatModifier extends Modifier
         }
 
         if (\is_array($args)) {
-            $instance->repeaterName = $args['name'];
+            $instance->repeaterName = $args['name'] ?? null;
             $instance->repeaterArgs = $args['args'] ?? [];
+        }
+
+        if (!isset($instance->repeaterName)) {
+            $instance->repeaterName = sprintf(
+                '%s_rows',
+                str_replace(['-', '.'], '_', $block->getName())
+            );
         }
 
         $block->addModifier([$instance, 'handle'], static::PRIORITY);
