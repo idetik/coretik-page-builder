@@ -1,3 +1,15 @@
+# [2.4.0](https://github.com/idetik/coretik-page-builder/compare/v2.3.2...v2.4.0) (2025-08-16)
+
+
+### Bug Fixes
+
+* Preview rendering fixed (acfe/flexible/render/before_template) ([4057aec](https://github.com/idetik/coretik-page-builder/commit/4057aec1fe0118da9295cf3d4371f72fc7917ca8))
+
+
+### Features
+
+* Add TrueFalse component ([05cd9b9](https://github.com/idetik/coretik-page-builder/commit/05cd9b9e572320c6535b9fcc4cedd43a20478b44))
+
 ## [2.3.2](https://github.com/idetik/coretik-page-builder/compare/v2.3.1...v2.3.2) (2025-03-01)
 
 
