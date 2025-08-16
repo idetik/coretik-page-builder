@@ -7,6 +7,7 @@ namespace Coretik\PageBuilder;
  * ----------------------
  */
 
+use Coretik\Core\Utils\Arr;
 use Coretik\PageBuilder\Core\Acf\PageBuilderField;
 use Coretik\PageBuilder\Core\Block\BlockFactory;
 use Coretik\PageBuilder\Library\Component\{
@@ -20,6 +21,7 @@ use Coretik\PageBuilder\Library\Component\{
     TableComponent,
     TitleComponent,
     TextComponent,
+    TrueFalseComponent,
 };
 use Coretik\PageBuilder\Library\Container;
 use Coretik\PageBuilder\Builder;
@@ -62,32 +64,33 @@ add_action('coretik/container/construct', function ($container) {
     $container['pageBuilder.library'] = function ($c) {
         $blocks = \collect(
             \apply_filters('coretik/page-builder/init_library', [
-                    // Components
-                    AnchorComponent::class,
-                    BreadcrumbComponent::class,
-                    CtaComponent::class,
-                    ImageComponent::class,
-                    TableComponent::class,
-                    TextComponent::class,
-                    ThumbnailComponent::class,
-                    TitleComponent::class,
-                    WysiwygComponent::class,
-                    RepeatearComponent::class,
+                // Components
+                AnchorComponent::class,
+                BreadcrumbComponent::class,
+                CtaComponent::class,
+                ImageComponent::class,
+                TableComponent::class,
+                TextComponent::class,
+                ThumbnailComponent::class,
+                TitleComponent::class,
+                WysiwygComponent::class,
+                RepeatearComponent::class,
+                TrueFalseComponent::class,
 
 
-                    // Blocks
+                // Blocks
 
 
-                    // Layouts
-                    // SampleLayout::class,
+                // Layouts
+                // SampleLayout::class,
 
 
-                    // // Container
-                    Container::class,
-                ])
-            );
+                // // Container
+                Container::class,
+            ])
+        );
         $blocks->macro('find', function ($name) {
-            return $this->first(fn ($block) => $block::NAME === $name);
+            return $this->first(fn($block) => $block::NAME === $name);
         });
         return $blocks;
     };
@@ -151,8 +154,10 @@ add_action('admin_init', function () {
      */
     add_action('acfe/flexible/render/before_template', function ($field, $layout) {
         if (blocks()->find($layout['name'])) {
-            $data = get_fields();
-            $data = current(current($data));
+            $data = current(get_fields());
+            $loop = acf_get_loop('active');
+            $data = $data[$loop['i'] ?? 0] ?? current($data);
+
             $block = factory()->create($data);
 
             if (empty($data['uniqId'])) {
@@ -167,7 +172,6 @@ add_action('admin_init', function () {
             $block->render();
         }
     }, 10, 2);
-
 });
 
 /**
@@ -176,8 +180,7 @@ add_action('admin_init', function () {
  */
 add_action(
     'init',
-    function (): void
-    {
+    function (): void {
         if (defined('CORETIK_PAGEBUILDER_AUTOLOAD_BLOCK_TYPES') && CORETIK_PAGEBUILDER_AUTOLOAD_BLOCK_TYPES === false) {
             return;
         }
