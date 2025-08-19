@@ -156,7 +156,7 @@ add_action('admin_init', function () {
         if (blocks()->find($layout['name'])) {
             $data = current(get_fields());
             $loop = acf_get_loop('active');
-            $data = $data[$loop['i'] ?? 0] ?? $loop['value'][$loop['i'] ?? 0] ?? current($data);
+            $data = $data[$loop['i'] ?? 0] ?? get_row(true) ?? current($data);
 
             $block = factory()->create($data);
 
