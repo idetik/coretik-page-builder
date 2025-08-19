@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/idetik/coretik-page-builder/compare/v2.4.0...v2.4.1) (2025-08-19)
+
+
+### Bug Fixes
+
+* Fix rendering template when editing ([356a6e2](https://github.com/idetik/coretik-page-builder/commit/356a6e2a0b43e6ee71cfd5c0e7a1d53871386113))
+
 # [2.4.0](https://github.com/idetik/coretik-page-builder/compare/v2.3.2...v2.4.0) (2025-08-16)
 
 
