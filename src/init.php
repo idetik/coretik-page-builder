@@ -154,9 +154,7 @@ add_action('admin_init', function () {
      */
     add_action('acfe/flexible/render/before_template', function ($field, $layout) {
         if (blocks()->find($layout['name'])) {
-            $data = current(get_fields());
-            $loop = acf_get_loop('active');
-            $data = $data[$loop['i'] ?? 0] ?? get_row(true) ?? current($data);
+            $data = get_row(true) ?? current(current(get_fields())) ?? [];
 
             $block = factory()->create($data);
 
