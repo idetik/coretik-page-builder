@@ -33,3 +33,8 @@ function repeat(BlockInterface|string $block, null|string|array $nameOrArgs = nu
 {
     return RepeatModifier::modify($block, $nameOrArgs);
 }
+
+function acfml(BlockInterface|string $block): BlockInterface
+{
+    return AcfmlModifier::modify($block);
+}
