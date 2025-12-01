@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/idetik/coretik-page-builder/compare/v2.4.3...v2.5.0) (2025-12-01)
+
+
+### Features
+
+* Add WPML ACFML modifier ([f9b1d0f](https://github.com/idetik/coretik-page-builder/commit/f9b1d0f61ea28106afb96630877f579504f8ba92))
+
 ## [2.4.3](https://github.com/idetik/coretik-page-builder/compare/v2.4.2...v2.4.3) (2025-08-22)
 
 
