@@ -22,7 +22,7 @@ class BlockFactory implements BlockFactoryInterface
         Block::setConfigAsGlobal($config);
     }
 
-    public function create(string|array $layout, BlockContextInterface $context = null): BlockInterface
+    public function create(string|array $layout, ?BlockContextInterface $context = null): BlockInterface
     {
         if (\is_array($layout)) {
             $name = $layout['acf_fc_layout'];

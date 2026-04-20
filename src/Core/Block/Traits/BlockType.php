@@ -106,7 +106,7 @@ trait BlockType
         return 'center';
     }
 
-    public function getBlockTypeAlignContent():?string
+    public function getBlockTypeAlignContent(): ?string
     {
         return 'center';
     }

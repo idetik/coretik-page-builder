@@ -29,7 +29,7 @@ class Builder
         return $this;
     }
 
-    public function setBlocks(array $blocks, callable $wrapAction = null): self
+    public function setBlocks(array $blocks, ?callable $wrapAction = null): self
     {
         foreach ($blocks as $i => $block) {
             $block = $this->factory->create($block, $this->context);

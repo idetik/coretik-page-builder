@@ -18,7 +18,6 @@ class AcfmlModifier extends Modifier
     public function handle(FieldsBuilder $fields, BlockInterface $block): FieldsBuilder
     {
         foreach ($fields->getFields() as $field) {
-
             $fieldConfig = $field->getConfig();
             $bypass = array_key_exists('wpml_cf_preferences', $fieldConfig) ? $fieldConfig['wpml_cf_preferences'] : false;
             $bypass = apply_filters('coretik/page-builder/modifier/acfml/bypass-field', $bypass, $field, $block);
