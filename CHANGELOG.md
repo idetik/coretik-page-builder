@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/idetik/coretik-page-builder/compare/v2.5.0...v2.5.1) (2026-04-20)
+
+
+### Bug Fixes
+
+* PHP 8.4 compat ([787c65b](https://github.com/idetik/coretik-page-builder/commit/787c65bd61387fcbdc4705c8da923a735ed8fc8d))
+
 # [2.5.0](https://github.com/idetik/coretik-page-builder/compare/v2.4.3...v2.5.0) (2025-12-01)
 
 
