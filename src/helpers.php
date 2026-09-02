@@ -15,7 +15,7 @@ if (!function_exists(__NAMESPACE__ . '\\factory')) {
 if (!function_exists(__NAMESPACE__ . '\\library')) {
     function library(): array
     {
-        return app()->get('pageBuilder')->library();
+        return app()?->get('pageBuilder')->library() ?? [];
     }
 }
 
