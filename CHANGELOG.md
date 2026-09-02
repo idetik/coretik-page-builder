@@ -1,3 +1,10 @@
+## [2.5.2](https://github.com/idetik/coretik-page-builder/compare/v2.5.1...v2.5.2) (2026-09-02)
+
+
+### Bug Fixes
+
+* Fix helpers ([60a21df](https://github.com/idetik/coretik-page-builder/commit/60a21dfb14154201cb3f87dec0b473714643cb79))
+
 ## [2.5.1](https://github.com/idetik/coretik-page-builder/compare/v2.5.0...v2.5.1) (2026-04-20)
 
 
