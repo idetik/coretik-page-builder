@@ -39,9 +39,13 @@ trait DevTools
                         default => $row
                     },
                     $this->getParameters()
-                                                                                                                                                  );
-                                                                                                                                                  \highlight_string("<?php\n" . var_export($parameters, true) . ";\n?>");
-                                                                                                                                                    ?></pre></div>
+                );
+                echo \htmlspecialchars(
+                    \print_r($parameters, true),
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                );
+                ?></pre></div>
             <div style="margin-top:16px;max-height:300px;overflow:auto;"><b>Rendu:</b> <pre style="margin-top:4px;"><code><?= htmlspecialchars($this->render(true)); ?></code></pre></div>
         </div>
         <?php
