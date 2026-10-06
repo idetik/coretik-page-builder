@@ -1,3 +1,10 @@
+## [2.5.3](https://github.com/idetik/coretik-page-builder/compare/v2.5.2...v2.5.3) (2026-10-06)
+
+
+### Bug Fixes
+
+* devtools php error ([4c545c8](https://github.com/idetik/coretik-page-builder/commit/4c545c8e643c7d07494aad0318898d54153b19cb))
+
 ## [2.5.2](https://github.com/idetik/coretik-page-builder/compare/v2.5.1...v2.5.2) (2026-09-02)
 
 
