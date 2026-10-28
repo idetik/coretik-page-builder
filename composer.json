@@ -8,7 +8,7 @@
         "globalis/wp-cubi-helpers": "^1.0",
         "stoutlogic/acf-builder": "^1.12",
         "idetik/coretik-faker": "^1.1",
-        "illuminate/filesystem": "^10.39"
+        "illuminate/filesystem": "^10.39 || ^11.0 || ^12.0 || ^13.0"
     },
     "authors": [
         {
