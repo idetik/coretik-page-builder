@@ -1,3 +1,10 @@
+## [2.5.4](https://github.com/idetik/coretik-page-builder/compare/v2.5.3...v2.5.4) (2026-10-28)
+
+
+### Bug Fixes
+
+* **deps:** allow illuminate/filesystem 11 to 13, for Coretik 2 ([#5](https://github.com/idetik/coretik-page-builder/issues/5)) ([cf3adba](https://github.com/idetik/coretik-page-builder/commit/cf3adba82c33367f80ba23c8c5b6254b290e8b9f))
+
 ## [2.5.3](https://github.com/idetik/coretik-page-builder/compare/v2.5.2...v2.5.3) (2026-10-06)
 
 
